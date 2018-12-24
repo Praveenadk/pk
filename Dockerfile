@@ -7,8 +7,6 @@ ENV NEO4J_SHA256=d000f1b6afb1cec3cf1cde99c75555d38f579b58e467eebe32e2353fdf9effa
     NEO4J_EDITION=enterprise
 ARG NEO4J_URI=http://dist.neo4j.org/neo4j-enterprise-3.4.0-unix.tar.gz
 
-COPY ./local-package/* /tmp/
-
 RUN apk add --no-cache --quiet \
     bash \
     curl \
