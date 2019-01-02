@@ -1,0 +1,52 @@
+FROM amazonlinux
+
+RUN yum install -y git
+RUN yum install -y wget
+RUN yum install -y curl
+RUN yum install -y tar
+
+# INSTALL JAVA
+RUN yum install -y java-1.7.0-openjdk
+RUN java -version
+ENV NEO4J_VERSION=3.4.5
+
+RUN mkdir /var/lib/neo4j
+
+RUN wget http://dist.neo4j.org/neo4j-community-$NEO4J_VERSION-unix.tar.gz
+RUN tar zxf neo4j-community-$NEO4J_VERSION-unix.tar.gz
+RUN mv neo4j-community-$NEO4J_VERSION/* /var/lib/neo4j
+RUN rm -rf neo4j-community-$NEO4J_VERSION-unix.tar.gz
+
+RUN export NEO4J_HOME=/var/lib/neo4j
+VOLUME /data
+
+#RUN pwd
+#RUN cd /var/lib/neo4j/
+#RUN bin/neo4j start
+
+ENV NEO4J_PASSWD neo4j123
+ENV NEO4J_AUTH neo4j/${NEO4J_PASSWD}
+
+RUN git clone https://github.com/Praveenadk/pk.git
+RUN mv /pk/snapshotcompanydata.csv /var/lib/neo4j/import
+RUN mv /pk/data.cql /var/lib/neo4j/import
+
+#RUN mv /pk/docker-entrypoint.sh /docker-entrypoint.sh
+
+#RUN chmod +x docker-entrypoint.sh
+
+WORKDIR /var/lib/neo4j
+
+EXPOSE 7474 7473 7687
+#COPY scripts.sh /scripts.sh
+ENTRYPOINT ["/sbin/tini", "-g", "--", "/docker-entrypoint.sh"]
+
+CMD bin/neo4j-admin set-initial-password ${NEO4J_PASSWD} || true && \
+    bin/neo4j start && sleep 5 && \
+    for f in import/data.cql; do \
+      [ -f "$data.cql" ] || continue; \
+      cat "$data.cql" | NEO4J_USERNAME=neo4j NEO4J_PASSWORD=${NEO4J_PASSWD} bin/cypher-shell --fail-fast && rm "$data.cql"; \
+    done && \
+    tail -f logs/neo4j.log
+
+RUN cat /var/lib/neo4j/import/data.cql | cypher-shell -u neo4j -p neo4j123
