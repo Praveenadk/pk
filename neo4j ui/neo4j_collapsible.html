@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+.node circle {
+    cursor: pointer;
+    stroke: #bbb;
+    stroke-width: 0.7px;
+                
+
+}
+
+
+.node text {
+  font: 12px Arial;
+  font-size:12px;
+  font-style:italic-bold;
+  pointer-events: none;
+  text-anchor: middle;
+}
+
+
+line.link {
+  fill: none;
+  stroke: green;
+stroke-width: 0.5px;
+}
+text.shadow {
+    stroke: black;
+    stroke-width: 0.5px;
+    opacity: 0.9;
+}
+
+</style>
+<body>
+<div id="canvas-svg" ></div>
+
+  
+</div>
+<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+<script>
+//var data = '{"name":"Spendinghabits","children":[{"name":"Barclays Center","children":[{"name":269}]},{"name":"Rupp Arena","children":[{"name":140}]},{"name":"Quicken Loans Arena","children":[{"name":376}]},{"name":"Arm & Hammer Park","children":[{"name":426}]},{"name":"U.S. Bank Stadium","children":[{"name":220}]},{"name":"Ohio Stadium","children":[{"name":90}]}]}';
+     
+//var myjson = '{"name":"Spendinghabits","children":[{" Name":"Art Venere"},{"Age":"55"},{"Gender":"Male"},{"salary":"6540"}]}';
+//var myjson = '{"name":"Demographics","_children":[{"name":"Art Venere","label":"Name"},{"name":"55","label":"Age"},{"name":"Male","label":"Gender"},{"name":"$6540","label":"Salary"}]}';
+    
+/* var json={
+"name": "flare",
+"_children": [
+  {
+   "name": "analytics",
+   "_children": [
+    {
+     "name": "cluster",
+     "_children": [
+      {"name": "AgglomerativeCluster"},
+      {"name": "CommunityStructure"},
+      {"name": "HierarchicalCluster"},
+      {"name": "MergeEdge"}
+     ]
+    },
+    {
+     "name": "graph",
+     "_children": [
+      {"name": "BetweennessCentrality"},
+      {"name": "LinkDistance"},
+      {"name": "MaxFlowMinCut"},
+      {"name": "ShortestPaths"},
+      {"name": "SpanningTree"}
+     ]
+    },
+    {
+     "name": "optimization"
+     
+    }
+   ]
+  }
+]
+}; */
+            
+var json=[{
+  "name": "Company",
+  
+  "companynumber": "09151627",
+  
+},{
+  "name": "Address",
+
+  "companynumber": "09151627",
+  
+}];
+
+//json = JSON.parse( myjson ); 
+ root = json;
+var x=0,y=0;
+var w = 1000;
+    var h = 600;
+var force = d3.layout.force()
+<!-- .size([w, h]) -->
+<!-- .linkStrength(0.1) -->
+    <!-- .friction(0.1) -->
+    <!-- .linkDistance(80) -->
+    <!-- .charge(-360) -->
+    <!-- .gravity(0.05) -->
+    <!-- .theta(0.8) -->
+    <!-- .alpha(0.1); -->
+    .linkDistance(100)
+                .friction(0.3)
+    .charge(-650)
+                .chargeDistance(400)
+    .gravity(0.05)
+    .size([w, h]);
+  //  .on("tick", tick);
+update();
+
+function update() {
+  var nodes = flatten(root),
+      edges = d3.layout.tree().links(nodes);
+  var drag = force.drag()
+    .on("dragstart", dragstart);            
+
+function flatten(root) {
+  var nodes = [], i = 0;
+  for(j=0;j<root.length;j++){
+    recurse(root[j],"");
+                }
+  function recurse(node,parent) {
+    if (node.children){
+	for (var k = 0, len = node.children.length; k < len; k++){
+	recurse(node.children[k],node)
+	
+	}
+
+	//node.children.forEach(recurse);
+	} 
+	node["parent"]=parent;
+    if (!node.id) node.id = i++;
+               
+    nodes.push(node);
+  
+  }
+
+  return nodes;
+}
+    var linkDistance=100;
+    var dataset = {
+                "nodes":nodes,
+                "edges":edges,
+    };
+
+    $("svg").remove();
+var svg = d3.select("body").append("svg").attr({"width":w,"height":h});
+var svgDefs = svg.append('defs');
+force.nodes(dataset.nodes)
+      .links(dataset.edges)
+      .start();
+    var edges = svg.selectAll("line")
+      .data(dataset.edges)
+      .enter()
+      .append("line")
+      .attr("id",function(d,i) {return 'edge'+i})
+      .attr('marker-end','url()')
+      .style("stroke","#bbb")
+      .style("pointer-events", "none");
+    
+    var nodes = svg.selectAll("circle")
+      .data(dataset.nodes)
+      .enter()
+      .append("g")
+      .attr("class", "node")
+      .append("circle")
+      .on("dblclick", click)
+      .attr("r","20")
+      .style("fill", color)
+      .call(drag);
+
+    var nodelabels = svg.selectAll(".nodelabel") 
+       .data(dataset.nodes)
+       .enter()
+       .append("text")
+       .attr({"x":function(d){return d.x;},
+              "y":function(d){return d.y;},                                    
+              "class":"nodelabel",
+              "stroke":"black",
+              "class": "shadow",
+              "font-size":"13px",
+              "text-shadow": "13px 13px",
+              "text-anchor": "middle",
+              "font-family": "Century Gothic"})
+                                
+       .text(function(d){return d.name;});
+var edgepaths = svg.selectAll(".edgepath")
+        .data(dataset.edges)
+        .enter()
+        .append('path')
+        .attr({'d': function(d) {return 'M '+d.source.x+' '+d.source.y+' L '+ d.target.x +' '+d.target.y},
+               'class':'edgepath',
+               'fill-opacity':0,
+               'stroke-opacity':0,
+               'fill':'blue',
+               'stroke':'#bbb',
+               'id':function(d,i) {return 'edgepath'+i}})
+        .style("pointer-events", "none");
+
+    var edgelabels = svg.selectAll(".edgelabel")
+        .data(dataset.edges)
+        .enter()
+        .append('text')
+        .style("pointer-events", "none")
+        .attr({'class':'edgelabel',
+               'id':function(d,i){return 'edgelabel'+i},
+               'dx':40,
+               'dy':12,
+               'font-size':13,
+                'text-anchor':'center',
+
+               'fill':'black'});
+                                                   
+
+    edgelabels.append('textPath')
+        .attr('xlink:href',function(d,i) {return '#edgepath'+i})
+        .style("pointer-events", "none")
+        .text(function(d){return d.target.type;});
+        //.text(function(d,i){return 'label '+i});
+
+
+    svg.append('defs').append('marker')
+        .attr({'id':'arrowhead',
+               'viewBox':'-0 -5 10 10',
+               'refX':25,
+               'refY':0,
+               //'markerUnits':'strokeWidth',
+               'orient':'auto',
+               'markerWidth':10,
+               'markerHeight':10,
+               'xoverflow':'visible'})
+        .append('svg:path')
+            .attr('d', 'M 0,-5 L 10 ,0 L 0,5')
+            .attr('fill', '#black')
+            .attr('stroke','#ccc');
+     
+
+
+
+    force.on("tick", function(){
+
+        edges.attr({"x1": function(d){return d.source.x;},
+                    "y1": function(d){return d.source.y;},
+                    "x2": function(d){return d.target.x;},
+                    "y2": function(d){return d.target.y;}
+        });
+
+        nodes.attr({"cx":function(d){return d.x;},
+                    "cy":function(d){return d.y;}
+        });
+
+        nodelabels.attr("x", function(d) { return d.x; }) 
+                  .attr("y", function(d) { return d.y; });
+
+        edgepaths.attr('d', function(d) { var path='M '+d.source.x+' '+d.source.y+' L '+ d.target.x +' '+d.target.y;
+                                           //console.log(d)
+                                           return path});       
+
+        edgelabels.attr('transform',function(d,i){
+            if (d.target.x<d.source.x){
+                bbox = this.getBBox();
+                rx = bbox.x+bbox.width/2;
+                ry = bbox.y+bbox.height/2;
+                return 'rotate(180 '+rx+' '+ry+')';
+                }
+            else {
+                return 'rotate(0)';
+                }
+        });
+    });
+
+                function color(d) {
+  return d._children ? "#3182bd" // collapsed package
+      : d.children ? "#c6dbef" // expanded package
+      : "#fd8d3c"; // leaf node
+}
+function dragstart(d) {
+  d3.select(this).classed("fixed", d.fixed = true);
+}
+
+
+}
+
+
+function click(d) {
+console.log(d);
+  if (d3.event.defaultPrevented) return; 
+  
+var data=[{"children":[{"siccode":"None Supplied"} ,{"postcode":"PO9 3NT","country":"UNITED KINGDOM","line1":"33 BROOKLANDS ROAD"} ],
+"parent":[{"nationality":"Norwegian","name":"Fredrik Holmsen","country_of_residence":"Norway"},{"nationality":"Norwegian","name":"Fredrik Holmsen","country_of_residence":"Norway"}]}];
+var child_arr=[];
+for(i=0;i<data[0].children.length;i++){
+data[0].children[i]["link"]="forward",
+child_arr.push(data[0].children[i]);
+} 
+for(i=0;i<data[0].parent.length;i++){
+data[0].parent[i]["link"]="backward",
+child_arr.push(data[0].parent[i]);
+} 
+console.log(child_arr);
+ d["children"]= child_arr;
+
+<!-- <!--  if (d.children) { -->
+    <!-- d._children = d.children; -->
+    <!-- d.children = null; -->
+  <!-- } else { -->
+    <!-- d.children = d._children; -->
+    <!-- d._children = null; -->
+  <!-- } --> -->
+  update();
+}
+
+</script>
+

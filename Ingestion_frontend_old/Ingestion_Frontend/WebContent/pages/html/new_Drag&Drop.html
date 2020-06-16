@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Drag & Drop</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.10.2/jquery.js "></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.15/js/bootstrap-multiselect.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.15/css/bootstrap-multiselect.css" type="text/css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsPlumb/1.4.1/jquery.jsPlumb-1.4.1-all-min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <!-- <script src="bower_components/sweetalert/dist/sweetalert.min.js"></script> -->
+    <!-- <link rel="stylesheet" href="bower_components/sweetalert/dist/sweetalert.css"> -->
+    <style>
+        @import 'https://fonts.googleapis.com/css?family=Cairo|Slabo+27px';
+        .nav-side-menu {
+            overflow: auto;
+            font-family: verdana;
+            font-size: 12px;
+            font-weight: 200;
+            background-color: #2e353d;
+            position: fixed;
+            top: 0px;
+            width: 207px;
+            height: 100%;
+            color: #e1ffff;
+        }
+        
+        .nav-side-menu .brand {
+            background-color: #23282e;
+            line-height: 50px;
+            display: block;
+            text-align: center;
+            font-size: 14px;
+        }
+        
+        .nav-side-menu .toggle-btn {
+            display: none;
+        }
+        
+        .nav-side-menu ul,
+        .nav-side-menu li {
+            list-style: none;
+            padding: 0px;
+            margin: 0px;
+            line-height: 35px;
+            cursor: pointer;
+        }
+        
+        .nav-side-menu ul:not(collapsed) .arrow:before,
+        .nav-side-menu li:not(collapsed) .arrow:before {
+            font-family: FontAwesome;
+            content: "\f078";
+            display: inline-block;
+            padding-left: 10px;
+            padding-right: 10px;
+            vertical-align: middle;
+            float: right;
+        }
+        
+        .nav-side-menu ul .active,
+        .nav-side-menu li .active {
+            border-left: 3px solid #d19b3d;
+            background-color: #4f5b69;
+        }
+        
+        .nav-side-menu ul .sub-menu li.active,
+        .nav-side-menu li .sub-menu li.active {
+            color: #d19b3d;
+        }
+        
+        .nav-side-menu ul .sub-menu li.active a,
+        .nav-side-menu li .sub-menu li.active a {
+            color: #d19b3d;
+        }
+        
+        .nav-side-menu ul .sub-menu li,
+        .nav-side-menu li .sub-menu li {
+            background-color: #181c20;
+            border: none;
+            line-height: 40px;
+            border-bottom: 1px solid #23282e;
+            margin-left: 0px;
+        }
+        
+        .nav-side-menu ul .sub-menu li:hover,
+        .nav-side-menu li .sub-menu li:hover {
+            background-color: #020203;
+        }
+        
+        .nav-side-menu ul .sub-menu li:before,
+        .nav-side-menu li .sub-menu li:before {
+            font-family: FontAwesome;
+            content: "\";
+ display: inline-block;
+            padding-left: 10px;
+            padding-right: 10px;
+            vertical-align: middle;
+        }
+        
+        .nav-side-menu li {
+            padding-left: 0px;
+            border-left: 3px solid #2e353d;
+            border-bottom: 1px solid #23282e;
+        }
+        
+        .nav-side-menu li a {
+            text-decoration: none;
+            color: #e1ffff;
+        }
+        
+        .nav-side-menu li a i {
+            padding-left: 10px;
+            width: 20px;
+            padding-right: 20px;
+        }
+        
+        .nav-side-menu li:hover {
+            border-left: 3px solid #d19b3d;
+            background-color: #4f5b69;
+            -webkit-transition: all 1s ease;
+            -moz-transition: all 1s ease;
+            -o-transition: all 1s ease;
+            -ms-transition: all 1s ease;
+            transition: all 1s ease;
+        }
+        
+        @media (max-width: 767px) {
+            .nav-side-menu {
+                position: relative;
+                width: 100%;
+                margin-bottom: 10px;
+            }
+            .nav-side-menu .toggle-btn {
+                display: block;
+                cursor: pointer;
+                position: absolute;
+                right: 10px;
+                top: 10px;
+                z-index: 10 !important;
+                padding: 3px;
+                background-color: #ffffff;
+                color: #000;
+                width: 40px;
+                text-align: center;
+            }
+            .brand {
+                text-align: left !important;
+                font-size: 22px;
+                padding-left: 20px;
+                line-height: 50px !important;
+            }
+        }
+        
+        @media (min-width: 767px) {
+            .nav-side-menu .menu-list .menu-content {
+                display: block;
+            }
+        }
+        
+        body {
+            background-color: #f9fafb;
+            background-size: 14px 14px;
+            background-image: linear-gradient(to right, rgba(229, 235, 237, 1) 1px, transparent 1px), linear-gradient(to bottom, rgba(229, 235, 237, 1) 1px, transparent 1px);
+            z-index: 1;
+        }
+        
+        #transformdiv li {
+            display: inline-block;
+            width: auto;
+            list-style: outside none none;
+            margin-left: 76px;
+            padding: 7px 18px;
+        }
+        
+        #targetdiv li {
+            padding: 7px 17px 0px 28px;
+        }
+        
+        li {
+            list-style-type: none;
+        }
+        
+        .fa {
+            display: inline-block;
+            font: normal normal normal 14px/1 FontAwesome;
+            font-size: 18px;
+            text-rendering: auto;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            padding: 6px 1px 0px 18px;
+            color: #2e6f9a;
+        }
+        
+        #transformdiv {
+            height: 96%;
+            margin-top: -32.5%;
+            margin-left: 3%;
+            /* background-color: #fff; */
+            position: relative;
+            margin-bottom: 1em;
+            display: block;
+            width: 74%;
+            white-space: nowrap;
+            <!-- border: 2px solid gray;
+            -->
+        }
+        
+        #sourcediv {
+            height: 96%;
+            margin-top: 0.5%;
+            margin-left: -30%;
+            /* background-color: #fff; */
+            position: relative;
+            /* margin-bottom: 1em; */
+            /* display: block; */
+            width: 26%;
+            float: left;
+            <!-- border: 2px solid;
+            -->
+        }
+        
+        #targetdiv {
+            height: 96%;
+            margin-top: -98%;
+            margin-left: 84%;
+            display: block;
+            width: 26%;
+            <!-- border: 2px solid;
+            -->
+        }
+        
+        .drag {
+            margin-top: -4px;
+            margin-left: 1px;
+            color: #a0a0a0;
+            position: absolute;
+            text-align: center;
+        }
+        
+        .drag1 {
+            margin-top: 1px;
+            margin-left: 168px;
+            color: #a0a0a0;
+            position: absolute;
+            text-align: center;
+        }
+        
+        .drag2 {
+            margin-top: 3px;
+            margin-left: 6px;
+            color: #a0a0a0;
+            position: absolute;
+            text-align: center;
+        }
+        
+        .source {
+            margin: 4px;
+            width: 63%;
+            padding: 6px;
+            height: 51px;
+            box-shadow: 0 10px 30px rgba(#333333, 0.4);
+            position: relative;
+            margin-top: 12%;
+            text-align: center;
+            font-family: 'Cairo', sans-serif;
+            cursor: move;
+            overflow: none;
+            border: 1px solid #2e6f9a;
+            -moz-border-radius: 8px;
+            border-radius: 8px;
+            opacity: 0.8;
+            cursor: pointer;
+            background-color: white;
+            font-size: 13px;
+            position: relative;
+        }
+        /* .source:hover{
+   background-color:#417da580;
+} */
+        
+        .transform {
+            text-align: center;
+            font-family: 'Cairo', sans-serif;
+            cursor: move;
+            border: 1px solid #2e6f9a;
+            -moz-border-radius: 8px;
+            border-radius: 8px;
+            opacity: 0.8;
+            cursor: pointer;
+            background-color: white;
+            font-size: 13px;
+            font-family: 'Cairo', sans-serif;
+            position: relative;
+            font-size: 14px;
+            margin: 4px;
+            width: 26%;
+            /* overflow: hidden; */
+            padding: 13px;
+            height: 51px;
+            position: relative;
+            margin-top: 5%;
+        }
+        
+        .target {
+            cursor: move;
+            border-radius: 8px;
+            border: 1px solid #2e6f9a;
+            opacity: 0.8;
+            cursor: pointer;
+            background-color: white;
+            margin: 4px;
+            width: 63%;
+            padding: 13px;
+            height: 51px;
+            position: relative;
+            margin-top: 16%;
+            text-align: center;
+            font-family: 'Cairo', sans-serif;
+            font-size: 13px;
+        }
+        
+        .highlightborder {
+            background-color: #c1c1c1;
+        }
+        
+        .disableborder {
+            background-color: none;
+        }
+        
+        .item {
+            background-color: none;
+            width: 100px;
+            height: 100px;
+            position: absolute;
+        }
+        
+        #dragbutton {
+            background-color: #ddffdd;
+        }
+        
+        #wrapper {
+            width: 800px;
+            height: 800px;
+            position: relative;
+            margin-top: 19%;
+            margin-left: 34%;
+        }
+        
+        circle {
+            cx: 7;
+            cy: 7;
+            r: 0;
+            fill: rgb(122, 176, 44);
+            stroke: #fff;
+        }
+        
+        .multiselect {
+            width: 215%;
+        }
+        
+        .source,
+        .transform,
+        .target {
+            box-shadow: 0px 5px 8px 0px rgba(0, 0, 0, 0.2), 0px 17px 24px 0px rgba(0, 0, 0, 0.19);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="modal fade" id="sourceConfig" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title">Source Configuration</h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="Input">Connection URL</label>
+                            <input type="email" class="form-control" id="connectionurlsrc" aria-describedby="emailHelp" placeholder="Enter the Connection url">
+
+                        </div>
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="username" class="form-control" id="usernamesrc" placeholder="Enter the Username">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="Password">Password</label>
+                            <input type="password" class="form-control" id="passwordsrc" placeholder="Enter the Password">
+                        </div>
+                        <div class="form-group">
+                            <label for="max_conn">Max Connections</label>
+                            <input type="number" class="form-control" id="connectionssrc" placeholder="Enter the max number of connections">
+                        </div>
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="targetConfig" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title">Source Configuration</h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="Input">Connection URL</label>
+                            <input type="email" class="form-control" id="connectionurltrg" aria-describedby="emailHelp" placeholder="Enter the Connection url">
+
+                        </div>
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="username" class="form-control" id="usernametrg" placeholder="Enter the Username">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="Password">Password</label>
+                            <input type="password" class="form-control" id="passwordtrg" placeholder="Enter the Password">
+                        </div>
+                        <div class="form-group">
+                            <label for="max_conn">Max Connections</label>
+                            <input type="number" class="form-control" id="connectionstrg" placeholder="Enter the max number of connections">
+                        </div>
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="nullcheckconfig" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title">NullCheck Configuration</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="control-label" for="columns">Select Columns</label>
+                        <div class="dropdown">
+                            <select id="columns1" class="multiselect-ui form-control" multiple="multiple">
+                                <option value="column1">column 1</option>
+                                <option value="column2">column 2</option>
+                                <option value="column3">column 3</option>
+                                <option value="column4">column 4</option>
+                                <option value="column5">column 5</option>
+                                <option value="column6">column 6</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="margin-top: 11px;">
+                            <label for="type">Type</label>
+                            <input type="text" class="form-control" id="transformtype" placeholder="Enter the Transformation type">
+                        </div>
+                        <div class="form-group" style="margin-top: 11px;">
+                            <label for="type">Value to replace</label>
+                            <input type="text" class="form-control" id="transformtype" placeholder="Enter the value to replace">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="dateformatconfig" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title">Dateformat Configuration</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="control-label" for="columns">Select Columns</label>
+                        <div class="dropdown">
+                            <select id="columns2" class="multiselect-ui form-control" multiple="multiple">
+                                <option value="column1">column 1</option>
+                                <option value="column2">column 2</option>
+                                <option value="column3">column 3</option>
+                                <option value="column4">column 4</option>
+                                <option value="column5">column 5</option>
+                                <option value="column6">column 6</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="margin-top: 11px;">
+                            <label for="type">Type</label>
+                            <input type="text" class="form-control" id="transformtype" placeholder="Enter the Transformation type">
+                        </div>
+                        <div class="form-group" style="margin-top: 11px;">
+                            <label for="type">Value to replace</label>
+                            <input type="text" class="form-control" id="transformtype" placeholder="Enter the value to replace">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="nav-side-menu">
+        <i class="fa fa-bars fa-2x toggle-btn" data-toggle="collapse" data-target="#menu-content"></i>
+        <div class="menu-list">
+            <ul id="menu-content" class="menu-content collapse out">
+
+                <li data-toggle="collapse" data-target="#source" class="collapsed active">
+                    <a href="#"><img src="source.png" style="width: 26px;height: 26px;"> Sources <span class="arrow"></span></a>
+                </li>
+                <ul class="sub-menu collapse" id="source">
+                    <li id="mysql" ondragstart="return srcStart(event)" ondrag="srcdragging(event)" draggable="true" style="text-align:center;">Mysql</li>
+                    <!-- <li  id="oracle" ondragstart="return srcStart(event)" ondrag="srcdragging(event)" draggable="true">Oracle</li> -->
+                    <!-- <li id="DB2" ondragstart="return srcStart(event)" ondrag="srcdragging(event)" draggable="true">DB2</li> -->
+                </ul>
+                <li data-toggle="collapse" data-target="#transform" class="collapsed">
+                    <a href="#"><img src="transform.png" style="width: 26px;height: 26px;"> Transform <span class="arrow"></span></a>
+                </li>
+                <ul class="sub-menu collapse" id="transform">
+                    <li id="nullcheck" ondragstart="return transformStart(event)" ondrag="transformdragging(event)" draggable="true" style="text-align:center;">Null Check</li>
+                    <li id="dateformat" ondragstart="return transformStart(event)" ondrag="transformdragging(event)" draggable="true" style="text-align:center;">Date Format Change</li>
+                </ul>
+                <li data-toggle="collapse" data-target="#target" class="collapsed">
+                    <a href="#"><img src="target.png" style="width: 26px;height: 26px;"> Target <span class="arrow"></span></a>
+                </li>
+                <ul class="sub-menu collapse" id="target">
+                    <li id="hive" ondragstart="return targetStart(event)" ondrag="targetdragging(event)" draggable="true" style="text-align:center;">Hive</li>
+                    <!-- <li id="target2" ondragstart="return targetStart(event)" ondrag="targetdragging(event)"  draggable="true">target2</li> -->
+                    <!-- <li id="target3" ondragstart="return targetStart(event)" ondrag="targetdragging(event)"  draggable="true">target3</li> -->
+
+                </ul>
+            </ul>
+        </div>
+    </div>
+    <div id="wrapper">
+        <ul id="sourcediv" class="item" ondragenter="return dragEnter(event)" ondrop="return srcDrop(event)" ondragover="return dragOver(event)"> <span class="drag">Drag source here </span></ul>
+        <ul id="transformdiv" class="item" ondragenter="return dragEnter(event)" ondrop="return transformDrop(event)" ondragover="return dragOver(event)"><span class="drag1"> Drag transformation here </span></ul>
+        <ul id="targetdiv" class="item" ondragenter="return dragEnter(event)" ondrop="return targetDrop(event)" ondragover="return dragOver(event)"> <span class="drag2">Drag Target here </span></ul>
+    </div>
+    <script>
+        var i = 0;
+        var j = 0;
+        var k = 0;
+        var sc = 0,
+            tc = 0,
+            trc = 0;
+        var src_trnfrm = [];
+        var trans_trg = [];
+        var src_trg = [];
+        var src_id = [];
+        var trnfm_id = [];
+        var trg_id = [];
+        var src_trnfrm_class = [];
+        var trans_trg_class = [];
+        var src_trg_class = [];
+        var e, e1, e2, e3, e4, e5;
+        $(document).ready(function() {
+            $('#columns1').multiselect();
+            $('#columns2').multiselect();
+        });
+
+        function dragEnter(ev) {
+		 //debugger;
+            event.preventDefault();
+            return true;
+        }
+
+        function dragOver(ev) {
+		 //debugger;
+            return false;
+        }
+
+        function srcdragging(event) {
+		 //debugger;
+            $("#sourcediv").addClass("highlightborder");
+        }
+
+        function transformdragging(event) {
+		 //debugger;
+            $("#transformdiv").addClass("highlightborder");
+        }
+
+        function targetdragging(event) {
+		 //debugger;
+            $("#targetdiv").addClass("highlightborder");
+        }
+
+        function srcStart(ev) {
+		 //debugger;
+            ev.dataTransfer.effectAllowed = 'move';
+            ev.dataTransfer.setData("Text", ev.target.getAttribute('id'));
+            return true;
+        }
+
+        function transformStart(ev) {
+		 //debugger;
+            ev.dataTransfer.effectAllowed = 'move';
+            ev.dataTransfer.setData("Text", ev.target.getAttribute('id'));
+            return true;
+        }
+
+        function targetStart(ev) {
+		 //debugger;
+            ev.dataTransfer.effectAllowed = 'move';
+            ev.dataTransfer.setData("Text", ev.target.getAttribute('id'));
+            return true;
+        }
+		
+		var endpointOptions;
+		   jsPlumb.ready(function() {
+                     console.log("khajsdf");
+                     var jsp = jsPlumb.getInstance();
+                      endpointOptions = { isSource: true,
+                        isTarget: true,
+                        connector: "Flowchart",
+                        connectorOverlays: [
+                            ["Arrow", {
+                                width: 10,
+                                height: 10,
+                                length: 15,
+                                location: 0.97,
+                                id: "arrow"
+                            }]
+                        ],
+                        connectorStyle: {
+                            lineWidth: 2,
+                            strokeStyle: '#2e6f9a'
+                        },
+						beforeDrop: function (params) {
+						console.log(params);
+                    return confirm("Connect " + params.sourceId + " to " + params.targetId + "?");
+                      },
+                        scope: "blueline",
+                        maxConnections: 1,
+                        dragAllowedWhenFull: false}
+					 });
+	
+                    <!-- var endpointOptions = { -->
+                        <!-- isSource: true, -->
+                        <!-- isTarget: true, -->
+                        <!-- connector: "Flowchart", -->
+                        <!-- connectorOverlays: [ -->
+                            <!-- ["Arrow", { -->
+                                <!-- width: 10, -->
+                                <!-- height: 10, -->
+                                <!-- length: 15, -->
+                                <!-- location: 0.97, -->
+                                <!-- id: "arrow" -->
+                            <!-- }] -->
+                        <!-- ], -->
+                        <!-- connectorStyle: { -->
+                            <!-- lineWidth: 2, -->
+                            <!-- strokeStyle: '#2e6f9a' -->
+                        <!-- }, -->
+						<!-- beforeDrop: function (params) { -->
+						<!-- console.log(params); -->
+                    <!-- return confirm("Connect " + params.sourceId + " to " + params.targetId + "?"); -->
+                      <!-- }, -->
+                        <!-- scope: "blueline", -->
+                        <!-- maxConnections: 1, -->
+                        <!-- dragAllowedWhenFull: false -->
+                    <!-- }; -->
+
+        function srcDrop(ev) {
+            debugger;
+            console.log("srcccc");
+             var src = "mysql";
+            //var src = ev.dataTransfer.getData("Text");
+            console.log(src);
+            if (src == "mysql") {
+                $(".drag").remove();
+                $("#sourcediv").removeClass("highlightborder");
+                if (src != "") {
+                    var nodeCopy = document.getElementById(src).cloneNode(true);
+                    nodeCopy.removeAttribute("Id");
+                    nodeCopy.removeAttribute("draggable");
+                    nodeCopy.className = "source";
+                    nodeCopy.setAttribute("id", "newsrc" + i + "");
+                    console.log(nodeCopy);
+                    console.log(nodeCopy.getAttribute('id'));
+                    var id = nodeCopy.getAttribute('id');
+                    src_id.push(id);
+                    var li = document.createElement("i");
+                    li.setAttribute('class', "fa fa-cog");
+                    <!-- sc = 0; -->
+                    li.setAttribute('id', "configsrc" + sc + "");
+                    sc++;
+                    nodeCopy.appendChild(li);
+                    ev.target.appendChild(nodeCopy);
+                    ev.stopPropagation();
+                    <!-- var endpointOptions = { -->
+                        <!-- isSource: true, -->
+                        <!-- isTarget: true, -->
+                        <!-- connector: "Flowchart", -->
+                        <!-- connectorOverlays: [ -->
+                            <!-- ["Arrow", { -->
+                                <!-- width: 10, -->
+                                <!-- height: 10, -->
+                                <!-- length: 15, -->
+                                <!-- location: 0.97, -->
+                                <!-- id: "arrow" -->
+                            <!-- }] -->
+                        <!-- ], -->
+                        <!-- connectorStyle: { -->
+                            <!-- lineWidth: 2, -->
+                            <!-- strokeStyle: '#2e6f9a' -->
+                        <!-- }, -->
+						<!-- beforeDrop: function (params) { -->
+						<!-- console.log(params); -->
+                    <!-- return confirm("Connect " + params.sourceId + " to " + params.targetId + "?"); -->
+                      <!-- }, -->
+                        <!-- scope: "blueline", -->
+                        <!-- maxConnections: 1, -->
+                        <!-- dragAllowedWhenFull: false -->
+                    <!-- }; -->
+                    for (i = 0; i < src_id.length; i++) {
+                        var e1 = jsPlumb.addEndpoint($("#" + src_id[i]), {
+                            anchor: "RightMiddle"
+                        }, endpointOptions);
+                    }
+                    <!-- i++; -->
+                }
+            } else {
+                $("#transformdiv").removeClass("highlightborder");
+                $("#targetdiv").removeClass("highlightborder");
+                swal("Warning!", "Drop Only Sources !", "warning")
+            }
+            $("#configsrc0").click(function() {
+                <!-- alert("clicked.....") -->
+                $('#sourceConfig').modal('show');
+            });
+        }
+
+        function transformDrop(ev) {
+		debugger;
+            console.log("transformmmmmmm");
+			console.log(ev);
+		 if(ev.target.className == "item highlightborder")
+		  { 
+           var trnfm = ev.dataTransfer.getData("Text");
+            console.log(trnfm);
+            if (trnfm == "nullcheck" || trnfm == "dateformat") {
+                $(".drag1").remove();
+                $("#transformdiv").removeClass("highlightborder");
+                if (trnfm != "") {
+                    var nodeCopy = document.getElementById(trnfm).cloneNode(true);
+                    nodeCopy.removeAttribute("Id");
+                    nodeCopy.removeAttribute("draggable");
+                    nodeCopy.className = "transform";
+                    nodeCopy.setAttribute("id", "newtransform" + j + "");
+                    if ($('ul#transformdiv li').length % 2 == 0) {
+                        event.target.appendChild(document.createElement("br"));
+                    }
+                    console.log(nodeCopy);
+                    console.log(nodeCopy.getAttribute('id'));
+                    var id = nodeCopy.getAttribute('id');
+                    trnfm_id.push(id);
+                    var li = document.createElement("i");
+                    li.setAttribute('class', "fa fa-cog");
+                    li.setAttribute('id', "configtrans" + trc + "");
+                    trc++;
+                    nodeCopy.appendChild(li);
+                    ev.target.appendChild(nodeCopy);
+                    ev.stopPropagation();
+				
+                    for (j = 0; j < trnfm_id.length; j++) {
+                        var e2 = jsPlumb.addEndpoint($("#" + trnfm_id[j]), {
+                            anchor: "LeftMiddle"
+                        }, endpointOptions);
+                        var e3 = jsPlumb.addEndpoint($("#" + trnfm_id[j]), {
+                            anchor: "RightMiddle"
+                        }, endpointOptions);
+                    }
+                  }
+				
+            } else {
+                $("#sourcediv").removeClass("highlightborder");
+                $("#targetdiv").removeClass("highlightborder");
+                swal("Warning!", "Drop Only Transformations !", "warning")
+            }
+			}
+            $("#configtrans0").click(function() {
+                <!-- alert("clicked....."); -->
+                $('#nullcheckconfig').modal('show');
+            });
+            $("#configtrans1").click(function() {
+                <!-- alert("clicked....."); -->
+                $('#dateformatconfig').modal('show');
+            });
+        }
+
+        function targetDrop(ev) {
+            debugger;
+            console.log("trgggggg");
+			console.log(ev);
+		if(ev.target.className == "item highlightborder")
+		{
+            var trg = "hive";
+            //var trg = ev.dataTransfer.getData("Text");
+            console.log(trg);
+            if (trg == "hive") {
+                $(".drag2").remove();
+                $("#targetdiv").removeClass("highlightborder");
+
+                if (trg != "") {
+                    var nodeCopy = document.getElementById(trg).cloneNode(true);
+                    nodeCopy.removeAttribute("Id");
+                    nodeCopy.removeAttribute("draggable");
+                    nodeCopy.className = "target";
+                    nodeCopy.setAttribute("id", "newtrg" + k + "");
+                    console.log(nodeCopy);
+                    console.log(nodeCopy.getAttribute('id'));
+                    var id = nodeCopy.getAttribute('id');
+                    trg_id.push(id);
+                    var li = document.createElement("i");
+                    li.setAttribute('class', "fa fa-cog");
+                    <!-- tc=0; -->
+                    li.setAttribute('id', "configtrg" + tc + "");
+                    tc++;
+                    nodeCopy.appendChild(li);
+                    ev.target.appendChild(nodeCopy);
+                    ev.stopPropagation();
+                      <!-- var endpointOptions = { -->
+                        <!-- isSource: true, -->
+                        <!-- isTarget: true, -->
+						<!-- scope: "blueline", -->
+						<!-- connectorStyle: { -->
+                            <!-- lineWidth: 2, -->
+                            <!-- strokeStyle: '#2e6f9a' -->
+                        <!-- }, -->
+                        <!-- connector: "Flowchart", -->
+                        <!-- connectorOverlays: [ -->
+                            <!-- ["Arrow", { -->
+                                <!-- width: 10, -->
+                                <!-- height: 10, -->
+                                <!-- length: 15, -->
+                                <!-- location: 0.97, -->
+                                <!-- id: "arrow" -->
+                            <!-- }] -->
+                        <!-- ], -->
+						<!-- beforeDrop: function (params) { -->
+						<!-- console.log(params); -->
+                    <!-- return confirm("Connect " + params.sourceId + " to " + params.targetId + "?"); -->
+                      <!-- }, -->
+                        <!-- maxConnections: 1, -->
+                        <!-- dragAllowedWhenFull: false -->
+                    <!-- }; -->
+                    for (k = 0; k < trg_id.length; k++) {
+                        var e4 = jsPlumb.addEndpoint($("#" + trg_id[k]), {
+                            anchor: "LeftMiddle"
+                        }, endpointOptions);
+                    }
+                }
+            } else {
+                $("#sourcediv").removeClass("highlightborder");
+                $("#transformdiv").removeClass("highlightborder");
+                swal("Warning!", "Drop Only Targets !", "warning")
+            }
+			}
+            $("#configtrg0").click(function() {
+                <!-- alert("clicked.....") -->
+                $('#targetConfig').modal('show');
+            });
+        }
+		
+		<!-- }); -->
+		 <!-- jsPlumb.ready(function () { -->
+		  <!-- var instance = jsPlumb.getInstance({ -->
+            <!-- DragOptions: { cursor: 'pointer', zIndex: 2000 }, -->
+            <!-- PaintStyle: { stroke: '#666' }, -->
+            <!-- EndpointHoverStyle: { fill: "orange" }, -->
+            <!-- HoverPaintStyle: { stroke: "orange" }, -->
+            <!-- EndpointStyle: { width: 20, height: 16, stroke: '#666' }, -->
+            <!-- Endpoint: "Rectangle", -->
+            <!-- Anchors: ["TopCenter", "TopCenter"], -->
+            <!-- Container: "canvas", -->
+            <!-- MaxConnections: 1, -->
+            <!-- ConnectionsDetachable: false, -->
+        <!-- }); -->
+		  <!-- instance.bind("connection", function (info, originalEvent) { -->
+                <!-- updateConnections(info.connection); -->
+            <!-- }); -->
+		 
+		 <!-- }); -->
+    </script>

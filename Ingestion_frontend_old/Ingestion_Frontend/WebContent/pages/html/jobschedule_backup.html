@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Drag & Drop</title>
+    <link rel="icon" href="../images/ingestion.png" type="image" sizes="16x16">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.10.2/jquery.js "></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.15/js/bootstrap-multiselect.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.15/css/bootstrap-multiselect.css" type="text/css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsPlumb/1.4.1/jquery.jsPlumb-1.4.1-all-min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.css" />
+    <style>
+        <!-- <link rel="stylesheet" href="../css/Drag&Drop.css"> --> <!-- <script src="../js/Drag&Drop.js"></script> --> <style> @media screen and (max-width: 1366px) {
+            .nav-side-menu {
+                margin-left: -113px !important;
+            }
+        }
+        
+        body {
+            font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif;
+        }
+        
+        @import 'https://fonts.googleapis.com/css?family=Cairo|Slabo+27px';
+        .nav-side-menu {
+            margin-left: -150px;
+            margin-top: 49px;
+            overflow: auto;
+            font-size: 12px;
+            font-weight: 200;
+            background-color: #2e353d;
+            position: fixed;
+            top: 0px;
+            width: 217px;
+            height: 100%;
+            color: #e1ffff;
+        }
+        
+        @media (min-width: 768px) {
+            .navbar {
+                border-radius: 2px !important;
+            }
+        }
+        
+        .nav-side-menu .brand {
+            background-color: #23282e;
+            line-height: 50px;
+            display: block;
+            text-align: center;
+            font-size: 14px;
+        }
+        
+        .nav-side-menu .toggle-btn {
+            display: none;
+        }
+        
+        .nav-side-menu ul,
+        .nav-side-menu li {
+            list-style: none;
+            padding: 0px;
+            margin: 0px;
+            line-height: 35px;
+            cursor: pointer!important;
+        }
+        
+        .nav-side-menu ul:not(collapsed) .arrow:before,
+        .nav-side-menu li:not(collapsed) .arrow:before {
+            font-family: FontAwesome;
+            content: "\f078";
+            display: inline-block;
+            padding-left: 10px;
+            padding-right: 10px;
+            vertical-align: middle;
+            float: right;
+        }
+        
+        .nav-side-menu ul .active,
+        .nav-side-menu li .active {
+            border-left: 3px solid #d19b3d;
+            background-color: #4f5b69;
+        }
+        
+        .nav-side-menu ul .sub-menu li.active,
+        .nav-side-menu li .sub-menu li.active {
+            color: #d19b3d;
+        }
+        
+        .nav-side-menu ul .sub-menu li.active a,
+        .nav-side-menu li .sub-menu li.active a {
+            color: #d19b3d;
+        }
+        
+        .nav-side-menu ul .sub-menu li,
+        .nav-side-menu li .sub-menu li {
+            background-color: #181c20;
+            border: none;
+            line-height: 40px;
+            border-bottom: 1px solid #23282e;
+            margin-left: 0px;
+        }
+        
+        .nav-side-menu li a {
+            text-decoration: none;
+            color: #e1ffff;
+        }
+        
+        .nav-side-menu li a i {
+            padding-left: 10px;
+            width: 20px;
+            padding-right: 20px;
+        }
+        
+        .nav-side-menu li:hover {
+            border-left: 3px solid #d19b3d;
+            background-color: #4f5b69;
+            -webkit-transition: all 1s ease;
+            -moz-transition: all 1s ease;
+            -o-transition: all 1s ease;
+            -ms-transition: all 1s ease;
+            transition: all 1s ease;
+        }
+        
+        @media (max-width: 767px) {
+            .nav-side-menu {
+                position: relative;
+                width: 100%;
+                margin-bottom: 10px;
+            }
+            .nav-side-menu .toggle-btn {
+                display: block;
+                cursor: pointer!important;
+                position: absolute;
+                right: 10px;
+                top: 10px;
+                z-index: 10 !important;
+                padding: 3px;
+                background-color: #ffffff;
+                color: #000;
+                width: 40px;
+                text-align: center;
+            }
+            .brand {
+                text-align: left !important;
+                font-size: 22px;
+                padding-left: 20px;
+                line-height: 50px !important;
+            }
+        }
+        
+        @media (min-width: 767px) {
+            .nav-side-menu .menu-list .menu-content {
+                display: block;
+                font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif;
+                font-size: 14px;
+            }
+        }
+        
+        body {
+            background-color: #f9fafb;
+            background-size: 14px 14px;
+            background-image: linear-gradient(to right, rgba(229, 235, 237, 1) 1px, transparent 1px), linear-gradient(to bottom, rgba(229, 235, 237, 1) 1px, transparent 1px);
+            z-index: 1;
+        }
+        
+        #transformdiv li {
+            display: inline-block;
+            width: auto;
+            list-style: outside none none;
+            margin-left: 48px;
+            padding: 7px 18px;
+        }
+        
+        #targetdiv li {
+            padding: 7px 14px 7px 17px !important;
+        }
+        
+        li {
+            list-style-type: none;
+            font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif;
+        }
+        
+        .fa {
+            display: inline-block;
+            font: normal normal normal 14px/1 FontAwesome;
+            font-size: 18px;
+            text-rendering: auto;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            padding: 6px 1px 0px 18px;
+            color: #004849;
+        }
+        
+        #transformdiv {
+            height: 140%;
+            margin-top: -142px;
+            margin-left: -5%;
+            /* background-color: #fff; */
+            position: relative;
+            margin-bottom: 1em;
+            display: block;
+            width: 74%;
+            white-space: nowrap;
+        }
+        
+        #sourcediv {
+            height: 141%;
+            margin-top: -1px;
+            margin-left: -38%;
+            /* background-color: #fff; */
+            position: relative;
+            /* margin-bottom: 1em; */
+            /* display: block; */
+            width: 28%;
+            float: left;
+        }
+        
+        #targetdiv {
+            height: 141%;
+            margin-top: -94%;
+            margin-left: 73%;
+            display: block;
+            width: 29%;
+        }
+        
+        .drag {
+            margin-top: 0px;
+            margin-left: 1px;
+            color: #a0a0a0;
+            position: fixed;
+            text-align: center;
+        }
+        
+        .drag1 {
+            margin-top: 1px;
+            margin-left: 168px;
+            color: #a0a0a0;
+            position: fixed;
+            text-align: center;
+        }
+        
+        .drag2 {
+            margin-top: 0px;
+            margin-left: 6px;
+            color: #a0a0a0;
+            position: fixed;
+            text-align: center;
+        }
+        
+        .source {
+            font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif !important;
+            color: black !important;
+            margin: 4px;
+            width: 63%;
+            padding: 6px;
+            height: 51px;
+            box-shadow: 0 10px 30px rgba(#333333, 0.4);
+            position: relative;
+            margin-top: 119%;
+            text-align: center;
+            font-family: 'Cairo', sans-serif;
+            overflow: none;
+            border: 1px solid #004849;
+            -moz-border-radius: 8px;
+            border-radius: 8px;
+            opacity: 0.8;
+            cursor: pointer!important;
+            background-color: white;
+            font-size: 13px;
+            position: relative;
+        }
+        
+        .transform {
+            font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif !important;
+            color: black !important;
+            text-align: center;
+            font-family: 'Cairo', sans-serif;
+            border: 1px solid #004849;
+            -moz-border-radius: 8px;
+            border-radius: 8px;
+            opacity: 0.8;
+            cursor: pointer!important;
+            background-color: white;
+            font-size: 13px;
+            font-family: 'Cairo', sans-serif;
+            position: relative;
+            font-size: 14px;
+            margin: 4px;
+            width: 26%;
+            /* overflow: hidden; */
+            padding: 13px;
+            height: 51px;
+            position: relative;
+            margin-top: 41%;
+        }
+        
+        .target {
+            font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif !important;
+            color: black !important;
+            border-radius: 8px;
+            border: 1px solid #004849;
+            opacity: 0.8;
+            cursor: pointer!important;
+            background-color: white;
+            margin: 4px;
+            width: 63%;
+            padding: 7px;
+            height: 51px;
+            position: relative;
+            margin-top: 114%;
+            text-align: center;
+            font-family: 'Cairo', sans-serif;
+            font-size: 13px;
+        }
+        
+        .highlightborder {
+            background-color: #c1c1c1;
+        }
+        
+        .disableborder {
+            background-color: none;
+        }
+        
+        .item {
+            background-color: none;
+            width: 100px;
+            height: 100px;
+            position: absolute;
+        }
+        
+        #dragbutton {
+            background-color: #ddffdd;
+        }
+        
+        #wrapper {
+            margin-top: 6%;
+            margin-left: 8%;
+        }
+        
+        circle {
+            cx: 7;
+            cy: 7;
+            r: 0;
+            fill: rgb(122, 176, 44);
+            stroke: #fff;
+        }
+        
+        .multiselect {
+            width: 122%;
+        }
+        
+        .source,
+        .transform,
+        .target {
+            box-shadow: 0px 5px 8px 0px rgba(0, 0, 0, 0.2), 0px 17px 24px 0px rgba(0, 0, 0, 0.19);
+        }
+        
+        ._jsPlumb_connector {
+            cursor: pointer!important;
+        }
+        
+        #play {
+            margin-top: -26.5%;
+            margin-left: 101%;
+        }
+        
+        #circulardiv {
+            background: lightsteelblue;
+            height: 30px;
+            width: 30px;
+            border-radius: 50px;
+            text-align: center;
+            cursor: pointer!important;
+        }
+        
+        .fields {
+            margin-bottom: 12px;
+        }
+        
+        option[title]:hover:after {
+            content: attr(title);
+            padding: 4px 8px;
+            position: absolute;
+            left: 0;
+            top: 100%;
+            white-space: nowrap;
+            z-index: 20px;
+            background: gray;
+        }
+        
+        .field-icon {
+            float: right;
+            color: black;
+            margin-right: 19px;
+            font-size: 16px;
+            margin-top: -32px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .opensrc,
+        .opentrans,
+        .opentrg {
+            text-align: center;
+        }
+        
+        img:hover {
+            background-color: #286090;
+        }
+        
+        pre {
+            background: aliceblue;
+            border-radius: 15px;
+            font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif;
+            color: black;
+        }
+        
+        .info {
+            width: 26%;
+            position: absolute;
+            box-shadow: 0px 5px 8px 0px rgba(0, 0, 0, 0.2), 0px 17px 24px 0px rgba(0, 0, 0, 0.19);
+            border: 1px solid lightblue;
+            background: white;
+            padding: 10px;
+            border-radius: 3px;
+        }
+        
+        #src_nullcheck {
+            margin-left: -21%;
+            margin-top: 40%;
+        }
+        
+        #nullcheck_dateformat {
+            margin-left: 16%;
+            margin-top: 44%;
+        }
+        
+        #dateformat_trg {
+            margin-left: 59%;
+            margin-top: 40%;
+        }
+        
+        .upperdiv {
+            background: #aabbc3;
+            padding: 6px;
+            width: 26%;
+            position: absolute;
+            text-align: center;
+            border-style: solid;
+            border-width: 1px 1px 1px 1px;
+            border-color: lightblue;
+            box-shadow: 0px 5px 8px 0px rgba(0, 0, 0, 0.2), 0px 17px 24px 0px rgba(0, 0, 0, 0.19);
+        }
+        
+        #upperdiv3 {
+            margin-left: 59%;
+            margin-top: 35.8%;
+        }
+        
+        #upperdiv2 {
+            margin-left: 16%;
+            margin-top: 39.8%;
+        }
+        
+        #upperdiv1 {
+            margin-left: -21%;
+            margin-top: 35.8%;
+        }
+        
+        .nav-side-menu li {
+            padding-left: 0px;
+            border-left: 3px solid #2e353d;
+            border-bottom: 1px solid #23282e;
+        }
+        
+        .nav-side-menu ul .sub-menu li:hover,
+        .nav-side-menu li .sub-menu li:hover {
+            background-color: #020203;
+        }
+        
+        .nav-side-menu ul .sub-menu li:before,
+        .nav-side-menu li .sub-menu li:before {
+            font-family: FontAwesome;
+            content: "\";
+ display: inline-block;
+            padding-left: 10px;
+            padding-right: 10px;
+            vertical-align: middle;
+        }
+        
+        #jobname {
+            display: inline-block;
+            margin-left: 14px;
+        }
+        
+        #jobtype {
+            width: 100%;
+            margin-left: 14px;
+            display: inline-block;
+            margin-top: 7px;
+        }
+        
+        #line {
+            border-top: 1px solid #abb3b9;
+            width: 89%;
+            position: relative;
+            top: -14px;
+            left: 156px;
+        }
+        
+        #daily {
+            position: absolute;
+            margin-top: 1%;
+        }
+        
+        #day {
+            margin-left: -225%;
+            width: 79%;
+            display: inline-block;
+        }
+        
+        #week1 {
+            position: absolute;
+            margin-top: 4%;
+        }
+        
+        #week2 {
+            position: absolute;
+           margin-top: 7.5%;
+        }
+        
+        .container1 {
+            margin-left: 34px;
+        }
+        
+        #occur_start_date {
+            margin-left: 28%;
+            margin-top: -10%;
+            width: 71%;
+        }
+        
+        #occur_end_date {
+            margin-top: -30px;
+            margin-left: 85px;
+        }
+		
+		#week{
+            margin-left: -230%;
+            width: 63%;
+            display:inline-block;
+        }
+    </style>
+</head>
+
+<body oncontextmenu="return false">
+    <div class="modal fade" id="mysqlConfig" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                    <h4 class="modal-title">Source Configuration</h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="Input">Host</label>
+                            <Input type="text" class="form-control" id="hostmysql" placeholder="Enter the Host" required="required">
+                        </div>
+                        <div class="form-group">
+                            <label for="Input">Port</label>
+                            <Input type="text" class="form-control" id="portmysql" placeholder="Enter the Port" required="required">
+                        </div>
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <Input type="text" class="form-control" id="usernamemysql" placeholder="Enter the Username" required="required">
+                        </div>
+                        <div class="form-group">
+                            <label for="Password">Password</label>
+                            <Input type="password" class="form-control" id="passwordmysql" placeholder="Enter the Password" required>
+                            <span toggle="#passwordmysql" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="databasename">DatabaseName</label>
+                            <Input type="text" class="form-control" id="databasenamemysql" placeholder="Enter the DatabaseName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="tablename">TableName</label>
+                            <Input type="text" class="form-control" id="tablenamemysql" placeholder="Enter the TableName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="tablename">Query</label>
+                            <Input type="text" class="form-control" id="querymysql" placeholder="Enter the Query" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="max_conn">Max Connections</label>
+                            <Input type="number" class="form-control" id="connectionsmysql" placeholder="Enter the max number of connections" required>
+                        </div>
+                        <div class="alert alert-success" style="display:none;margin-bottom:0px !important;" id="success_alert_mysql">
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                            <strong>Connection Success!</strong>
+                        </div>
+                        <div class="alert alert-danger" style="display:none;margin-bottom:0px !important;" id="failure_alert_mysql">
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                            <strong>Connection Failure!</strong>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="test_conn_mysql" style="float:left;" class="btn btn-primary"><img src="../images/loader.gif" id="ajax_loader" style="display:none;margin-left:-8px;"></img>Test Connection</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" id="mysqlconfigsave" class="btn btn-primary" data-dismiss="modal" disabled="disabled">Save</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="oracleConfig" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                    <h4 class="modal-title">Source Configuration</h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="Input">Host</label>
+                            <Input type="text" class="form-control" id="hostoracle" placeholder="Enter the Host" required="required">
+                        </div>
+                        <div class="form-group">
+                            <label for="Input">Port</label>
+                            <Input type="text" class="form-control" id="portoracle" placeholder="Enter the Port" required="required">
+                        </div>
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <Input type="text" class="form-control" id="usernameoracle" placeholder="Enter the Username" required="required">
+                        </div>
+                        <div class="form-group">
+                            <label for="Password">Password</label>
+                            <Input type="password" class="form-control" id="passwordoracle" placeholder="Enter the Password" required>
+                            <span toggle="#passwordoracle" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="databasename">DatabaseName</label>
+                            <Input type="text" class="form-control" id="databasenameoracle" placeholder="Enter the DatabaseName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="tablename">TableName</label>
+                            <Input type="text" class="form-control" id="tablenameoracle" placeholder="Enter the TableName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="max_conn">Max Connections</label>
+                            <Input type="number" class="form-control" id="connectionsoracle" placeholder="Enter the max number of connections" required>
+                        </div>
+                        <div class="alert alert-success" style="display:none;margin-bottom:0px !important;" id="success_alert_orc">
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                            <strong>Connection Success!</strong>
+                        </div>
+                        <div class="alert alert-danger" style="display:none;margin-bottom:0px !important;" id="failure_alert_orc">
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                            <strong>Connection Failure!</strong>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="test_conn_oracle" style="float:left;" class="btn btn-primary"><img src="../images/loader.gif" id="ajax_loader" style="display:none;margin-left:-8px;"></img>Test Connection</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" id="oracleconfigsave" class="btn btn-primary" data-dismiss="modal" disabled="disabled">Save</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="targetConfig" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                    <h4 class="modal-title">Target Configuration</h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="host">Host</label>
+                            <input type="text" class="form-control" id="hosttrg" placeholder="Enter the Host">
+                        </div>
+                        <div class="form-group">
+                            <label for="port">Port</label>
+                            <input type="text" class="form-control" id="porttrg" placeholder="Enter the Port">
+                        </div>
+                        <div class="form-group">
+                            <label for="port">Directory</label>
+                            <input type="text" class="form-control" id="directorytrg" placeholder="Enter the Directory">
+                        </div>
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="username" class="form-control" id="usernametrg" placeholder="Enter the Username">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="Password">Password</label>
+                            <input type="password" class="form-control" id="passwordtrg" placeholder="Enter the Password">
+                            <span toggle="#passwordtrg" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="max_conn">Max Connections</label>
+                            <Input type="number" class="form-control" id="connectionstrg" placeholder="Enter the max number of connections">
+                        </div>
+                        <div class="alert alert-success" style="display:none;" id="success_alert_trg">
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                            <strong>Connection Success!</strong>
+                        </div>
+                        <div class="alert alert-danger" style="display:none;margin-bottom:0px !important;" id="failure_alert_trg">
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                            <strong>Connection Failure!</strong>
+                        </div>
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="test_conn_trg" style="float:left;" class="btn btn-primary">Test Connection</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" id="trgconfigsave" class="btn btn-primary" data-dismiss="modal">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="nullcheckconfig" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                    <h4 class="modal-title">NullCheck Configuration</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="control-label" for="columns">Select Columns</label>
+                        <div class="dropdown">
+                            <select id="columns1" class="multiselect-ui form-control" multiple="multiple">
+
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="nullchecksel">Action</label>
+                            <select class="form-control" id="nullchecksel" onchange="replacevaluenullcheck()">
+                                <option value="Select">Select Option</option>
+                                <option value="prevent replace">Prevent value Replace</option>
+                                <option value="Replace">Replace Value</option>
+                            </select>
+                        </div>
+
+                        <label for="type" style="display:none;" class="label">Values to replace</label>
+                        <div class="form-group" style="margin-top: 11px;display:none;" id="value_to_replace_nullcheck">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" id="nullcheckconfigsave" class="btn btn-primary" data-dismiss="modal">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="dateformatconfig" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                    <h4 class="modal-title">Dateformat Configuration</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="control-label" for="columns">Select Columns</label>
+                        <div class="dropdown">
+                            <select id="columns2" class="multiselect-ui form-control" multiple="multiple">
+
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="dateformatsel">Action</label>
+                            <select class="form-control" id="dateformatsel" onchange="replacevaluedateformat()">
+                                <option value="Select">Select Option</option>
+                                <option value="prevent replace">Prevent Format Change</option>
+                                <option value="change format">Change Format</option>
+                            </select>
+                        </div>
+
+                        <label for="type" style="display:none;" class="label">Value to replace</label>
+                        <div class="form-group" style="margin-top: 11px;display:none;" id="format_to_change_dateformat">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" id="dateformatconfigsave" class="btn btn-primary" data-dismiss="modal">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" style="width: 100%;position: fixed !important;border-bottom: 2px solid #2e353d !important;z-index:1;background-color: #2e353d !important;">
+        <div>
+            <img src="../images/ingestion1.png" style="width: 35px;margin-left: 10px;margin-top: -8px;border-radius: 12px;height: 35px;">
+            <span style="display: inline-block;margin-left: 1%;margin-top: 8px;font-size: 22px;color: white;">INGESTION FRAMEWORK</span>
+            <i class="fa fa-home" id="clear" style="font-size:26px;color:white;margin-left: 69%;cursor:pointer;"></i>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="nav-side-menu">
+            <i class="fa fa-bars fa-2x toggle-btn" data-toggle="collapse" data-target="#menu-content"></i>
+            <div class="menu-list">
+                <ul id="menu-content" class="menu-content collapse out">
+
+                    <li data-toggle="collapse" data-target="#source" class="collapsed active">
+                        <a href="#"><img src="../images/source.png" style="width: 26px;height: 26px;">&nbsp;Sources <span class="arrow"></span></a>
+                    </li>
+                    <ul class="sub-menu collapse" id="source">
+                        <li id="mysql" class="opensrc" ondragstart="return srcStart(event)" ondrag="srcdragging(event)" draggable="true">Mysql</li>
+                        <li id="oracle" class="opensrc" ondragstart="return srcStart(event)" ondrag="srcdragging(event)" draggable="true">Oracle</li>
+                        <!-- <li id="DB2" ondragstart="return srcStart(event)" ondrag="srcdragging(event)" draggable="true">DB2</li> -->
+                    </ul>
+                    <li data-toggle="collapse" data-target="#transform" class="collapsed">
+                        <a href="#"><img src="../images/transform.png" style="width: 26px;height: 26px;">&nbsp;Transform <span class="arrow"></span></a>
+                    </li>
+                    <ul class="sub-menu collapse" id="transform">
+                        <li id="nullcheck" class="opentrans" ondragstart="return transformStart(event)" ondrag="transformdragging(event)" draggable="true">Null Check</li>
+                        <li id="dateformat" class="opentrans" ondragstart="return transformStart(event)" ondrag="transformdragging(event)" draggable="true">Date Format Change</li>
+                    </ul>
+                    <li data-toggle="collapse" data-target="#target" class="collapsed">
+                        <a href="#"><img src="../images/target.png" style="width: 26px;height: 26px;">&nbsp;Target <span class="arrow"></span></a>
+                    </li>
+                    <ul class="sub-menu collapse" id="target">
+                        <li id="HDFS" class="opentrg" ondragstart="return targetStart(event)" ondrag="targetdragging(event)" draggable="true" style="text-align:center;">HDFS</li>
+                        <!-- <li id="target2" ondragstart="return targetStart(event)" ondrag="targetdragging(event)"  draggable="true">target2</li> -->
+                        <!-- <li id="target3" ondragstart="return targetStart(event)" ondrag="targetdragging(event)"  draggable="true">target3</li> -->
+
+                    </ul>
+                </ul>
+            </div>
+        </div>
+
+        <div id="wrapper">
+            <div>
+                <table>
+                    <tr>
+                        <td>
+                            <label for="jobname">Job Name:</label>
+                        </td>
+                        <td>
+                            <input minlength="5" maxlength="20" class='form-control' type='text' id='jobname' name='jobname' required>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="job_type" style="margin-top: 15px;">Select Schedule Type:</label>
+                        </td>
+                        <td>
+                            <div>
+                                <select class='form-control' type='text' id='jobtype' name='jobtype' onchange="scheduleOption()">
+                                    <option value=''>select</option>
+                                    <option value='Immediate'>Immediate</option>
+                                    <option value='one Time'>One Time</option>
+                                    <option value='Recurring'>Recurring</option>
+                                </select>
+
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            </br>
+            <div id='whole_div'>
+                <div id='one_time'>
+                    <label id='onetime_label'>One-time Occurence:</label>
+                    <div id='line'></div>
+                    <table>
+                        <tr>
+                            <td>
+                                <label>Date & Time:</label>
+                            </td>
+                            <td>
+                                <div class="form-group" style="margin-left: 9px;">
+                                    <div class='input-group date' id='datetimepicker1'>
+                                        <input type='text' class="form-control" />
+                                        <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                    <br>
+                </div>
+                <div id='recurring'>
+                    <label id='onetime_label' style='left: 80px; width: 94%;'>Frequency:</label>
+                    <div style='left: 83px; width: 94%;' id='line'></div>
+                    <table>
+                        <tr>
+                            <td style='width: 2%;'>
+                                <label>Occurs:</label>
+                            </td>
+                            <td>
+                                <select style='width: 18%;margin-left: 15px;' class='form-control' type='text' id='job_occur_type' name='job_occur_type' onchange="Option()">
+                                    <option>select</option>
+                                    <option value='Daily'>Daily&nbsp;&nbsp;&nbsp;&nbsp;</option>
+                                    <option value='Weekly'>Weekly</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr id='daily'>
+                            <td>
+                                <label>Recurs every:</label>
+                            </td>
+                            <td style='width: 27%;'>
+                                <input type="number" id="day" class="form-control">&nbsp;
+                                <label>day(s)</label>
+                            </td>
+                        </tr>
+                        <tr class='weekly' id="week1">
+                            <td>
+                                <label>Recurs every:</label>
+                            </td>
+                            <td style='width: 27%;'>
+
+                        <input type="number" id="week" class="form-control">&nbsp;
+                        <label>week(s)</label>
+                        <br />
+                    </td>
+                        </tr>
+                        <tr class='weekly' id="week2">
+                            <td>
+                                <label class="container1">Monday
+                                    <input type="checkbox" class='days_check' value="monday" id="mon" name="checkboxes">
+
+                                </label>
+                                <label class="container1">Tuesday
+                                    <input type="checkbox" class='days_check' value="tuesday" id="tue" name="checkboxes">
+
+                                </label>
+                                <label class="container1">Wednesday
+                                    <input type="checkbox" class='days_check' value="wednesday" id="wed" name="checkboxes">
+
+                                </label>
+                                <label class="container1">Thursday
+                                    <input type="checkbox" class='days_check' value="thursday" id="thur" name="checkboxes">
+
+                                </label>
+                                <label class="container1">Friday
+                                    <input type="checkbox" class='days_check' value="friday" id="fri" name="checkboxes">
+
+                                </label>
+                                <label class="container1">Saturday
+                                    <input type="checkbox" class='days_check' value="saturday" id="sat" name="checkboxes">
+
+                                </label>
+                                <label class="container1">Sunday
+                                    <input type="checkbox" class='days_check' value="sunday" id="sun" name="chechboxes">
+
+                                </label>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <br>
+                <label id='onetime_label' style="margin-top: 12%;">Daily frequency:</label>
+                <div style='left: 126px;width: 91.5%;' id='line'></div>
+                <div id='daily_radio_at_div'>
+                    <table style="margin-top: 3%;">
+                        <!-- <td> -->
+                        <!-- <label>Occurs once at:</label> -->
+                        <!-- </td> -->
+                        <!-- <td> -->
+                        <!-- <div id="timeinput"> -->
+                        <!-- <input name="timeinput" type="time" id="timedaily" atp-time-picker value="8:55" [(ngModel)]="dailytime" #timeinputdaily="ngModel">&nbsp; -->
+                        <!-- <!--  <a (click)="submit()"> <i class="fa fa-clock-o" style="font-size:27px" aria-hidden="true" ></i></a> -->
+                        <!-- </div> -->
+                        <!-- </td> -->
+                    </table>
+                </div>
+                <div id='daily_radio_occurs_div'>
+                    <table>
+                        <!-- <td>
+                    <label>Occurs every:</label>
+                </td> -->
+                        <!-- <td>
+
+                    <input type="number" id="hrdaily" style='display:inline-block;width: 27%;' class="form-control">&nbsp;
+                    <label>hour(s)</label>
+
+                </td> -->
+                        <td>
+                            <div id="occur_start">
+                                <label>Starting At:</label>
+                                <div id="occur_start_date">
+                                    <div class='input-group date' id='datetimepicker2'>
+                                        <input type='text' class="form-control" />
+                                        <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <label style="margin-top: 27px;">Ending At:</label>
+                            <div id="occur_end_date">
+                                <div class='input-group date' id='datetimepicker3'>
+                                    <input type='text' class="form-control" />
+                                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </td>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <script>
+        $(function() {
+            $('#datetimepicker1').datetimepicker();
+            $('#datetimepicker2').datetimepicker();
+            $('#datetimepicker3').datetimepicker();
+        });
+	function Option() {
+		debugger;
+		console.log("optionnnnn");
+		 var frequency = (document.getElementById("job_occur_type")).value;
+    console.log(frequency);
+    if (frequency == "Daily") {
+      (document.getElementById("day")).disabled = false;
+      (document.getElementById("mon")).disabled = true;
+      (document.getElementById("tue")).disabled = true;
+      (document.getElementById("wed")).disabled = true;
+      (document.getElementById("thur")).disabled = true;
+      (document.getElementById("fri")).disabled = true;
+      (document.getElementById("sat")).disabled = true;
+      (document.getElementById("sun")).disabled = true;
+      (document.getElementById("week")).disabled = true;
+    }
+    else if (frequency == "Weekly") {
+      (document.getElementById("day")).disabled = true;
+      (document.getElementById("mon")).disabled = false;
+      (document.getElementById("tue")).disabled = false;
+      (document.getElementById("wed")).disabled = false;
+      (document.getElementById("thur")).disabled = false;
+      (document.getElementById("fri")).disabled = false;
+      (document.getElementById("sat")).disabled = false;
+      (document.getElementById("sun")).disabled = false;
+      (document.getElementById("week")).disabled = false;
+    }
+		}
+		function scheduleOption(){
+		 debugger;
+		  var schedule = (document.getElementById("jobtype")).value;
+    console.log(schedule);
+    if (schedule == "Immediate") {
+	  $('#datetimepicker1 .form-control').prop('disabled', true);
+      (document.getElementById("job_occur_type")).disabled = true;
+      (document.getElementById("mon")).disabled = true;
+      (document.getElementById("tue")).disabled = true;
+      (document.getElementById("wed")).disabled = true;
+      (document.getElementById("thur")).disabled = true;
+      (document.getElementById("fri")).disabled = true;
+      (document.getElementById("sat")).disabled = true;
+      (document.getElementById("sun")).disabled = true;
+      (document.getElementById("day")).disabled = true;
+      (document.getElementById("week")).disabled = true;
+	  $('#datetimepicker2 .form-control').prop('disabled', true);
+	  $('#datetimepicker3 .form-control').prop('disabled', true);
+      //(document.getElementById("timedaily")).disabled = true;
+      //document.getElementById("timedaily").style.backgroundColor = '#e9ecef';
+      // (document.getElementById("hrdaily")).disabled = true;
+	  $('#datetimepicker2 .form-control').prop('disabled', true);
+	  $('#datetimepicker3 .form-control').prop('disabled', true);
+    }
+    else if (schedule == "one Time") {
+	  $('#datetimepicker1 .form-control').prop('disabled', false);
+      (document.getElementById("job_occur_type")).disabled = true;
+      (document.getElementById("mon")).disabled = true;
+      (document.getElementById("tue")).disabled = true;
+      (document.getElementById("wed")).disabled = true;
+      (document.getElementById("thur")).disabled = true;
+      (document.getElementById("fri")).disabled = true;
+      (document.getElementById("sat")).disabled = true;
+      (document.getElementById("sun")).disabled = true;
+      (document.getElementById("day")).disabled = true;
+      (document.getElementById("week")).disabled = true;
+      <!-- (document.getElementById("timedaily")).disabled = true; -->
+      // (document.getElementById("hrdaily")).disabled = true;
+      // document.getElementById("hrdaily").style.backgroundColor = '#e9ecef';
+	  $('#datetimepicker2 .form-control').prop('disabled', true);
+	   $('#datetimepicker3 .form-control').prop('disabled', true);
+      //(document.getElementById("end")).disabled = true;
+    }
+    else if (schedule == "Recurring") {
+	  $('#datetimepicker1 .form-control').prop('disabled', true);
+      (document.getElementById("datetimepicker1")).disabled = true;
+      <!-- (document.getElementById("time")).disabled = true; -->
+      <!-- document.getElementById("time").style.backgroundColor = '#e9ecef'; -->
+      (document.getElementById("job_occur_type")).disabled = false;
+      (document.getElementById("timedaily")).disabled = false;
+      document.getElementById("timedaily").style.backgroundColor = 'white';
+      // (document.getElementById("hrdaily")).disabled = false;
+      // document.getElementById("hrdaily").style.backgroundColor = 'white';
+	  $('#datetimepicker2 .form-control').prop('disabled', false);
+	  $('#datetimepicker3 .form-control').prop('disabled', false);
+      //(document.getElementById("end")).disabled = false;
+    }
+	}
+    </script>
+</body>
+
+</html>

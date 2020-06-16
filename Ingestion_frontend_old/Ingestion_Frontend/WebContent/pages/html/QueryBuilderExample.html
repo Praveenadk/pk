@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Drag & Drop</title>
+    <link rel="icon" href="../images/ingestion.png" type="image" sizes="16x16">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.10.2/jquery.js "></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css">
+   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="../css/query-builder.default.css" />
+  <script data-require="jquery@2.2.0" data-semver="2.2.0" src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+  <script data-require="moment.js@*" data-semver="2.14.1" src="https://npmcdn.com/moment@2.14.1"></script>
+  <script src="https://cdn.jsdelivr.net/npm/interactjs@1.3.4/dist/interact.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/jquery.query-builder/2.3.3/js/query-builder.standalone.min.js"></script>
+    <style>
+      .query-builder .rules-group-container {
+    padding: 10px;
+    padding-bottom: 6px;
+    border: 1px solid #004849 !important;
+    background: #728e9b !important; 
+    </style>
+</head>
+<body>
+  <div id="builder"></div>
+  <button class="btn btn-success" id="btn-set">Set Rules</button>
+  <button class="btn btn-primary" id="btn-get">Get Rules</button>
+  <button class="btn btn-warning" id="btn-reset">Reset</button>
+  <script>
+  var rules_basic;
+  <!-- = { -->
+	  <!-- condition: 'AND', -->
+	  <!-- rules: [{ -->
+	    <!-- id: 'price', -->
+	    <!-- operator: 'less', -->
+	    <!-- value: 10.25 -->
+	  <!-- }, { -->
+	    <!-- condition: 'OR', -->
+	    <!-- rules: [{ -->
+	      <!-- id: 'category', -->
+	      <!-- operator: 'equal', -->
+	      <!-- value: 2 -->
+	    <!-- }, { -->
+	      <!-- id: 'category', -->
+	      <!-- operator: 'equal', -->
+	      <!-- value: 1 -->
+	    <!-- }] -->
+	  <!-- }] -->
+	<!-- }; -->	
+ <!-- customerId | int(11)     | NO   | PRI | NULL    |       | -->
+<!-- | firstName  | varchar(30) | YES  |     | NULL    |       | -->
+<!-- | lastName   | varchar(30) | YES  |     | NULL    |       | -->
+<!-- | gender     | varchar(10) | YES  |     | NULL    |       | -->
+<!-- | email      | varchar(40) | YES  |     | NULL    |       | -->
+<!-- | dob        | varchar(25) | YES  |     | NULL    |       | -->
+<!-- | phoneNo    | varchar(25) | YES  |     | NULL    |       | -->
+<!-- | country    | varchar(30) | YES  |     | NULL    |       | -->
+<!-- | city       | varchar(30) | YES  |     | NULL    |       | -->
+<!-- | state      | varchar(30) | YES  |     | NULL    |       | -->
+<!-- | zip        | varchar(15) | YES  |     | NULL    |       | -->
+<!-- +------------+-------------+------+-----+---------+----- -->		
+    $('#builder').queryBuilder({
+	  plugins: ['bt-tooltip-errors'],
+	  
+	  filters: [{
+	    id: 'Customer_Id',
+	    label: 'Customer_Id',
+	    type: 'integer',
+		placeholder: '____________',
+	  },
+	  {
+	    id: 'firstname',
+	    label: 'FirstName',
+	    type: 'string',
+		placeholder: '____________',
+	  },
+	  {
+	    id: 'lastname',
+	    label: 'LastName',
+	    type: 'string',
+		placeholder: '____________',
+	  },
+	  {
+	    id: 'gender',
+	    label: 'Gender',
+	    type: 'integer',
+	    input: 'radio',
+	    values: {
+	      1: 'Male',
+	      0: 'Female'
+	    },
+	    operators: ['equal','not_equal']
+	  },
+	  {
+	    id: 'email',
+	    label: 'Email',
+	    type: 'string',
+		placeholder: '____________',
+	  },
+	  {
+	    id: 'dob',
+	    label: 'DoB',
+	    type: 'string',
+		placeholder: '____________',
+	  },
+	  {
+	    id: 'phonenumber',
+	    label: 'Phone Number',
+	    type: 'integer',
+		placeholder: '____________',
+		validation: {
+	      format: /^.{4}$/
+	    }
+	  },{
+	    id: 'country',
+	    label: 'Country',
+	    type: 'integer',
+	    input: 'select',
+	    values: {
+	      1: 'UK',
+	      2: 'USA',
+	      3: 'INDIA',
+	      4: 'Australia'
+	    },
+	    operators: ['equal', 'not_equal']
+	  }, {
+	    id: 'city',
+	    label: 'City',
+	    type: 'string',
+		placeholder: '____________',
+	  },{
+	    id: 'state',
+	    label: 'State',
+	    type: 'string',
+		placeholder: '____________',
+	  },{
+	    id: 'zip',
+	    label: 'Zip',
+	    type: 'integer',
+		placeholder: '____________',
+	     }],
+	  rules: rules_basic
+	});
+    /****************************************************************
+    						Triggers and Changers QueryBuilder
+ *****************************************************************/
+
+	$('#btn-get').on('click', function() {
+	  var result = $('#builder').queryBuilder('getRules');
+	  if (!$.isEmptyObject(result)) {
+	    alert(JSON.stringify(result, null, 2));
+	  }
+	  else{
+	  	console.log("invalid object :");
+	  }
+	  console.log(result);
+	});
+
+	$('#btn-reset').on('click', function() {
+	  $('#builder').queryBuilder('reset');
+	});
+
+	$('#btn-set').on('click', function() {
+	  //$('#builder').queryBuilder('setRules', rules_basic);
+	  var result = $('#builder').queryBuilder('getRules');
+	  if (!$.isEmptyObject(result)) {
+	  	rules_basic = result;
+	  }
+	});
+
+	//When rules changed :
+	$('#builder').on('getRules.queryBuilder.filter', function(e) {
+		//$log.info(e.value);
+	});
+  </script>
+</body>
+</html>

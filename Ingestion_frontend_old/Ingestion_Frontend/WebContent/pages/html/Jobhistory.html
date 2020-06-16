@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Unified Ingestion Framework</title>
+    <link rel="icon" href="../images/ingestion.png" type="image" sizes="16x16">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/yamljs/0.3.0/yaml.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/yamljs/0.3.0/yaml.legacy.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.5/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.10.2/jquery.js "></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.15/js/bootstrap-multiselect.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.15/css/bootstrap-multiselect.css" type="text/css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsPlumb/1.4.1/jquery.jsPlumb-1.4.1-all-min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2"></script>  
+	 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+	 <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>  
+    <style>
+    td.details-control {
+    <!-- background: url('../resources/details_open.png') no-repeat center center; -->
+    cursor: pointer;
+	content: "&#xf055";  /* this is your text. You can also use UTF-8 character codes as I do here */
+    font-family: FontAwesome;
+    left:-5px;
+    position:absolute;
+    top:0;
+}
+tr.shown td.details-control {
+    cursor: pointer;
+	content: "&#xf056";  /* this is your text. You can also use UTF-8 character codes as I do here */
+    font-family: FontAwesome;
+    left:-5px;
+    position:absolute;
+    top:0;
+    <!-- background: url('../resources/details_close.png') no-repeat center center; -->
+}
+#example_wrapper
+{
+    width: 92%;
+    margin-top: 42px;
+    margin-left: 50px;
+	}
+    </style>
+</head>
+<body>
+<table id="example" class="display" style="width:100%">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Name</th>
+                <th>Position</th>
+                <th>Office</th>
+                <th>Salary</th>
+            </tr>
+        </thead>
+		<!-- <tbody> -->
+		<!-- <tr> -->
+		<!-- <td></td> -->
+                <!-- <td>Ashton Cox</td> -->
+                <!-- <td>Junior Technical Author</td> -->
+                <!-- <td>San Francisco</td> -->
+                <!-- <!-- <td>66</td> --> 
+                <!-- <!-- <td>2009/01/12</td> -->
+                <!-- <td>$86,000</td> -->
+            <!-- </tr> -->
+            <!-- <tr> -->
+			<!-- <td></td> -->
+                <!-- <td>Cedric Kelly</td> -->
+                <!-- <td>Senior Javascript Developer</td> -->
+                <!-- <!-- <td>Edinburgh</td> --> 
+                <!-- <!-- <td>22</td> --> 
+                <!-- <!-- <td>2012/03/29</td> --> 
+                <!-- <td>$433,060</td> -->
+            <!-- </tr> -->
+		<!-- </tbody> -->
+        <tfoot>
+            <tr>
+                <th></th>
+                <th>Name</th>
+                <th>Position</th>
+                <th>Office</th>
+                <th>Salary</th>
+            </tr>
+        </tfoot>
+    </table>
+</body>
+
+    <script>
+	<!-- var msg = { -->
+<!-- console.log(JSON.parse(data)); -->
+
+       /* Formatting function for row details - modify as you need */
+function format ( d ) {
+    // `d` is the original data object for the row
+    return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">'+
+        '<tr>'+
+            '<td>Full name:</td>'+
+            '<td>'+d.name+'</td>'+
+        '</tr>'+
+        '<tr>'+
+            '<td>Extension number:</td>'+
+            '<td>'+d.extn+'</td>'+
+        '</tr>'+
+        '<tr>'+
+            '<td>Extra info:</td>'+
+            '<td>And any further details here (images etc)...</td>'+
+        '</tr>'+
+    '</table>';
+}
+  <!-- "ajax": { -->
+    <!-- "url": "data.json", -->
+    <!-- "type": "POST" -->
+  <!-- } -->
+$(document).ready(function() {
+    var table = $('#example').DataTable({
+	"ajax": {
+    "url": "http://10.60.24.110:3000/data",
+    "type": "GET"
+        },
+        "columns": [
+            {"className":'details-control'},
+            { "data": "name" },
+            { "data": "position" },
+            { "data": "office" },
+            { "data": "salary" }
+        ],
+        "order": [[1, 'asc']]
+    });
+     
+    // Add event listener for opening and closing details
+    $('#example tbody').on('click', 'td.details-control', function () {
+        var tr = $(this).closest('tr');
+        var row = table.row( tr );
+ 
+        if ( row.child.isShown() ) {
+            // This row is already open - close it
+            row.child.hide();
+            tr.removeClass('shown');
+        }
+        else {
+            // Open this row
+            row.child( format(row.data()) ).show();
+            tr.addClass('shown');
+        }
+    } );
+} );
+    </script>
+</body>
+
+</html>

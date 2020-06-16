@@ -1,0 +1,2770 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Drag & Drop</title>
+    <link rel="icon" href="../images/ingestion.png" type="image" sizes="16x16">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/yamljs/0.3.0/yaml.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/yamljs/0.3.0/yaml.legacy.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.5/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.10.2/jquery.js "></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.15/js/bootstrap-multiselect.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.15/css/bootstrap-multiselect.css" type="text/css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsPlumb/1.4.1/jquery.jsPlumb-1.4.1-all-min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.css" />
+    <link rel="stylesheet" href="../css/mdtimepicker.min.css">
+    <script src="../js/mdtimepicker.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/dmuy/MDTimePicker/mdtimepicker.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/dmuy/MDTimePicker/mdtimepicker.css" />
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.css" />
+    <!-- <link rel="stylesheet" href="../css/mdtimepicker.min.css"> -->
+    <!-- <script src="../js/mdtimepicker.js"></script> -->
+    <!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/dmuy/MDTimePicker/mdtimepicker.js"></script> -->
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/dmuy/MDTimePicker/mdtimepicker.css" /> -->
+    <!-- <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.1/js/bootstrap-datepicker.min.js" type="text/javascript"></script>  -->
+    <!-- <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />  -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clockpicker/0.0.7/bootstrap-clockpicker.js" type="text/javascript"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/clockpicker/0.0.7/bootstrap-clockpicker.css" rel="stylesheet" type="text/css" />
+    <!-- <link rel="stylesheet" href="../css/Drag&Drop.css"> -->
+    <!-- <script src="../js/Drag&Drop.js"></script> -->
+    <style>
+        @media screen and (max-width: 1366px) {
+            .nav-side-menu {
+                margin-left: -113px !important;
+            }
+            #wrapper_up {
+                margin-left: 104px !important;
+                margin-top: 51px;
+            }
+        }
+        
+        @media screen and (min-width: 1500px) {
+            .nav-side-menu {
+                margin-left: -180px
+            }
+            #wrapper_up {
+                margin-left: 38px;
+                margin-top: 51px;
+            }
+        }
+        
+        body {
+            font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif;
+        }
+        
+        @import 'https://fonts.googleapis.com/css?family=Cairo|Slabo+27px';
+        .nav-side-menu {
+            margin-left: -144px;
+            margin-top: 49px;
+            overflow: auto;
+            font-size: 12px;
+            font-weight: 200;
+            background-color: #2e353d;
+            position: fixed;
+            top: 0px;
+            width: 217px;
+            height: 100%;
+            color: #e1ffff;
+        }
+        
+        @media (min-width: 768px) {
+            .navbar {
+                border-radius: 2px !important;
+            }
+        }
+        
+        .nav-side-menu .brand {
+            background-color: #23282e;
+            line-height: 50px;
+            display: block;
+            text-align: center;
+            font-size: 14px;
+        }
+        
+        .nav-side-menu .toggle-btn {
+            display: none;
+        }
+        
+        .nav-side-menu ul,
+        .nav-side-menu li {
+            list-style: none;
+            padding: 0px;
+            margin: 0px;
+            line-height: 35px;
+            cursor: pointer!important;
+        }
+        
+        .nav-side-menu ul:not(collapsed) .arrow:before,
+        .nav-side-menu li:not(collapsed) .arrow:before {
+            font-family: FontAwesome;
+            content: "\f078";
+            display: inline-block;
+            padding-left: 10px;
+            padding-right: 10px;
+            vertical-align: middle;
+            float: right;
+        }
+        
+        .nav-side-menu ul .active,
+        .nav-side-menu li .active {
+            border-left: 3px solid #d19b3d;
+            background-color: #4f5b69;
+        }
+        
+        .nav-side-menu ul .sub-menu li.active,
+        .nav-side-menu li .sub-menu li.active {
+            color: #d19b3d;
+        }
+        
+        .nav-side-menu ul .sub-menu li.active a,
+        .nav-side-menu li .sub-menu li.active a {
+            color: #d19b3d;
+        }
+        
+        .nav-side-menu ul .sub-menu li,
+        .nav-side-menu li .sub-menu li {
+            background-color: #181c20;
+            border: none;
+            line-height: 40px;
+            border-bottom: 1px solid #23282e;
+            margin-left: 0px;
+        }
+        
+        .nav-side-menu li a {
+            text-decoration: none;
+            color: #e1ffff;
+        }
+        
+        .nav-side-menu li a i {
+            padding-left: 10px;
+            width: 20px;
+            padding-right: 20px;
+        }
+        
+        .nav-side-menu li:hover {
+            border-left: 3px solid #d19b3d;
+            background-color: #4f5b69;
+            -webkit-transition: all 1s ease;
+            -moz-transition: all 1s ease;
+            -o-transition: all 1s ease;
+            -ms-transition: all 1s ease;
+            transition: all 1s ease;
+        }
+        
+        @media (max-width: 767px) {
+            .nav-side-menu {
+                position: relative;
+                width: 100%;
+                margin-bottom: 10px;
+            }
+            .nav-side-menu .toggle-btn {
+                display: block;
+                cursor: pointer!important;
+                position: absolute;
+                right: 10px;
+                top: 10px;
+                z-index: 10 !important;
+                padding: 3px;
+                background-color: #ffffff;
+                color: #000;
+                width: 40px;
+                text-align: center;
+            }
+            .brand {
+                text-align: left !important;
+                font-size: 22px;
+                padding-left: 20px;
+                line-height: 50px !important;
+            }
+        }
+        
+        @media (min-width: 767px) {
+            .nav-side-menu .menu-list .menu-content {
+                display: block;
+                font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif;
+                font-size: 14px;
+            }
+        }
+        
+        body {
+            background-color: #f9fafb;
+            background-size: 14px 14px;
+            background-image: linear-gradient(to right, rgba(229, 235, 237, 1) 1px, transparent 1px), linear-gradient(to bottom, rgba(229, 235, 237, 1) 1px, transparent 1px);
+            z-index: 1;
+        }
+        
+        #transformdiv li {
+            display: inline-block;
+            width: auto;
+            list-style: outside none none;
+            margin-left: 48px;
+            padding: 7px 18px;
+        }
+        
+        #targetdiv li {
+            padding: 7px 14px 7px 17px !important;
+        }
+        
+        li {
+            list-style-type: none;
+            font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif;
+        }
+        
+        .fa {
+            display: inline-block;
+            font: normal normal normal 14px/1 FontAwesome;
+            font-size: 18px;
+            text-rendering: auto;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            padding: 6px 1px 0px 18px;
+            color: #004849;
+        }
+        
+        #transformdiv {
+            margin-left: -6.5%;
+            height: 121%;
+            margin-top: 0px;
+            /* background-color: #fff; */
+            position: relative;
+            margin-bottom: 1em;
+            display: block;
+            width: 74%;
+            white-space: nowrap;
+        }
+        
+        #sourcediv {
+            height: 119%;
+            margin-left: -38.5%;
+            margin-top: 12px;
+            <!-- margin-left: -38%;
+            -->
+            /* background-color: #fff; */
+            position: relative;
+            /* margin-bottom: 1em; */
+            /* display: block; */
+            width: 28%;
+            float: left;
+        }
+        
+        #targetdiv {
+            margin-left: 72%;
+            height: 118%;
+            margin-top: -79.5%;
+            <!-- height: 141%;
+            --> <!-- margin-top: -94%;
+            --> <!-- margin-left: 73%;
+            --> display: block;
+            width: 29%;
+        }
+        
+        .drag {
+            margin-top: 13px;
+            margin-left: 1px;
+            color: #a0a0a0;
+            position: fixed;
+            text-align: center;
+        }
+        
+        .drag1 {
+            margin-top: 26px;
+            margin-left: 168px;
+            color: #a0a0a0;
+            position: fixed;
+            text-align: center;
+        }
+        
+        .drag2 {
+            margin-top: 16px;
+            margin-left: 6px;
+            color: #a0a0a0;
+            position: fixed;
+            text-align: center;
+        }
+        
+        .source {
+            font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif !important;
+            color: black !important;
+            margin: 4px;
+            width: 63%;
+            padding: 6px;
+            height: 51px;
+            box-shadow: 0 10px 30px rgba(#333333, 0.4);
+            position: relative;
+            margin-top: 111%;
+            text-align: center;
+            font-family: 'Cairo', sans-serif;
+            overflow: none;
+            border: 1px solid #004849;
+            -moz-border-radius: 8px;
+            border-radius: 8px;
+            opacity: 0.8;
+            cursor: pointer!important;
+            background-color: white;
+            font-size: 13px;
+            position: relative;
+        }
+        
+        .transform {
+            font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif !important;
+            color: black !important;
+            text-align: center;
+            font-family: 'Cairo', sans-serif;
+            border: 1px solid #004849;
+            -moz-border-radius: 8px;
+            border-radius: 8px;
+            opacity: 0.8;
+            cursor: pointer!important;
+            background-color: white;
+            font-size: 13px;
+            font-family: 'Cairo', sans-serif;
+            position: relative;
+            font-size: 14px;
+            margin: 4px;
+            width: 26%;
+            /* overflow: hidden; */
+            padding: 13px;
+            height: 51px;
+            position: relative;
+            margin-top: 38%;
+        }
+        
+        .target {
+            font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif !important;
+            color: black !important;
+            border-radius: 8px;
+            border: 1px solid #004849;
+            opacity: 0.8;
+            cursor: pointer!important;
+            background-color: white;
+            margin: 4px;
+            width: 63%;
+            padding: 7px;
+            height: 51px;
+            position: relative;
+            margin-top: 104%;
+            text-align: center;
+            font-family: 'Cairo', sans-serif;
+            font-size: 13px;
+        }
+        
+        .highlightborder {
+            background-color: #c1c1c1;
+        }
+        
+        .disableborder {
+            background-color: none;
+        }
+        
+        .item {
+            background-color: none;
+            width: 100px;
+            height: 100px;
+            position: absolute;
+        }
+        
+        #dragbutton {
+            background-color: #ddffdd;
+        }
+        
+        #wrapper {
+            width: 800px;
+            height: 527px;
+            position: relative;
+            margin-top: 13%;
+            margin-left: 34%;
+        }
+        
+        circle {
+            cx: 7;
+            cy: 7;
+            r: 0;
+            fill: rgb(122, 176, 44);
+            stroke: #fff;
+        }
+        
+        .multiselect {
+            width: 122%;
+        }
+        
+        .source,
+        .transform,
+        .target {
+            box-shadow: 0px 5px 8px 0px rgba(0, 0, 0, 0.2), 0px 17px 24px 0px rgba(0, 0, 0, 0.19);
+        }
+        
+        ._jsPlumb_connector {
+            cursor: pointer!important;
+        }
+        
+        #play {
+            margin-top: -25.5%;
+            margin-left: 101%;
+        }
+        
+        #circulardiv {
+            background: lightsteelblue;
+            height: 30px;
+            width: 30px;
+            border-radius: 50px;
+            text-align: center;
+            cursor: pointer!important;
+        }
+        
+        .fields {
+            margin-bottom: 12px;
+        }
+        
+        option[title]:hover:after {
+            content: attr(title);
+            padding: 4px 8px;
+            position: absolute;
+            left: 0;
+            top: 100%;
+            white-space: nowrap;
+            z-index: 20px;
+            background: gray;
+        }
+        
+        .field-icon {
+            float: right;
+            color: black;
+            margin-right: 19px;
+            font-size: 16px;
+            margin-top: -32px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .opensrc,
+        .opentrans,
+        .opentrg {
+            text-align: center;
+        }
+        
+        img:hover {
+            background-color: #286090;
+        }
+        
+        pre {
+            background: aliceblue;
+            border-radius: 15px;
+            font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif;
+            color: black;
+        }
+        
+        .info {
+            width: 26%;
+            position: absolute;
+            box-shadow: 0px 5px 8px 0px rgba(0, 0, 0, 0.2), 0px 17px 24px 0px rgba(0, 0, 0, 0.19);
+            border: 1px solid lightblue;
+            background: white;
+            padding: 10px;
+            border-radius: 3px;
+        }
+        
+        #src_nullcheck {
+            margin-left: -22%;
+            margin-top: 40%;
+        }
+        
+        #nullcheck_dateformat {
+            margin-left: 16%;
+            margin-top: 42%;
+        }
+        
+        #dateformat_trg {
+            margin-left: 59%;
+            margin-top: 40%;
+        }
+        
+        .upperdiv {
+            background: #aabbc3;
+            padding: 6px;
+            width: 26%;
+            position: absolute;
+            text-align: center;
+            border-style: solid;
+            border-width: 1px 1px 1px 1px;
+            border-color: lightblue;
+            box-shadow: 0px 5px 8px 0px rgba(0, 0, 0, 0.2), 0px 17px 24px 0px rgba(0, 0, 0, 0.19);
+        }
+        
+        #upperdiv3 {
+            margin-left: 59%;
+            margin-top: 35.8%;
+        }
+        
+        #upperdiv2 {
+            margin-left: 16%;
+            margin-top: 37.8%;
+        }
+        
+        #upperdiv1 {
+            margin-left: -22%;
+            margin-top: 35.8%;
+        }
+        
+        .nav-side-menu li {
+            padding-left: 0px;
+            border-left: 3px solid #2e353d;
+            border-bottom: 1px solid #23282e;
+        }
+        
+        .nav-side-menu ul .sub-menu li:hover,
+        .nav-side-menu li .sub-menu li:hover {
+            background-color: #020203;
+        }
+        
+        .nav-side-menu ul .sub-menu li:before,
+        .nav-side-menu li .sub-menu li:before {
+            font-family: FontAwesome;
+            content: "\";
+ display: inline-block;
+            padding-left: 10px;
+            padding-right: 10px;
+            vertical-align: middle;
+        }
+        
+        #wrapper_up {
+            margin-left: 75px;
+            margin-top: 51px;
+        }
+        
+        html {
+            -webkit-font-smoothing: antialiased!important;
+            -moz-osx-font-smoothing: grayscale!important;
+            -ms-font-smoothing: antialiased!important;
+        }
+        
+        .md-stepper-horizontal {
+            display: table;
+            width: 85.3%;
+            position: fixed;
+            z-index: 2;
+            margin: 0 auto;
+            background-color: #FFFFFF;
+            box-shadow: 0 3px 8px -6px rgba(0, 0, 0, .50);
+        }
+        
+        .md-stepper-horizontal .md-step {
+            display: table-cell;
+            position: relative;
+            padding: 18px 22px 4px 24px;
+            <!-- padding: 18px 24px 4px 24px !important;
+            -->
+        }
+        
+        .md-stepper-horizontal .md-step:hover,
+        .md-stepper-horizontal .md-step:active {
+            background-color: rgba(0, 0, 0, 0.04);
+        }
+        
+        .md-stepper-horizontal .md-step:active {
+            border-radius: 15% / 75%;
+        }
+        
+        .md-stepper-horizontal .md-step:first-child:active {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+        
+        .md-stepper-horizontal .md-step:last-child:active {
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+        
+        .md-stepper-horizontal .md-step:hover .md-step-circle {
+            background-color: #757575;
+        }
+        
+        .md-stepper-horizontal .md-step:first-child .md-step-bar-left,
+        .md-stepper-horizontal .md-step:last-child .md-step-bar-right {
+            display: none;
+        }
+        
+        .md-stepper-horizontal .md-step .md-step-circle {
+            width: 30px;
+            height: 30px;
+            margin: 0 auto;
+            background-color: #999999;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #FFFFFF;
+        }
+        
+        .md-stepper-horizontal.green .md-step.active .md-step-circle {
+            background-color: #00AE4D;
+        }
+        
+        .md-stepper-horizontal.orange .md-step.active .md-step-circle {
+            background-color: #F96302;
+        }
+        
+        .md-stepper-horizontal .md-step.active .md-step-circle {
+            background-color: #286090;
+        }
+        
+        .md-stepper-horizontal .md-step.done .md-step-circle:before {
+            font-family: 'FontAwesome';
+            font-weight: 100;
+            content: "\f00c";
+        }
+        
+        .md-stepper-horizontal .md-step.done .md-step-circle *,
+        .md-stepper-horizontal .md-step.editable .md-step-circle * {
+            display: none;
+        }
+        
+        .md-stepper-horizontal .md-step.editable .md-step-circle {
+            -moz-transform: scaleX(-1);
+            -o-transform: scaleX(-1);
+            -webkit-transform: scaleX(-1);
+            transform: scaleX(-1);
+        }
+        
+        .md-stepper-horizontal .md-step.editable .md-step-circle:before {
+            font-family: 'FontAwesome';
+            font-weight: 100;
+            content: "\f040";
+        }
+        
+        .md-stepper-horizontal .md-step .md-step-title {
+            margin-top: 16px;
+            font-size: 16px;
+            font-weight: 600;
+        }
+        
+        .md-stepper-horizontal .md-step .md-step-title,
+        .md-stepper-horizontal .md-step .md-step-optional {
+            text-align: center;
+            color: rgba(0, 0, 0, .26);
+        }
+        
+        .md-stepper-horizontal .md-step.active .md-step-title {
+            font-weight: 600;
+            color: rgba(0, 0, 0, .87);
+        }
+        
+        .md-stepper-horizontal .md-step.active.done .md-step-title,
+        .md-stepper-horizontal .md-step.active.editable .md-step-title {
+            font-weight: 600;
+        }
+        
+        .md-stepper-horizontal .md-step .md-step-optional {
+            font-size: 12px;
+        }
+        
+        .md-stepper-horizontal .md-step.active .md-step-optional {
+            color: rgba(0, 0, 0, .54);
+        }
+        
+        .md-stepper-horizontal .md-step .md-step-bar-left,
+        .md-stepper-horizontal .md-step .md-step-bar-right {
+            position: absolute;
+            top: 36px;
+            height: 1px;
+            border-top: 1px solid #DDDDDD;
+        }
+        
+        .md-stepper-horizontal .md-step .md-step-bar-right {
+            right: 0;
+            left: 50%;
+            margin-left: 20px;
+        }
+        
+        .md-stepper-horizontal .md-step .md-step-bar-left {
+            left: 0;
+            right: 50%;
+            margin-right: 20px;
+        }
+        
+        #jobname {
+            display: inline-block;
+            margin-left: 14px;
+        }
+        
+        #jobtype {
+            width: 100%;
+            margin-left: 14px;
+            display: inline-block;
+            margin-top: 7px;
+        }
+        
+        #line {
+            border-top: 1px solid #abb3b9;
+            width: 89%;
+            position: relative;
+            top: -14px;
+            left: 156px;
+        }
+        
+        #daily {
+            position: absolute;
+            margin-top: 1%;
+        }
+        
+        #day {
+            margin-left: -225%;
+            width: 79%;
+            display: inline-block;
+        }
+        
+        #week1 {
+            position: absolute;
+            margin-top: 4%;
+        }
+        
+        #week2 {
+            position: absolute;
+            margin-top: 7.5%;
+        }
+        
+        .container1 {
+            margin-left: 34px;
+        }
+        
+        #occur_start_date {
+            margin-left: 28%;
+            margin-top: -10%;
+            width: 71%;
+        }
+        
+        #occur_end_date {
+            margin-top: -30px;
+            margin-left: 85px;
+        }
+        
+        #week {
+            margin-left: -230%;
+            width: 63%;
+            display: inline-block;
+        }
+        
+        #daily_radio_at_div {
+            position: relative;
+            top: -61px;
+            left: 26px;
+        }
+        
+        #daily_radio_occurs_div {
+            position: relative;
+            top: -52px;
+            left: 26px;
+        }
+        
+        label {
+            display: inline-block;
+            max-width: 100%;
+            margin-bottom: 5px;
+            font-weight: 700;
+        }
+        
+        #wrapper_Schedule {
+            margin-left: 8%;
+            margin-top: 169px;
+        }
+    </style>
+</head>
+
+<body oncontextmenu="return false">
+    <div class="modal fade" id="mysqlConfig" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                    <h4 class="modal-title">Source Configuration</h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="Input">Host</label>
+                            <Input type="text" class="form-control" id="hostmysql" placeholder="Enter the Host" required="required">
+                        </div>
+                        <div class="form-group">
+                            <label for="Input">Port</label>
+                            <Input type="text" class="form-control" id="portmysql" placeholder="Enter the Port" required="required">
+                        </div>
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <Input type="text" class="form-control" id="usernamemysql" placeholder="Enter the Username" required="required">
+                        </div>
+                        <div class="form-group">
+                            <label for="Password">Password</label>
+                            <Input type="password" class="form-control" id="passwordmysql" placeholder="Enter the Password" required>
+                            <span toggle="#passwordmysql" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="databasename">DatabaseName</label>
+                            <Input type="text" class="form-control" id="databasenamemysql" placeholder="Enter the DatabaseName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="tablename">TableName</label>
+                            <Input type="text" class="form-control" id="tablenamemysql" placeholder="Enter the TableName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="tablename">Query</label>
+                            <Input type="text" class="form-control" id="querymysql" placeholder="Enter the Query" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="max_conn">Max Connections</label>
+                            <Input type="number" class="form-control" id="connectionsmysql" placeholder="Enter the max number of connections" required>
+                        </div>
+                        <div class="alert alert-success" style="display:none;margin-bottom:0px !important;" id="success_alert_mysql">
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                            <strong>Connection Success!</strong>
+                        </div>
+                        <div class="alert alert-danger" style="display:none;margin-bottom:0px !important;" id="failure_alert_mysql">
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                            <strong>Connection Failure!</strong>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="test_conn_mysql" style="float:left;" class="btn btn-primary"><img src="../images/loader.gif" id="ajax_loader" style="display:none;margin-left:-8px;"></img>Test Connection</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" id="mysqlconfigsave" class="btn btn-primary" data-dismiss="modal" disabled="disabled">Save</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="oracleConfig" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                    <h4 class="modal-title">Source Configuration</h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="Input">Host</label>
+                            <Input type="text" class="form-control" id="hostoracle" placeholder="Enter the Host" required="required">
+                        </div>
+                        <div class="form-group">
+                            <label for="Input">Port</label>
+                            <Input type="text" class="form-control" id="portoracle" placeholder="Enter the Port" required="required">
+                        </div>
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <Input type="text" class="form-control" id="usernameoracle" placeholder="Enter the Username" required="required">
+                        </div>
+                        <div class="form-group">
+                            <label for="Password">Password</label>
+                            <Input type="password" class="form-control" id="passwordoracle" placeholder="Enter the Password" required>
+                            <span toggle="#passwordoracle" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="databasename">DatabaseName</label>
+                            <Input type="text" class="form-control" id="databasenameoracle" placeholder="Enter the DatabaseName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="tablename">TableName</label>
+                            <Input type="text" class="form-control" id="tablenameoracle" placeholder="Enter the TableName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="max_conn">Max Connections</label>
+                            <Input type="number" class="form-control" id="connectionsoracle" placeholder="Enter the max number of connections" required>
+                        </div>
+                        <div class="alert alert-success" style="display:none;margin-bottom:0px !important;" id="success_alert_orc">
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                            <strong>Connection Success!</strong>
+                        </div>
+                        <div class="alert alert-danger" style="display:none;margin-bottom:0px !important;" id="failure_alert_orc">
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                            <strong>Connection Failure!</strong>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="test_conn_oracle" style="float:left;" class="btn btn-primary"><img src="../images/loader.gif" id="ajax_loader" style="display:none;margin-left:-8px;"></img>Test Connection</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" id="oracleconfigsave" class="btn btn-primary" data-dismiss="modal" disabled="disabled">Save</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="targetConfig" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                    <h4 class="modal-title">Target Configuration</h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="host">Host</label>
+                            <input type="text" class="form-control" id="hosttrg" placeholder="Enter the Host">
+                        </div>
+                        <div class="form-group">
+                            <label for="port">Port</label>
+                            <input type="text" class="form-control" id="porttrg" placeholder="Enter the Port">
+                        </div>
+                        <div class="form-group">
+                            <label for="port">Directory</label>
+                            <input type="text" class="form-control" value="/" id="directorytrg" placeholder="Enter the Directory">
+                        </div>
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="username" class="form-control" id="usernametrg" placeholder="Enter the Username">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="Password">Password</label>
+                            <input type="password" class="form-control" id="passwordtrg" placeholder="Enter the Password">
+                            <span toggle="#passwordtrg" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="max_conn">Max Connections</label>
+                            <Input type="number" class="form-control" id="connectionstrg" placeholder="Enter the max number of connections">
+                        </div>
+                        <div class="alert alert-success" style="display:none;" id="success_alert_trg">
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                            <strong>Connection Success!</strong>
+                        </div>
+                        <div class="alert alert-danger" style="display:none;margin-bottom:0px !important;" id="failure_alert_trg">
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                            <strong>Connection Failure!</strong>
+                        </div>
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="test_conn_trg" style="float:left;" class="btn btn-primary">Test Connection</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" id="trgconfigsave" class="btn btn-primary" data-dismiss="modal">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="nullcheckconfig" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                    <h4 class="modal-title">NullCheck Configuration</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="control-label" for="columns">Select Columns</label>
+                        <div class="dropdown">
+                            <select id="columns1" class="multiselect-ui form-control" multiple="multiple">
+
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="nullchecksel">Action</label>
+                            <select class="form-control" id="nullchecksel" onchange="replacevaluenullcheck()">
+                                <option value="Select">Select Option</option>
+                                <option value="prevent replace">Prevent value Replace</option>
+                                <option value="Replace">Replace Value</option>
+                            </select>
+                        </div>
+
+                        <label for="type" style="display:none;" class="label">Values to replace</label>
+                        <div class="form-group" style="margin-top: 11px;display:none;" id="value_to_replace_nullcheck">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" id="nullcheckconfigsave" class="btn btn-primary" data-dismiss="modal">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="dateformatconfig" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                    <h4 class="modal-title">Dateformat Configuration</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="control-label" for="columns">Select Columns</label>
+                        <div class="dropdown">
+                            <select id="columns2" class="multiselect-ui form-control" multiple="multiple">
+
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="dateformatsel">Action</label>
+                            <select class="form-control" id="dateformatsel" onchange="replacevaluedateformat()">
+                                <option value="Select">Select Option</option>
+                                <option value="prevent replace">Prevent Format Change</option>
+                                <option value="change format">Change Format</option>
+                            </select>
+                        </div>
+
+                        <label for="type" style="display:none;" class="label">Value to replace</label>
+                        <div class="form-group" style="margin-top: 11px;display:none;" id="format_to_change_dateformat">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" id="dateformatconfigsave" class="btn btn-primary" data-dismiss="modal">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" style="width: 100%;position: fixed !important;border-bottom: 2px solid #2e353d !important;z-index:1;background-color: #2e353d !important;">
+        <div>
+            <img src="../images/ingestion1.png" style="width: 35px;margin-left: 10px;margin-top: -16px;border-radius: 12px;height: 35px;">
+            <span style="display: inline-block;margin-top: 7px;font-size: 22px;color: white;"></span>
+            <i class="fa fa-home" id="clear" style="font-size:26px;color:white;margin-top: 7px;margin-left: 89%;cursor:pointer;"></i>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="nav-side-menu">
+            <i class="fa fa-bars fa-2x toggle-btn"></i>
+            <div class="menu-list">
+                <ul id="menu-content" class="menu-content collapse out">
+
+                    <li class="active">
+                        <a href="#"><img src="../images/source.png" style="width: 26px;height: 26px;">&nbsp;Sources
+                            <span class=""></span></a>
+                    </li>
+                    <ul class="sub-menu" id="source">
+                        <li id="mysql" class="opensrc" ondragstart="return srcStart(event)" ondrag="srcdragging(event)" draggable="true">Mysql</li>
+                        <li id="oracle" class="opensrc" ondragstart="return srcStart(event)" ondrag="srcdragging(event)" draggable="true">Oracle</li>
+                        <li id="hive" class="opensrc" ondragstart="return srcStart(event)" ondrag="srcdragging(event)" draggable="false">Hive</li>
+                        <li id="hdfs" class="opensrc" ondragstart="return srcStart(event)" ondrag="srcdragging(event)" draggable="false">HDFS</li>
+                        <!-- <li id="DB2" ondragstart="return srcStart(event)" ondrag="srcdragging(event)" draggable="true">DB2</li> -->
+                    </ul>
+                    <li>
+                        <a href="#"><img src="../images/transform.png" style="width: 26px;height: 26px;">&nbsp;Transform <span class=""></span></a>
+                    </li>
+                    <ul class="sub-menu " id="transform">
+                        <li id="nullcheck" class="opentrans" ondragstart="return transformStart(event)" ondrag="transformdragging(event)" draggable="true">Null Check</li>
+                        <li id="dateformat" class="opentrans" ondragstart="return transformStart(event)" ondrag="transformdragging(event)" draggable="true">Date Format Change</li>
+                        <li id="ssnvalidate" class="opentrans" ondragstart="return transformStart(event)" ondrag="transformdragging(event)" draggable="false">SSN Validator</li>
+                        <li id="phonevalidate" class="opentrans" ondragstart="return transformStart(event)" ondrag="transformdragging(event)" draggable="false">Phone Validator</li>
+                        <li id="executespark" class="opentrans" ondragstart="return transformStart(event)" ondrag="transformdragging(event)" draggable="false">Execute Spark </li>
+                    </ul>
+                    <li>
+                        <a href="#"><img src="../images/target.png" style="width: 26px;height: 26px;">&nbsp;Target <span class=""></span></a>
+                    </li>
+                    <ul class="sub-menu" id="target">
+                        <li id="HDFS" class="opentrg" ondragstart="return targetStart(event)" ondrag="targetdragging(event)" draggable="true" style="text-align:center;">HDFS</li>
+                        <li id="Hive" class="opentrg" ondragstart="return targetStart(event)" ondrag="targetdragging(event)" draggable="true" style="text-align:center;">Hive</li>
+                        <li id="HBase" class="opentrg" ondragstart="return targetStart(event)" ondrag="targetdragging(event)" draggable="false" style="text-align:center;">HBase</li>
+                        <li id="Kafka" class="opentrg" ondragstart="return targetStart(event)" ondrag="targetdragging(event)" draggable="false" style="text-align:center;">Kafka</li>
+                        <li id="Cassandra" class="opentrg" ondragstart="return targetStart(event)" ondrag="targetdragging(event)" draggable="false" style="text-align:center;">Cassandra</li>
+                        <!-- <li id="target2" ondragstart="return targetStart(event)" ondrag="targetdragging(event)"  draggable="true">target2</li> -->
+                        <!-- <li id="target3" ondragstart="return targetStart(event)" ondrag="targetdragging(event)"  draggable="true">target3</li> -->
+
+                    </ul>
+                </ul>
+            </div>
+        </div>
+        <div id="wrapper_up">
+            <div class="md-stepper-horizontal Dark blue">
+                <div class="md-step active" id="workflow">
+                    <div class="md-step-circle"><span>1</span></div>
+                    <div class="md-step-title">Workflow</div>
+                    <div class="md-step-optional">Define the Workflow</div>
+                    <div class="md-step-bar-left"></div>
+                    <div class="md-step-bar-right"></div>
+                </div>
+                <div class="md-step" id="schedule">
+                    <div class="md-step-circle"><span>2</span></div>
+                    <div class="md-step-title">Job Schedule</div>
+                    <div class="md-step-optional">Schedule the Job</div>
+                    <div class="md-step-bar-left"></div>
+                    <div class="md-step-bar-right"></div>
+                </div>
+                <div class="md-step">
+                    <div class="md-step-circle"><span>3</span></div>
+                    <div class="md-step-title">Job History</div>
+                    <div class="md-step-optional">View the History</div>
+                    <div class="md-step-bar-left"></div>
+                    <div class="md-step-bar-right"></div>
+                </div>
+                <div class="md-step">
+                    <div class="md-step-circle"><span>4</span></div>
+                    <div class="md-step-title">Review</div>
+                    <div class="md-step-optional">Review</div>
+                    <div class="md-step-bar-left"></div>
+                    <div class="md-step-bar-right"></div>
+                </div>
+            </div>
+        </div>
+        <div id="wrapper_Schedule" style="display:none;">
+            <div>
+                <table>
+                    <tr>
+                        <td>
+                            <label for="jobname">Job Name:</label>
+                        </td>
+                        <td>
+                            <input minlength="5" maxlength="20" class='form-control' type='text' id='jobname' name='jobname' required>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="job_type" style="margin-top: 15px;">Select Schedule Type:</label>
+                        </td>
+                        <td>
+                            <div>
+                                <select class='form-control' type='text' id='jobtype' name='jobtype' onchange="scheduleOption()">
+                                    <option value=''>select</option>
+                                    <option value='Immediate'>Immediate</option>
+                                    <option value='one Time'>One Time</option>
+                                    <option value='Recurring'>Recurring</option>
+                                </select>
+
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            </br>
+            <div id='whole_div'>
+                <div id='one_time'>
+                    <label id='onetime_label'>One-time Occurence:</label>
+                    <div id='line'></div>
+                    <table>
+                        <tr>
+                            <td>
+                                <label>Date:</label>
+                            </td>
+                            <td>
+                                <div class="input-group date" data-provide="datepicker" style="margin-left:11px;">
+                                    <input type="text" class="form-control" id="datepicker1">
+                                    <div class="input-group-addon">
+                                        <span class="glyphicon glyphicon-th"></span>
+                                    </div>
+                                </div>
+                                <!-- <div class="input-group date" data-date-format="dd.mm.yyyy"> -->
+                                <!-- <input  type="text" class="form-control" placeholder="dd.mm.yyyy"> -->
+                                <!-- <div class="input-group-addon" > -->
+                                <!-- <span class="glyphicon glyphicon-th"></span> -->
+                                <!-- </div> -->
+                                <!-- </div> -->
+                                <!-- <input id="datepicker" width="270" style="margin-left:5px;" /> -->
+                                <!-- <div class="input-group date" data-provide="datepicker" style="margin-left:11px;"> -->
+                                <!-- <input type="text" class="form-control"> -->
+                                <!-- <div class="input-group-addon"> -->
+                                <!-- <span class="glyphicon glyphicon-th"></span> -->
+                                <!-- </div> -->
+                                <!-- </div> -->
+                            </td>
+                            <td style="padding:9px;">
+                                <label>Time:</label>
+                            </td>
+                            <td>
+                                <td>
+                                    <!-- <div class="input-group"> -->
+
+                                    <!-- <input type="text" id="timepicker" class="form-control"> -->
+                                    <!-- <span class="input-group-addon time"><i class="glyphicon glyphicon-time"></i></span> -->
+                                    <!-- </div> -->
+                                    <div class="input-group clockpicker" id="clockpicker1">
+                                        <input type="text" class="form-control" value="" id="clockpickerinput1">
+                                        <span class="input-group-addon">
+        <span class="glyphicon glyphicon-time"></span>
+                                        </span>
+                                    </div>
+                                </td>
+                                <!-- <input type="text" id="timepicker"/> -->
+                            </td>
+                        </tr>
+                    </table>
+                    <br>
+                </div>
+                <div id='recurring'>
+                    <label id='onetime_label' style='left: 80px; width: 94%;'>Frequency:</label>
+                    <div style='left: 83px; width: 96%;' id='line'></div>
+                    <table>
+                        <tr>
+                            <td style='width: 2%;'>
+                                <label>Occurs:</label>
+                            </td>
+                            <td>
+                                <select style='width: 18%;margin-left: 15px;' class='form-control' type='text' id='job_occur_type' name='job_occur_type' onchange="Option()">
+                                    <option>select</option>
+                                    <option value='Daily'>Daily&nbsp;&nbsp;&nbsp;&nbsp;</option>
+                                    <option value='Weekly'>Weekly</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr id='daily'>
+                            <td>
+                                <label>Recurs every:</label>
+                            </td>
+                            <td style='width: 27%;'>
+                                <input type="number" id="day" class="form-control">&nbsp;
+                                <label>day(s)</label>
+                            </td>
+                        </tr>
+                        <tr class='weekly' id="week1">
+                            <td>
+                                <label>Recurs every:</label>
+                            </td>
+                            <td style='width: 27%;'>
+
+                                <input type="number" id="week" class="form-control">&nbsp;
+                                <label>week(s)</label>
+                                <br />
+                            </td>
+                        </tr>
+                        <tr class='weekly' id="week2">
+                            <td>
+                                <label class="container1">Monday
+                                    <input type="checkbox" class='days_check' value="monday" id="mon" name="checkboxes">
+
+                                </label>
+                                <label class="container1">Tuesday
+                                    <input type="checkbox" class='days_check' value="tuesday" id="tue" name="checkboxes">
+
+                                </label>
+                                <label class="container1">Wednesday
+                                    <input type="checkbox" class='days_check' value="wednesday" id="wed" name="checkboxes">
+
+                                </label>
+                                <label class="container1">Thursday
+                                    <input type="checkbox" class='days_check' value="thursday" id="thur" name="checkboxes">
+
+                                </label>
+                                <label class="container1">Friday
+                                    <input type="checkbox" class='days_check' value="friday" id="fri" name="checkboxes">
+
+                                </label>
+                                <label class="container1">Saturday
+                                    <input type="checkbox" class='days_check' value="saturday" id="sat" name="checkboxes">
+
+                                </label>
+                                <label class="container1">Sunday
+                                    <input type="checkbox" class='days_check' value="sunday" id="sun" name="chechboxes">
+
+                                </label>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <br>
+                <label id='onetime_label' style="margin-top: 12%;">Daily frequency:</label>
+                <div style='left: 126px;width: 92%;' id='line'></div>
+                <input type='radio' name='daily_radio' value='daily_radio_at' checked style="margin-top:17px;">
+                <div id='daily_radio_at_div'>
+                    <table style="margin-top: 3.5%;">
+                        <td>
+                            <label>Occurs once at:</label>
+                        </td>
+                        <td>
+                            <div id="timeinput" style="margin-left:10px;">
+                                <!-- <div class="input-group"> -->
+                                <div class="input-group clockpicker" id="clockpicker4">
+                                    <input type="text" class="form-control" value="" id="clockpickerinput4">
+                                    <span class="input-group-addon">
+                                      <span class="glyphicon glyphicon-time"></span>
+                                    </span>
+                                </div>
+                                <!-- <input type="text" id="timepicker1" class="form-control"> -->
+                                <!-- <span class="input-group-addon time"><i class="glyphicon glyphicon-time"></i></span> -->
+                                <!-- </div> -->
+                            </div>
+                        </td>
+                    </table>
+                </div>
+                <input type='radio' name='daily_radio' value='daily_radio_occurs'>
+                <div id='daily_radio_occurs_div'>
+                    <table>
+                        <td>
+                            <label>Occurs every:</label>
+                        </td>
+                        <td>
+
+                            <input type="number" id="hrdaily" style='display:inline-block;width: 27%;margin-left:10px;' class="form-control">&nbsp;
+                            <label>hour(s)</label>
+
+                        </td>
+                        <td>
+                            <div id="occur_start">
+                                <label>Starting At:</label>
+                                <div id="occur_start_date">
+                                    <!-- <div class="input-group"> -->
+
+                                    <!-- <input type="text" id="timepicker2" class="form-control"> -->
+                                    <!-- <span class="input-group-addon time"><i class="glyphicon glyphicon-time"></i></span> -->
+                                    <!-- </div> -->
+                                    <div class="input-group clockpicker" id="clockpicker2">
+                                        <input type="text" class="form-control" value="" id="clockpickerinput2">
+                                        <span class="input-group-addon">
+        <span class="glyphicon glyphicon-time"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <label style="margin-top: 27px;">Ending At:</label>
+                            <div id="occur_end_date">
+                                <!-- <div class="input-group"> -->
+
+                                <!-- <input type="text" id="timepicker3" class="form-control"> -->
+                                <!-- <span class="input-group-addon time"><i class="glyphicon glyphicon-time"></i></span> -->
+                                <!-- </div> -->
+                                <div class="input-group clockpicker" id="clockpicker3">
+                                    <input type="text" class="form-control" value="" id="clockpickerinput3">
+                                    <span class="input-group-addon">
+        <span class="glyphicon glyphicon-time"></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </td>
+                    </table>
+                </div>
+
+                <div style="margin-top: -40px;">
+                    <label id='onetime_label'>Duration:</label>
+                </div>
+                <div style='left: 65px;width: 99%;' id='line'></div>
+                <table>
+                    <tr>
+                        <td>
+                            <label>Start date:</label>
+                            <div style="display:inline-block">
+                                <div class="input-group date" data-provide="datepicker" style="margin-left:11px;">
+                                    <input type="text" class="form-control" id="datepicker2">
+                                    <div class="input-group-addon">
+                                        <span class="glyphicon glyphicon-th"></span>
+                                    </div>
+                                </div>
+                                <!-- <input id="datepicker1" width="270" /> -->
+                            </div>
+                        </td>
+                        <td>
+                            <input type='radio' name='end_date' value='true' checked style="margin-left:35px;">
+                            <div id='end_date_div' style='display: inline-block;'>
+                                <label>End date:</label>
+                                <div style="display:inline-block">
+                                    <!-- <input id="datepicker2" width="270" /> -->
+                                    <div class="input-group date" data-provide="datepicker" style="margin-left:11px;" id="datepicker2">
+                                        <input type="text" class="form-control" id="datepicker3">
+                                        <div class="input-group-addon">
+                                            <span class="glyphicon glyphicon-th"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <input type='radio' name='end_date' value='false' style="margin-top: 18px;margin-left: 35px;">
+                            <label>No end date</label>
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+        </div>
+
+        <div id="wrapper">
+
+            <ul id="sourcediv" class="item" ondragenter="return dragEnter(event)" ondrop="return srcDrop(event)" ondragover="return dragOver(event)"> <span class="drag">Drag source here </span></ul>
+            <div class="upperdiv" id="upperdiv1" style="display:none;">Processor Info</div>
+            <div class="info" id="src_nullcheck" style="display:none;position: absolute;">
+                <!-- <span>BytesIn: 1108</span> -->
+                <!-- <br/> -->
+                <!-- <span>Input: 2 (1.08 KB)</span> -->
+                <!-- <br/> -->
+                <!-- <span>BytesOut: 554</span> -->
+                <!-- <br/> -->
+                <!-- <span>Output: 1 (554 bytes)</span> -->
+                <!-- <br/> -->
+                <!-- <span>BytesQueued: 554</span> -->
+                <!-- <br/> -->
+            </div>
+
+            <div class="upperdiv" id="upperdiv2" style="display:none;">Processor Info</div>
+            <div class="info" id="nullcheck_dateformat" style="display:none;position: absolute;">
+                <!-- <span>BytesIn: 2167</span> -->
+                <!-- <br/> -->
+                <!-- <span>Input: 1 (2.08 KB)</span> -->
+                <!-- <br/> -->
+                <!-- <span>BytesOut: 1024</span> -->
+                <!-- <br/> -->
+                <!-- <span>Output: 1 (1024 bytes)</span> -->
+                <!-- <br/> -->
+                <!-- <span>BytesQueued: 1024</span> -->
+                <!-- <br/> -->
+            </div>
+            <!-- <img src="../images/mainloader.gif" id="ajax_loader1" style="display:none;"></img> -->
+
+            <div class="upperdiv" id="upperdiv3" style="display:none;">Processor Info</div>
+            <div class="info" id="dateformat_trg" style="display:none;position: absolute;">
+                <!-- <span>BytesIn: 3212</span> -->
+                <!-- <br/> -->
+                <!-- <span>Input: 1 (1.08 KB)</span> -->
+                <!-- <br/> -->
+                <!-- <span>BytesOut: 3327</span> -->
+                <!-- <br/> -->
+                <!-- <span>Output: 1 (3327 bytes)</span> -->
+                <!-- <br/> -->
+                <!-- <span>BytesQueued: 3327</span> -->
+                <!-- <br/> -->
+            </div>
+            <ul id="transformdiv" class="item" ondragenter="return dragEnter(event)" ondrop="return transformDrop(event)" ondragover="return dragOver(event)"><span class="drag1"> Drag transformation here </span></ul>
+            <ul id="targetdiv" class="item" ondragenter="return dragEnter(event)" ondrop="return targetDrop(event)" ondragover="return dragOver(event)"> <span class="drag2">Drag Target here </span></ul>
+        </div>
+
+        <div id="play" style="display:none;cursor:pointer;">
+            <button type="button" id="start_workflow" onclick="startWorkflow()" class="btn" style="background:#16494a;border-color: #004849;color: white;cursor:pointer;position: absolute;z-index: 2;margin-top:-14px;"><img src="../images/loader5.gif" id="ajax_loader1" style="display:none;margin-left:-8px;"></img>StartWorkflow</button>
+            <button type="button" id="next1" class="btn" style="z-index: 2;float: right;cursor: pointer;background: #16494a;border-color: #004849;color: white;display:none;margin-right: -95px;
+    margin-top: 17.875em;">Next</button>
+            <button type="button" id="back1" class="btn" style="z-index: 2;float: right;cursor: pointer;background: #16494a;border-color: #004849;color: white;display:none;margin-right: -20px;margin-top: 17.875em;">Back</button>
+            <button type="button" id="next" class="btn" style="z-index: 2;cursor:pointer;margin-top: 24em;
+    margin-left: 3em;background:#16494a;border-color: #004849;color: white;">Next</button>
+        </div>
+        <!-- <div>  -->
+        <!-- <button type="button" id="UUID" style="z-index: 2;cursor:pointer;">UUID Generator</button> -->
+        <!-- </div> -->
+
+    </div>
+    <script>
+        var i = 0,
+            i1 = 0,
+            j = 0,
+            j1 = 0,
+            k = 0,
+            sc = 0,
+            sc1 = 0,
+            tc = 0,
+            trc = 0,
+            trc1 = 0;
+        var a = 0;
+        var src_id;
+        var src_type;
+        var data = [];
+        var finaljson = {};
+        var finalconfig = {};
+        var configuration = {};
+        var nullcheckoption = {};
+        var nullcheckoption1 = {};
+        var dateformatoption1 = {};
+        var dateformatoption = {};
+        var cols_global_nullcheck = [];
+        var columns = [];
+        var configuration_nullcheck = {};
+        var configuration_dateformat = {};
+        var conn_obj = {};
+        var conn_arr = [];
+        var conn_arr_br = [];
+        var finaldata_src = {};
+        var finaldata_trg = {};
+        var srcdata = [];
+        var trgdata = [];
+        var trns_arr = [];
+        var oracleconfigdetails = {};
+        var oracledata = {};
+        var mysqlconfigdetails = {};
+        var mysqldata = {};
+        var e, e1, e2, e3, e4, e5;
+        $(document).ready(function() {
+            $(".toggle-password").click(function() {
+                debugger;
+                $(this).toggleClass("fa-eye fa-eye-slash");
+                var Input = $($(this).attr("toggle"));
+                if (Input.attr("type") == "password") {
+                    Input.attr("type", "text");
+                } else {
+                    Input.attr("type", "password");
+                }
+            });
+            <!-- $('.modal').on('hidden.bs.modal', function(e) { -->
+            <!-- $(".modal-body input").val(""); -->
+            <!-- }); -->
+        });
+        <!-- $('.input-group.date').datepicker({format: "dd.mm.yyyy"});  -->
+        $('#clockpicker1').clockpicker({
+            donetext: 'Done'
+        });
+        $('#clockpicker2').clockpicker({
+            donetext: 'Done',
+            placement: 'top'
+        });
+        $('#clockpicker3').clockpicker({
+            donetext: 'Done',
+            placement: 'top'
+        });
+        $('#clockpicker4').clockpicker({
+            donetext: 'Done',
+            placement: 'top'
+        });
+        $('#datepicker').datepicker({
+            uiLibrary: 'bootstrap',
+            placement: 'left'
+        });
+        <!-- $('#datepicker1').datepicker({ -->
+        <!-- uiLibrary: 'bootstrap' -->
+        <!-- }); -->
+        <!-- $('#datepicker2').datepicker({ -->
+        <!-- uiLibrary: 'bootstrap' -->
+        <!-- }); -->
+        <!-- $('#timepicker').mdtimepicker({ -->
+        <!-- readOnly: false, -->
+        <!-- timeFormat: 'hh:mm:ss', -->
+        <!-- format: 'hh:mm:ss' -->
+        <!-- }); -->
+        <!-- $('#timepicker1').mdtimepicker({ -->
+        <!-- readOnly: false, -->
+        <!-- timeFormat: 'hh:mm:ss', -->
+        <!-- format: 'hh:mm:ss' -->
+        <!-- }); -->
+        <!-- $('#timepicker2').mdtimepicker({ -->
+        <!-- readOnly: false, -->
+        <!-- timeFormat: 'hh:mm:ss', -->
+        <!-- format: 'hh:mm:ss' -->
+        <!-- }); -->
+        <!-- $('#timepicker3').mdtimepicker({ -->
+        <!-- readOnly: false, -->
+        <!-- timeFormat: 'hh:mm:ss', -->
+        <!-- format: 'hh:mm:ss' -->
+        <!-- }); -->
+
+        function replacevaluenullcheck() {
+            $("#value_to_replace_nullcheck").empty();
+            $("#label").show();
+            var selected_value = document.getElementById("nullchecksel").value;
+            console.log(selected_value);
+            if (selected_value == "Replace") {
+                $('#value_to_replace_nullcheck').show();
+                var selected = $("#columns1 option:selected");
+                console.log(selected);
+                var cols = [];
+                var message = "";
+                selected.each(function() {
+                    message = $(this).val();
+                    cols.push(message);
+                });
+                console.log(cols);
+                cols_global_nullcheck = cols;
+                console.log(cols.length);
+                for (var c = 0; c < (cols.length); c++) {
+                    $('#value_to_replace_nullcheck').append('<div><Input type="text" class="form-control fields" id="value_to_replace' + c + '"placeholder="Enter the value to replace for ' + cols[c] + '"/></div>');
+                }
+            } else {
+                $('#value_to_replace_nullcheck').hide();
+                $(".label").hide();
+            }
+        }
+
+        function replacevaluedateformat() {
+            $("#format_to_change_dateformat").empty();
+            var selected_value = document.getElementById("dateformatsel").value;
+            console.log(selected_value);
+            if (selected_value == "change format") {
+                $('#format_to_change_dateformat').show();
+                var selected = $("#columns2 option:selected");
+                console.log(selected);
+                var cols = [];
+                var message = "";
+                selected.each(function() {
+                    message = $(this).val();
+                    cols.push(message);
+                });
+                console.log(cols);
+                cols_global_dateformat = cols;
+                console.log(cols.length);
+                for (var c = 0; c < (cols.length); c++) {
+                    $('#format_to_change_dateformat').append('<div><Input type="text" class="form-control fields" id="format_to_change' + c + '"placeholder="Enter the value to replace for ' + cols[c] + '"/></div>');
+                }
+            } else {
+                $('#format_to_change_dateformat').hide();
+                $(".label").hide();
+            }
+        }
+
+        function dragEnter(ev) {
+            event.preventDefault();
+            return true;
+        }
+
+        function dragOver(ev) {
+            return false;
+        }
+
+        function srcdragging(event) {
+            $("#sourcediv").addClass("highlightborder");
+        }
+
+        function transformdragging(event) {
+            $("#transformdiv").addClass("highlightborder");
+        }
+
+        function targetdragging(event) {
+            $("#targetdiv").addClass("highlightborder");
+        }
+
+        function srcStart(ev) {
+            //debugger;
+            console.log(ev);
+            if (ev.dataTransfer) {
+                <!-- debugger; -->
+                console.log("ev.datatransfer");
+                ev.dataTransfer.effectAllowed = 'move';
+                ev.dataTransfer.setData("Text", ev.target.getAttribute('id'));
+                return true;
+            } else {
+                console.log("no datransfer");
+                return false;
+            }
+        }
+
+        function transformStart(ev) {
+            //debugger;
+            if (ev.dataTransfer) {
+                console.log("ev.datatransfer");
+                ev.dataTransfer.effectAllowed = 'move';
+                ev.dataTransfer.setData("Text", ev.target.getAttribute('id'));
+                return true;
+            } else {
+                console.log("no datransfer");
+                return false;
+            }
+        }
+
+        function targetStart(ev) {
+            //debugger;
+            if (ev.dataTransfer) {
+                console.log("ev.datatransfer");
+                ev.dataTransfer.effectAllowed = 'move';
+                ev.dataTransfer.setData("Text", ev.target.getAttribute('id'));
+                return true;
+            } else {
+                console.log("no datransfer");
+                return false;
+            }
+        }
+
+        var endpointOptions;
+        var jsp;
+        jsPlumb.ready(function() {
+            console.log("khajsdf");
+            jsp = jsPlumb.getInstance({
+                Container: wrapper
+            });
+            endpointOptions = {
+                isSource: true,
+                isTarget: true,
+                connector: "Flowchart",
+                connectorOverlays: [
+                    ["Arrow", {
+                        width: 10,
+                        height: 10,
+                        length: 15,
+                        location: 0.97,
+                        id: "arrow"
+                    }]
+                ],
+                connectorStyle: {
+                    lineWidth: 2.5,
+                    strokeStyle: '#004849'
+                },
+                beforeDrop: function(params) {
+                    debugger;
+                    console.log(params);
+                    console.log(params.sourceId);
+                    console.log(params.targetId);
+                    console.log(params.connection.id);
+                    //var src_check = "uuid*";
+                    var trg_check = "uuid*";
+                    //var trnfrm_check2 = "uuid*";
+                    //var trnfrm_check1 = "uuid*";
+                    <!-- if (((params.sourceId).match(src_check) && (params.targetId).match(trnfrm_check1)) || ((params.sourceId).match(src_check) && (params.targetId).match(trnfrm_check2))) { -->
+                    <!-- $("#src_nullcheck,#upperdiv1").show(); -->
+                    <!-- $('#play').show(); -->
+                    <!-- } -->
+                    <!-- if (((params.sourceId).match(trnfrm_check1) && (params.targetId).match(trnfrm_check2)) || ((params.sourceId).match(trnfrm_check2) && (params.targetId).match(trnfrm_check1))) { -->
+                    <!-- $("#nullcheck_dateformat,#upperdiv2").show(); -->
+                    <!-- $('#play').show(); -->
+                    <!-- } -->
+                    <!-- if (((params.sourceId).match(trnfrm_check2) && (params.targetId).match(trg_check)) || ((params.sourceId).match(trnfrm_check1) && (params.targetId).match(trg_check))) { -->
+                    <!-- $("#dateformat_trg,#upperdiv3").show(); -->
+                    <!-- $('#play').show(); -->
+                    <!-- } -->
+                    if ((params.targetId).match(trg_check)) {
+                        $('#play').show();
+                    }
+                    var conn_id = params.connection.id
+                    console.log(conn_id)
+                    var config = {
+                        from: params.sourceId,
+                        to: params.targetId
+                    }
+                    finalconfig = {
+                        connectionid: conn_id,
+                        configuration: config
+                    }
+                    console.log(finalconfig);
+                    conn_arr.push(finalconfig);
+                    console.log(conn_arr);
+                    conn_arr_br = conn_arr;
+                    conn_obj["Connection"] = conn_arr;
+                    console.log(JSON.stringify(conn_obj));
+                    return true;
+                    //confirm("Connect " + params.sourceId + " to " + params.targetId + "?");
+                },
+                scope: "blueline",
+                maxConnections: 1,
+                dragAllowedWhenFull: false
+            }
+        });
+
+        function srcDrop(ev) {
+            debugger;
+            <!-- data = [{ -->
+            <!-- "column_name": "id", -->
+            <!-- "type": "INT" -->
+            <!-- }, { -->
+            <!-- "column_name": "first_name", -->
+            <!-- "type": "VARCHAR" -->
+            <!-- }, { -->
+            <!-- "column_name": "last_name", -->
+            <!-- "type": "VARCHAR" -->
+            <!-- }, { -->
+            <!-- "column_name": "email", -->
+            <!-- "type": "VARCHAR" -->
+            <!-- }, { -->
+            <!-- "column_name": "gender", -->
+            <!-- "type": "VARCHAR" -->
+            <!-- }, { -->
+            <!-- "column_name": "date", -->
+            <!-- "type": "DATETIME" -->
+            <!-- }] -->
+            console.log(data);
+            console.log("srcccc");
+            console.log(ev);
+            if (ev.target.className == "item highlightborder" || "item") {
+                var src = ev.dataTransfer.getData("Text");
+                console.log(src);
+                if (src == "mysql") {
+                    $(".drag").remove();
+                    $("#sourcediv").removeClass("highlightborder");
+                    if (src != "") {
+                        var s = [];
+                        var hexDigits = "0123456789abcdef";
+                        for (var i = 0; i < 3; i++) {
+                            s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1);
+                        }
+                        var uuid = s.join("");
+                        console.log(s);
+                        console.log(hexDigits);
+                        console.log(uuid);
+                        var nodeCopy = document.getElementById(src).cloneNode(true);
+                        nodeCopy.removeAttribute("Id");
+                        nodeCopy.removeAttribute("draggable");
+                        nodeCopy.className = "source";
+                        nodeCopy.setAttribute("id", "uuid" + uuid + "");
+                        console.log(nodeCopy);
+                        console.log(nodeCopy.getAttribute('id'));
+                        var id = nodeCopy.getAttribute('id');
+                        var li = document.createElement("i");
+                        li.setAttribute('class', "fa fa-cog");
+                        li.setAttribute('id', "configmysql" + sc + "");
+                        nodeCopy.appendChild(li);
+                        ev.target.appendChild(nodeCopy);
+                        ev.stopPropagation();
+                        src_id = id;
+                        src_type = src;
+                        var e1 = jsp.addEndpoint($("#" + id), {
+                            anchor: "RightMiddle"
+                        }, endpointOptions);
+                        jsp.draggable($("#" + id));
+                        i++;
+                        $('#mysqlconfigsave').click(function() {
+                            debugger;
+                            mysqlconfigdetails = {
+                                host: document.getElementById("hostmysql").value,
+                                port: document.getElementById("portmysql").value,
+                                username: document.getElementById("usernamemysql").value,
+                                password: document.getElementById("passwordmysql").value,
+                                databasename: document.getElementById("databasenamemysql").value,
+                                tablename: document.getElementById("tablenamemysql").value,
+                                query: document.getElementById("querymysql").value,
+                                maxconnection: document.getElementById("connectionsmysql").value,
+                            }
+                            console.log(mysqlconfigdetails);
+                            mysqldata = {
+                                id: src_id,
+                                type: src_type,
+                                configuration: mysqlconfigdetails
+                            }
+                            console.log(JSON.stringify(mysqldata));
+                            srcdata.push(mysqldata);
+                            console.log(JSON.stringify(srcdata));
+                            finaldata_src["source"] = srcdata;
+                            console.log(JSON.stringify(finaldata_src));
+                        });
+                        jsp.bind('click', function(e1, e) {
+                            debugger;
+                            console.log(e1.id);
+                            console.log(e);
+                            Swal.fire({
+                                title: 'Delete Connection ?',
+                                text: '',
+                                type: 'warning',
+                                showCancelButton: true,
+                                confirmButtonClass: "btn btn-md btn-primary",
+                                confirmButtonText: "Yes",
+                                cancelButtonText: "No",
+                                // closeOnConfirm: true,
+                                // closeOnCancel: true
+                            }).then((result) => {
+                                debugger;
+                                if (result.value) {
+                                    console.log(e1);
+                                    console.log(e1.id);
+                                    for (var d = 0; d < conn_arr.length; d++) {
+                                        if (conn_arr[d].connectionid == e1.id)
+                                            conn_arr.splice(d, 1);
+                                    }
+                                    console.log(conn_arr);
+                                    jsp.detach(e1);
+                                }
+                            });
+                        });
+                    }
+                    $("#configmysql" + sc + "").click(function() {
+                        $('#mysqlConfig').modal('show');
+                    });
+                    sc++;
+                } else if (src == "oracle") {
+                    $(".drag").remove();
+                    $("#sourcediv").removeClass("highlightborder");
+                    if (src != "") {
+                        var s = [];
+                        var hexDigits = "0123456789abcdef";
+                        for (var i = 0; i < 3; i++) {
+                            s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1);
+                        }
+                        var uuid = s.join("");
+                        console.log(s);
+                        console.log(hexDigits);
+                        console.log(uuid);
+                        var nodeCopy = document.getElementById(src).cloneNode(true);
+                        nodeCopy.removeAttribute("Id");
+                        nodeCopy.removeAttribute("draggable");
+                        nodeCopy.className = "source";
+                        nodeCopy.setAttribute("id", "uuid" + uuid + "");
+                        console.log(nodeCopy);
+                        console.log(nodeCopy.getAttribute('id'));
+                        var id = nodeCopy.getAttribute('id');
+                        var li = document.createElement("i");
+                        li.setAttribute('class', "fa fa-cog");
+                        li.setAttribute('id', "configoracle" + sc1 + "");
+                        nodeCopy.appendChild(li);
+                        ev.target.appendChild(nodeCopy);
+                        ev.stopPropagation();
+                        src_id = id;
+                        src_type = src;
+                        var e1 = jsp.addEndpoint($("#" + id), {
+                            anchor: "RightMiddle"
+                        }, endpointOptions);
+                        jsp.draggable($("#" + id));
+                        i++;
+                        $('#oracleconfigsave').click(function() {
+                            debugger;
+                            console.log(JSON.stringify(oracledata));
+                            srcdata.push(oracledata);
+                            console.log(JSON.stringify(srcdata));
+                            finaldata_src["source"] = srcdata;
+                            console.log(JSON.stringify(finaldata_src));
+                        });
+                        jsp.bind('click', function(e1, e) {
+                            debugger;
+                            console.log(e1.id);
+                            console.log(e);
+                            Swal.fire({
+                                title: 'Delete Connection ?',
+                                text: '',
+                                type: 'warning',
+                                showCancelButton: true,
+                                confirmButtonClass: "btn btn-md btn-primary",
+                                confirmButtonText: "Yes",
+                                cancelButtonText: "No",
+                                // closeOnConfirm: true,
+                                // closeOnCancel: true
+                            }).then((result) => {
+                                debugger;
+                                if (result.value) {
+                                    console.log(e1);
+                                    console.log(e1.id);
+                                    for (var d = 0; d < conn_arr.length; d++) {
+                                        if (conn_arr[d].connectionid == e1.id)
+                                            conn_arr.splice(d, 1);
+                                    }
+                                    console.log(conn_arr);
+                                    jsp.detach(e1);
+                                }
+                            });
+                        });
+                    }
+                    $("#configoracle" + sc1 + "").click(function() {
+                        $('#oracleConfig').modal('show');
+                    });
+                    sc1++;
+
+                } else {
+                    $("#transformdiv").removeClass("highlightborder");
+                    $("#targetdiv").removeClass("highlightborder");
+                    Swal.fire("Warning!", "Drop Only Sources !", "warning")
+                }
+                $(".source").on("dblclick", function(e) {
+                    debugger;
+                    if ($(e.target).is('i')) {
+                        e.preventDefault();
+                        return;
+                    }
+                    Swal.fire({
+                        title: 'Remove Source ?',
+                        text: '',
+                        type: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: "Yes",
+                        cancelButtonText: "No",
+                        //closeOnConfirm: true,
+                        // closeOnCancel: true
+                    }).then((result) => {
+                        if (result.value) {
+                            console.log(e);
+                            console.log(e.target.id);
+                            var div = e.target.id;
+                            jsp.removeAllEndpoints(div);
+                            $("#" + div).remove();
+                            jsp.repaintEverything();
+                        }
+                    })
+                });
+            }
+        }
+
+        function transformDrop(ev) {
+            debugger;
+            console.log("transformmmmmmm");
+            console.log(ev);
+            if (ev.target.className == "item highlightborder" || "item") {
+                var trnfm = ev.dataTransfer.getData("Text");
+                console.log(trnfm);
+
+                if (trnfm == "nullcheck") {
+                    $(".drag1").remove();
+                    $("#transformdiv").removeClass("highlightborder");
+                    if (trnfm != "") {
+                        var s = [];
+                        var hexDigits = "0123456789abcdef";
+                        for (var i = 0; i < 3; i++) {
+                            s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1);
+                        }
+                        var uuid = s.join("");
+                        console.log(s);
+                        console.log(hexDigits);
+                        console.log(uuid);
+                        var nodeCopy = document.getElementById(trnfm).cloneNode(true);
+                        nodeCopy.removeAttribute("Id");
+                        //nodeCopy.removeAttribute("draggable");
+                        nodeCopy.className = "transform";
+                        nodeCopy.setAttribute("id", "uuid" + uuid + "");
+                        for (var z = 0; z < conn_arr_br.length; z++) {
+                            var regex = "Target[0-9]";
+                            var check = (conn_arr_br[z].configuration.to);
+                            console.log(check);
+                            if ((check.match(regex))) {
+                                event.target.appendChild(document.createElement("br"));
+                                conn_arr_br.length = 0;
+                            }
+                        }
+                        if ($('ul#transformdiv li').length % 2 == 0) {
+                            event.target.appendChild(document.createElement("br"));
+                        }
+                        console.log(nodeCopy);
+                        console.log(nodeCopy.getAttribute('id'));
+                        var id = nodeCopy.getAttribute('id');
+                        var li = document.createElement("i");
+                        li.setAttribute('class', "fa fa-cog");
+                        li.setAttribute('id', "nullcheckconfigtrans" + trc + "");
+                        nodeCopy.appendChild(li);
+                        ev.target.appendChild(nodeCopy);
+                        ev.stopPropagation();
+                        for (var b = 0; b < data.length; b++) {
+                            $("#columns1").append($('<option title="' + data[b].type + '" value="' + data[b].column_name + '">' + data[b].column_name + '</option>'));
+                        }
+                        $('#columns1').multiselect();
+                        var e2 = jsp.addEndpoint($("#" + id), {
+                            anchor: "LeftMiddle"
+                        }, endpointOptions);
+                        var e3 = jsp.addEndpoint($("#" + id), {
+                            anchor: "RightMiddle"
+                        }, endpointOptions);
+                        jsp.draggable($("#" + id));
+                        j++;
+                        $('#nullcheckconfigsave').click(function() {
+                            debugger;
+                            console.log(cols_global_nullcheck);
+                            console.log(cols_global_nullcheck.length);
+                            nullcheckoption = {
+                                type: document.getElementById("nullchecksel").value,
+                                configuration: configuration_nullcheck
+                            }
+                            for (a = 0; a < cols_global_nullcheck.length; a++) {
+                                configuration_nullcheck[cols_global_nullcheck[a]] = document.getElementById("value_to_replace" + a + "").value;
+                            }
+                            console.log(configuration);
+                            console.log(nullcheckoption);
+                            nullcheckoption1["option"] = nullcheckoption;
+                            nullcheckoption1["columns"] = cols_global_nullcheck;
+                            nullcheckconfigdetails = {
+                                id: id,
+                                type: trnfm,
+                                configuration: nullcheckoption1,
+                            }
+                            console.log(JSON.stringify(nullcheckconfigdetails));
+                            trns_arr.push(nullcheckconfigdetails);
+                        });
+                    }
+                    $("#nullcheckconfigtrans" + trc + "").click(function() {
+                        $('#nullcheckconfig').modal('show');
+                    });
+                    trc++;
+
+                } else if (trnfm == "dateformat") {
+                    $(".drag1").remove();
+                    $("#transformdiv").removeClass("highlightborder");
+                    if (trnfm != "") {
+                        var s = [];
+                        var hexDigits = "0123456789abcdef";
+                        for (var i = 0; i < 3; i++) {
+                            s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1);
+                        }
+                        var uuid = s.join("");
+                        console.log(s);
+                        console.log(hexDigits);
+                        console.log(uuid);
+                        var nodeCopy = document.getElementById(trnfm).cloneNode(true);
+                        nodeCopy.removeAttribute("Id");
+                        //nodeCopy.removeAttribute("draggable");
+                        nodeCopy.className = "transform";
+                        nodeCopy.setAttribute("id", "uuid" + uuid + "");
+                        if ($('ul#transformdiv li').length % 2 == 0) {
+                            event.target.appendChild(document.createElement("br"));
+                        }
+                        console.log(nodeCopy);
+                        console.log(nodeCopy.getAttribute('id'));
+                        var id = nodeCopy.getAttribute('id');
+                        var li = document.createElement("i");
+                        li.setAttribute('class', "fa fa-cog");
+                        li.setAttribute('id', "dateconfigtrans" + trc1 + "");
+                        for (var z = 0; z < conn_arr_br.length; z++) {
+                            var regex = "Target[0-9]";
+                            var check = (conn_arr_br[z].configuration.to);
+                            console.log(check);
+                            if ((check.match(regex))) {
+                                event.target.appendChild(document.createElement("br"));
+                                conn_arr_br.length = 0;
+                            }
+                        }
+                        nodeCopy.appendChild(li);
+                        ev.target.appendChild(nodeCopy);
+                        ev.stopPropagation();
+                        for (var c = 0; c < data.length; c++) {
+                            $("#columns2").append($('<option title="' + data[c].type + '" value="' + data[c].column_name + '">' + data[c].column_name + '</option>'));
+                        }
+                        $('#columns2').multiselect();
+                        var e4 = jsp.addEndpoint($("#" + id), {
+                            anchor: "LeftMiddle"
+                        }, endpointOptions);
+                        var e5 = jsp.addEndpoint($("#" + id), {
+                            anchor: "RightMiddle"
+                        }, endpointOptions);
+                        jsp.draggable($("#" + id));
+                        j1++;
+                        $('#dateformatconfigsave').click(function() {
+                            debugger;
+
+                            console.log(cols_global_dateformat);
+                            console.log(cols_global_dateformat.length);
+                            dateformatoption = {
+                                type: document.getElementById("dateformatsel").value,
+                                configuration: configuration_dateformat
+                            }
+                            for (a = 0; a < cols_global_dateformat.length; a++) {
+                                configuration_dateformat[cols_global_dateformat[a]] = document.getElementById("format_to_change" + a + "").value;
+                            }
+                            console.log(configuration);
+                            console.log(dateformatoption);
+                            dateformatoption1["option"] = dateformatoption;
+                            dateformatoption1["columns"] = cols_global_dateformat;
+                            dateformatconfigdetails = {
+                                id: id,
+                                type: trnfm,
+                                configuration: dateformatoption1,
+                            }
+                            console.log(JSON.stringify(dateformatconfigdetails));
+                            trns_arr.push(dateformatconfigdetails);
+                        });
+                    }
+                    $("#dateconfigtrans" + trc1 + "").click(function() {
+                        $('#dateformatconfig').modal('show');
+                    });
+                    trc1++;
+                } else {
+                    $("#sourcediv").removeClass("highlightborder");
+                    $("#targetdiv").removeClass("highlightborder");
+                    Swal.fire("Warning!", "Drop Only Transformations !", "warning")
+                }
+
+                $(".transform").on("dblclick", function(e) {
+                    debugger;
+                    if ($(e.target).is('i')) {
+                        e.preventDefault();
+                        return;
+                    }
+                    Swal.fire({
+                        title: 'Remove Transform ?',
+                        text: '',
+                        type: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: "Yes",
+                        cancelButtonText: "No",
+                        // closeOnConfirm: true,
+                        // closeOnCancel: true
+                    }).then((result) => {
+                        if (result.value) {
+                            console.log(e);
+                            console.log(e.target.id);
+                            var div = e.target.id;
+                            jsp.removeAllEndpoints(div);
+                            $("#" + div).remove();
+                            jsp.repaintEverything();
+                        }
+                    })
+                });
+
+            }
+        }
+
+        function targetDrop(ev) {
+            debugger;
+            console.log("trgggggg");
+            console.log(ev);
+            if (ev.target.className == "item highlightborder" || "item") {
+                var trg = ev.dataTransfer.getData("Text");
+                console.log(trg);
+                if (trg == "HDFS") {
+                    $(".drag2").remove();
+                    $("#targetdiv").removeClass("highlightborder");
+                    if (trg != "") {
+                        var s = [];
+                        var hexDigits = "0123456789abcdef";
+                        for (var i = 0; i < 3; i++) {
+                            s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1);
+                        }
+                        var uuid = s.join("");
+                        console.log(s);
+                        console.log(hexDigits);
+                        console.log(uuid);
+                        var nodeCopy = document.getElementById(trg).cloneNode(true);
+                        nodeCopy.removeAttribute("Id");
+                        //nodeCopy.removeAttribute("draggable");
+                        nodeCopy.className = "target";
+                        nodeCopy.setAttribute("id", "uuid" + uuid + "");
+                        $(nodeCopy).draggable({
+                            containment: "targetdiv"
+                        });
+                        console.log(nodeCopy);
+                        console.log(nodeCopy.getAttribute('id'));
+                        var id = nodeCopy.getAttribute('id');
+                        var li = document.createElement("i");
+                        li.setAttribute('class', "fa fa-cog");
+                        li.setAttribute('id', "configtrg" + tc + "");
+                        nodeCopy.appendChild(li);
+                        ev.target.appendChild(nodeCopy);
+                        ev.stopPropagation();
+                        var e6 = jsp.addEndpoint($("#" + id), {
+                            anchor: "LeftMiddle"
+                        }, endpointOptions);
+                        jsp.draggable($("#" + id));
+                        k++;
+                        $('#trgconfigsave').click(function() {;
+                            debugger;
+                            trgconfigdetails = {
+                                host: document.getElementById("hosttrg").value,
+                                port: document.getElementById("porttrg").value,
+                                directory: document.getElementById("directorytrg").value,
+                                username: document.getElementById("usernametrg").value,
+                                password: document.getElementById("passwordtrg").value,
+                                maxconnection: document.getElementById("connectionstrg").value,
+                            }
+                            console.log(trgconfigdetails);
+                            Targetdata = {
+                                id: id,
+                                type: trg,
+                                configuration: trgconfigdetails
+                            }
+                            console.log(JSON.stringify(Targetdata));
+                            trgdata.push(Targetdata);
+                            console.log(trgdata);
+                            finaldata_trg["target"] = trgdata;
+                            console.log(JSON.stringify(finaldata_trg));
+                        });
+
+                    }
+                    $("#configtrg" + tc + "").click(function() {
+                        $('#targetConfig').modal('show');
+                    });
+                    tc++;
+                } else {
+                    $("#sourcediv").removeClass("highlightborder");
+                    $("#transformdiv").removeClass("highlightborder");
+                    Swal.fire("Warning!", "Drop Only Targets !", "warning");
+                }
+            }
+
+            $(".target").on("dblclick", function(e) {
+                debugger;
+                if ($(e.target).is('i')) {
+                    e.preventDefault();
+                    return;
+                }
+                Swal.fire({
+                    title: 'Remove Target ?',
+                    text: '',
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: "Yes",
+                    cancelButtonText: "No",
+                    //closeOnConfirm: true,
+                    // closeOnCancel: true
+                }).then((result) => {
+                    if (result.value) {
+                        console.log(e);
+                        console.log(e.target.id);
+                        var div = e.target.id;
+                        jsp.removeAllEndpoints(div);
+                        $("#" + div).remove();
+                        jsp.repaintEverything();
+                    }
+                })
+
+            });
+        }
+
+        function startWorkflow() {
+            <!-- $('#start_workflow').on("click", function() { -->
+            debugger;
+            finaljson["source"] = srcdata;
+            finaljson["target"] = trgdata;
+            finaljson["connection"] = conn_arr;
+            finaljson["transformation"] = trns_arr;
+            console.log(JSON.stringify(finaljson));
+            <!-- var yaml = json2yaml(finaljson); -->
+            <!-- console.log(yaml); -->
+
+            $.ajax({
+                type: 'POST',
+                url: 'http://10.60.24.111:8082/IngestionFramework/FlowExecution',
+                data: JSON.stringify(finaljson),
+                beforeSend: function() {
+                    $("#ajax_loader1").show();
+                },
+                success: function(msg) {
+                    console.log(msg);
+                    if (msg.includes("FAILURE")) {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: '',
+                            type: 'error',
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: "Ok",
+                            //closeOnConfirm: true
+                        });
+                    }
+                    var test2 = (JSON.parse(msg));
+                    var test3 = test2.connectionidinfo
+                    console.log(test2.connectionidinfo);
+                    for (var k = 0; k < test2.length; k++) {
+                        console.log(test2[k].connectionStatus.aggregateSnapshot);
+                        if (test2[k].connectionStatus.aggregateSnapshot.sourceName == "mysql" && test2[k].connectionStatus.aggregateSnapshot.destinationName == "nullcheck") {
+                            $("#src_nullcheck").html(
+                                '<span class="labels">BytesIn: ' + test2[k].connectionStatus.aggregateSnapshot.bytesIn + '</span><br/><span class="labels">Input: ' + test2[k].connectionStatus.aggregateSnapshot.input + '</span><br/><span class="labels">BytesOut: ' + test2[k].connectionStatus.aggregateSnapshot.bytesOut + '</span><br/><span class="labels">Output: ' + test2[k].connectionStatus.aggregateSnapshot.output + '</span><br/><span class="labels">BytesQueued: ' + test2[k].connectionStatus.aggregateSnapshot.bytesQueued + '</span><br/>'
+                            );
+                            $('#src_nullcheck').show();
+                            $('#upperdiv1').show();
+                        }
+                        if (test2[k].connectionStatus.aggregateSnapshot.sourceName == "mysql" && test2[k].connectionStatus.aggregateSnapshot.destinationName == "dateformat") {
+                            $("#src_nullcheck").html(
+                                '<span class="labels">BytesIn: ' + test2[k].connectionStatus.aggregateSnapshot.bytesIn + '</span><br/><span class="labels">Input: ' + test2[k].connectionStatus.aggregateSnapshot.input + '</span><br/><span class="labels">BytesOut: ' + test2[k].connectionStatus.aggregateSnapshot.bytesOut + '</span><br/><span class="labels">Output: ' + test2[k].connectionStatus.aggregateSnapshot.output + '</span><br/><span class="labels">BytesQueued: ' + test2[k].connectionStatus.aggregateSnapshot.bytesQueued + '</span><br/>'
+                            );
+                            $('#src_nullcheck').show();
+                            $('#upperdiv1').show();
+                        }
+                        if (test2[k].connectionStatus.aggregateSnapshot.sourceName == "nullcheck" && test2[k].connectionStatus.aggregateSnapshot.destinationName == "dateformat") {
+                            $("#nullcheck_dateformat").html(
+                                '<span class="labels">BytesIn: ' + test2[k].connectionStatus.aggregateSnapshot.bytesIn + '</span><br/><span class="labels">Input: ' + test2[k].connectionStatus.aggregateSnapshot.input + '</span><br/><span class="labels">BytesOut: ' + test2[k].connectionStatus.aggregateSnapshot.bytesOut + '</span><br/><span class="labels">Output: ' + test2[k].connectionStatus.aggregateSnapshot.output + '</span><br/><span class="labels">BytesQueued: ' + test2[k].connectionStatus.aggregateSnapshot.bytesQueued + '</span><br/>'
+                            );
+                            $('#nullcheck_dateformat').show();
+                            $('#upperdiv2').show();
+                        }
+                        if (test2[k].connectionStatus.aggregateSnapshot.sourceName == "dateformat" && test2[k].connectionStatus.aggregateSnapshot.destinationName == "nullcheck") {
+                            $("#nullcheck_dateformat").html(
+                                '<span class="labels">BytesIn: ' + test1[k].connectionStatus.aggregateSnapshot.bytesIn + '</span><br/><span class="labels">Input: ' + test2[k].connectionStatus.aggregateSnapshot.input + '</span><br/><span class="labels">BytesOut: ' + test2[k].connectionStatus.aggregateSnapshot.bytesOut + '</span><br/><span class="labels">Output: ' + test2[k].connectionStatus.aggregateSnapshot.output + '</span><br/><span class="labels">BytesQueued: ' + test2[k].connectionStatus.aggregateSnapshot.bytesQueued + '</span><br/>'
+                            );
+                            $('#nullcheck_dateformat').show();
+                            $('#upperdiv2').show();
+                        }
+                        if (test2[k].connectionStatus.aggregateSnapshot.sourceName == "dateformat" && test2[k].connectionStatus.aggregateSnapshot.destinationName == "HDFS") {
+                            $("#dateformat_trg").html(
+                                '<span class="labels">BytesIn: ' + test2[k].connectionStatus.aggregateSnapshot.bytesIn + '</span><br/><span class="labels">Input: ' + test2[k].connectionStatus.aggregateSnapshot.input + '</span><br/><span class="labels">BytesOut: ' + test2[k].connectionStatus.aggregateSnapshot.bytesOut + '</span><br/><span class="labels">Output: ' + test2[k].connectionStatus.aggregateSnapshot.output + '</span><br/><span class="labels">BytesQueued: ' + test2[k].connectionStatus.aggregateSnapshot.bytesQueued + '</span><br/>'
+                            );
+                            $('#dateformat_trg').show();
+                            $('#upperdiv3').show();
+                        }
+                        if (test2[k].connectionStatus.aggregateSnapshot.sourceName == "nullcheck" && test2[k].connectionStatus.aggregateSnapshot.destinationName == "HDFS") {
+                            $("#dateformat_trg").html(
+                                '<span class="labels">BytesIn: ' + test2[k].connectionStatus.aggregateSnapshot.bytesIn + '</span><br/><span class="labels">Input: ' + test2[k].connectionStatus.aggregateSnapshot.input + '</span><br/><span class="labels">BytesOut: ' + test2[k].connectionStatus.aggregateSnapshot.bytesOut + '</span><br/><span class="labels">Output: ' + test2[k].connectionStatus.aggregateSnapshot.output + '</span><br/><span class="labels">BytesQueued: ' + test2[k].connectionStatus.aggregateSnapshot.bytesQueued + '</span><br/>'
+                            );
+                            $('#dateformat_trg').show();
+                            $('#upperdiv3').show();
+                        }
+                    }
+                },
+
+                <!-- $.ajax({ -->
+                <!-- type: 'GET', -->
+                <!-- url: 'http://10.60.24.111:8082/IngestionFramework/Get_ConnectionIds_Info ', -->
+                <!-- <!-- data: msg, --> -->
+                <!-- success: function(data) { -->
+                <!-- console.log(data); -->
+                <!-- }, -->
+                <!-- failure: function(response) { -->
+                <!-- console.log(response); -->
+                <!-- } -->
+                <!-- }); -->
+
+                <!-- } 
+                <!-- else { --> 
+                <!-- Swal.fire({ -->
+                <!-- title: 'Success!', -->
+                <!-- text: '', -->
+                <!-- type: 'success', -->
+                <!-- confirmButtonColor: '#3085d6', -->
+                <!-- confirmButtonText: "Ok", -->
+                <!-- // closeOnConfirm: true -->
+                <!-- }); -->
+                <!-- } -->
+                <!-- }, -->
+                complete: function() {
+                    ajaxCall2();
+                    $("#ajax_loader1").hide();
+                    <!-- setInterval(sendRequest, 5000); -->
+                },
+            });
+        }
+        <!-- },5000); -->
+        <!-- setInterval( -->
+        function ajaxCall2() {
+            $.ajax({
+                type: 'GET',
+                url: 'http://10.60.24.111:8082/IngestionFramework/Get_ConnectionIds_Info ',
+                success: function(data) {
+                    console.log(data);
+                    var test = (JSON.parse(data));
+                    var test1 = test.connectionidinfo
+                    console.log(test.connectionidinfo);
+                    //console.log(test);
+                    for (var k = 0; k < test1.length; k++) {
+                        console.log(test1[k].connectionStatus.aggregateSnapshot);
+                        if (test1[k].connectionStatus.aggregateSnapshot.sourceName == "mysql" && test1[k].connectionStatus.aggregateSnapshot.destinationName == "nullcheck") {
+                            $("#src_nullcheck").html(
+                                '<span class="labels">BytesIn: ' + test1[k].connectionStatus.aggregateSnapshot.bytesIn + '</span><br/><span class="labels">Input: ' + test1[k].connectionStatus.aggregateSnapshot.input + '</span><br/><span class="labels">BytesOut: ' + test1[k].connectionStatus.aggregateSnapshot.bytesOut + '</span><br/><span class="labels">Output: ' + test1[k].connectionStatus.aggregateSnapshot.output + '</span><br/><span class="labels">BytesQueued: ' + test1[k].connectionStatus.aggregateSnapshot.bytesQueued + '</span><br/>'
+                            );
+                            $('#src_nullcheck').show();
+                            $('#upperdiv1').show();
+                        }
+                        if (test1[k].connectionStatus.aggregateSnapshot.sourceName == "mysql" && test1[k].connectionStatus.aggregateSnapshot.destinationName == "dateformat") {
+                            $("#src_nullcheck").html(
+                                '<span class="labels">BytesIn: ' + test1[k].connectionStatus.aggregateSnapshot.bytesIn + '</span><br/><span class="labels">Input: ' + test1[k].connectionStatus.aggregateSnapshot.input + '</span><br/><span class="labels">BytesOut: ' + test1[k].connectionStatus.aggregateSnapshot.bytesOut + '</span><br/><span class="labels">Output: ' + test1[k].connectionStatus.aggregateSnapshot.output + '</span><br/><span class="labels">BytesQueued: ' + test1[k].connectionStatus.aggregateSnapshot.bytesQueued + '</span><br/>'
+                            );
+                            $('#src_nullcheck').show();
+                            $('#upperdiv1').show();
+                        }
+                        if (test1[k].connectionStatus.aggregateSnapshot.sourceName == "nullcheck" && test1[k].connectionStatus.aggregateSnapshot.destinationName == "dateformat") {
+                            $("#nullcheck_dateformat").html(
+                                '<span class="labels">BytesIn: ' + test1[k].connectionStatus.aggregateSnapshot.bytesIn + '</span><br/><span class="labels">Input: ' + test1[k].connectionStatus.aggregateSnapshot.input + '</span><br/><span class="labels">BytesOut: ' + test1[k].connectionStatus.aggregateSnapshot.bytesOut + '</span><br/><span class="labels">Output: ' + test1[k].connectionStatus.aggregateSnapshot.output + '</span><br/><span class="labels">BytesQueued: ' + test1[k].connectionStatus.aggregateSnapshot.bytesQueued + '</span><br/>'
+                            );
+                            $('#nullcheck_dateformat').show();
+                            $('#upperdiv2').show();
+                        }
+                        if (test1[k].connectionStatus.aggregateSnapshot.sourceName == "dateformat" && test1[k].connectionStatus.aggregateSnapshot.destinationName == "nullcheck") {
+                            $("#nullcheck_dateformat").html(
+                                '<span class="labels">BytesIn: ' + test1[k].connectionStatus.aggregateSnapshot.bytesIn + '</span><br/><span class="labels">Input: ' + test1[k].connectionStatus.aggregateSnapshot.input + '</span><br/><span class="labels">BytesOut: ' + test1[k].connectionStatus.aggregateSnapshot.bytesOut + '</span><br/><span class="labels">Output: ' + test1[k].connectionStatus.aggregateSnapshot.output + '</span><br/><span class="labels">BytesQueued: ' + test1[k].connectionStatus.aggregateSnapshot.bytesQueued + '</span><br/>'
+                            );
+                            $('#nullcheck_dateformat').show();
+                            $('#upperdiv2').show();
+                        }
+                        if (test1[k].connectionStatus.aggregateSnapshot.sourceName == "dateformat" && test1[k].connectionStatus.aggregateSnapshot.destinationName == "HDFS") {
+                            $("#dateformat_trg").html(
+                                '<span class="labels">BytesIn: ' + test1[k].connectionStatus.aggregateSnapshot.bytesIn + '</span><br/><span class="labels">Input: ' + test1[k].connectionStatus.aggregateSnapshot.input + '</span><br/><span class="labels">BytesOut: ' + test1[k].connectionStatus.aggregateSnapshot.bytesOut + '</span><br/><span class="labels">Output: ' + test1[k].connectionStatus.aggregateSnapshot.output + '</span><br/><span class="labels">BytesQueued: ' + test1[k].connectionStatus.aggregateSnapshot.bytesQueued + '</span><br/>'
+                            );
+                            $('#dateformat_trg').show();
+                            $('#upperdiv3').show();
+                        }
+                        if (test1[k].connectionStatus.aggregateSnapshot.sourceName == "nullcheck" && test1[k].connectionStatus.aggregateSnapshot.destinationName == "HDFS") {
+                            $("#dateformat_trg").html(
+                                '<span class="labels">BytesIn: ' + test1[k].connectionStatus.aggregateSnapshot.bytesIn + '</span><br/><span class="labels">Input: ' + test1[k].connectionStatus.aggregateSnapshot.input + '</span><br/><span class="labels">BytesOut: ' + test1[k].connectionStatus.aggregateSnapshot.bytesOut + '</span><br/><span class="labels">Output: ' + test1[k].connectionStatus.aggregateSnapshot.output + '</span><br/><span class="labels">BytesQueued: ' + test1[k].connectionStatus.aggregateSnapshot.bytesQueued + '</span><br/>'
+                            );
+                            $('#dateformat_trg').show();
+                            $('#upperdiv3').show();
+                        }
+                    }
+                },
+                complete: function() {
+                    $("#ajax_loader1").hide();
+                    setInterval(ajaxCall2, 8000);
+                },
+                failure: function(response) {
+                    console.log(response);
+                }
+            });
+        }
+        <!-- ,5000); -->
+
+        $('#clear').click(function() {
+            debugger;
+            location.reload();
+        });
+
+        $('#test_conn_mysql').on("click", function() {
+            debugger;
+            mysqlconfigdetails = {
+                host: document.getElementById("hostmysql").value,
+                port: document.getElementById("portmysql").value,
+                username: document.getElementById("usernamemysql").value,
+                password: document.getElementById("passwordmysql").value,
+                databasename: document.getElementById("databasenamemysql").value,
+                tablename: document.getElementById("tablenamemysql").value,
+                query: document.getElementById("querymysql").value,
+                maxconnection: document.getElementById("connectionsmysql").value,
+            }
+            console.log(mysqlconfigdetails);
+            mysqldata = {
+                sourceid: src_id,
+                source_type: src_type,
+                configuration: mysqlconfigdetails
+            }
+            console.log(JSON.stringify(mysqldata));
+            $.ajax({
+                type: 'POST',
+                url: 'http://10.60.24.111:8082/IngestionFramework/ConnectionCheck',
+                data: JSON.stringify(mysqldata),
+                beforeSend: function() {
+                    $("#ajax_loader").show();
+                },
+                success: function(msg) {
+                    console.log(msg);
+                    var msg1 = JSON.parse(msg);
+                    if (msg1.connection == "SUCCESS") {
+                        $('#success_alert_mysql').show();
+                        document.getElementById("mysqlconfigsave").disabled = false;
+                        <!-- window.setTimeout(function() { -->
+                            <!-- $("#success_alert_mysql").fadeTo(500, 0).slideUp(500, function() { -->
+                                <!-- $(this).remove(); -->
+                            <!-- }); -->
+                        <!-- }, 1500); -->
+                        console.log(msg1.columns);
+                        data = msg1.columns;
+                    } else {
+                        $('#failure_alert_mysql').show();
+                        <!-- window.setTimeout(function() { -->
+                            <!-- $("#failure_alert_mysql").fadeTo(500, 0).slideUp(500, function() { -->
+                                <!-- $(this).remove(); -->
+                            <!-- }); -->
+                        <!-- }, 1500); -->
+                    }
+                },
+                complete: function() {
+                    $("#ajax_loader").hide();
+                },
+            });
+        });
+
+        $('#test_conn_oracle').on("click", function() {
+            debugger;
+            oracleconfigdetails = {
+                host: document.getElementById("hostoracle").value,
+                port: document.getElementById("portoracle").value,
+                username: document.getElementById("usernameoracle").value,
+                password: document.getElementById("passwordoracle").value,
+                databasename: document.getElementById("databasenameoracle").value,
+                tablename: document.getElementById("tablenameoracle").value,
+                maxconnection: document.getElementById("connectionsoracle").value,
+            }
+            console.log(oracleconfigdetails);
+            oracledata = {
+                id: src_id,
+                type: src_type,
+                configuration: oracleconfigdetails
+            }
+            console.log(JSON.stringify(oracledata));
+
+            $.ajax({
+                type: 'POST',
+                url: 'http://10.60.24.111:8082/IngestionFramework/ConnectionCheck',
+                data: JSON.stringify(oracledata),
+                beforeSend: function() {
+                    $("#ajax_loader").show();
+                },
+                success: function(msg) {
+                    console.log(msg);
+                    var msg1 = JSON.parse(msg);
+                    if (msg1.connection == "SUCCESS") {
+                        $('#success_alert_orc').show();
+                        document.getElementById("oracleconfigsave").disabled = false;
+                        <!-- window.setTimeout(function() { -->
+                            <!-- $("#success_alert_orc").fadeTo(500, 0).slideUp(500, function() { -->
+                                <!-- $(this).remove(); -->
+                            <!-- }); -->
+                        <!-- }, 1500); -->
+                        console.log(msg1.columns);
+                        data = msg1.columns;
+                    } else {
+                        $('#failure_alert_orc').show();
+                        <!-- window.setTimeout(function() { -->
+                            <!-- $("#failure_alert_orc").fadeTo(500, 0).slideUp(500, function() { -->
+                                <!-- $(this).remove(); -->
+                            <!-- }); -->
+                        <!-- }, 1500); -->
+                    }
+                },
+                complete: function() {
+                    $("#ajax_loader").hide();
+                },
+            });
+        });
+
+        $('#test_conn_trg').on("click", function() {
+            debugger;
+            $.ajax({
+                type: 'POST',
+                url: 'http://10.60.24.111:8082/IngestionFramework/ConnectionCheck',
+                data: JSON.stringify(Sourcedata),
+                beforeSend: function() {
+                    $("#ajax_loader").show();
+                },
+                success: function(msg) {
+                    console.log(msg);
+                },
+                complete: function() {
+                    $("#ajax_loader").hide();
+                }
+            });
+        });
+
+        function Option() {
+            debugger;
+            console.log("optionnnnn");
+            var frequency = (document.getElementById("job_occur_type")).value;
+            console.log(frequency);
+            if (frequency == "Daily") {
+                (document.getElementById("day")).disabled = false;
+                (document.getElementById("mon")).disabled = true;
+                (document.getElementById("tue")).disabled = true;
+                (document.getElementById("wed")).disabled = true;
+                (document.getElementById("thur")).disabled = true;
+                (document.getElementById("fri")).disabled = true;
+                (document.getElementById("sat")).disabled = true;
+                (document.getElementById("sun")).disabled = true;
+                (document.getElementById("week")).disabled = true;
+            } else if (frequency == "Weekly") {
+                (document.getElementById("day")).disabled = true;
+                (document.getElementById("mon")).disabled = false;
+                (document.getElementById("tue")).disabled = false;
+                (document.getElementById("wed")).disabled = false;
+                (document.getElementById("thur")).disabled = false;
+                (document.getElementById("fri")).disabled = false;
+                (document.getElementById("sat")).disabled = false;
+                (document.getElementById("sun")).disabled = false;
+                (document.getElementById("week")).disabled = false;
+            } else {
+                $("#daily").show();
+                $(".weekly").show();
+                $(".weekly *").prop('disabled', true);
+                $("#daily *").prop('disabled', true);
+            }
+        }
+        $("input:radio[name='daily_radio']").change(function() {
+
+            var radio = $("input:radio[name='daily_radio']:checked").val();
+            if (radio == "daily_radio_at") {
+                $("#daily_radio_at_div *").prop('disabled', false);
+                $("#daily_radio_occurs_div *").prop('disabled', true);
+            } else {
+                $("#daily_radio_occurs_div *").prop('disabled', false);
+                $("#daily_radio_at_div *").prop('disabled', true);
+            }
+        });
+
+        function scheduleOption() {
+            debugger;
+            var schedule = (document.getElementById("jobtype")).value;
+            console.log(schedule);
+            if (schedule == "Immediate") {
+                $("#whole_div *").prop('disabled', true);
+
+            } else if (schedule == "one Time") {
+                $("#whole_div *").prop('disabled', true);
+                $("#whole_div").css("background", "none");
+                $("#one_time *").prop('disabled', false);
+                $("#one_time").css("background", "none");
+                $("#recurring *").prop('disabled', true);
+            } else if (schedule == "Recurring") {
+                <!-- $('#datetimepicker1 .form-control').prop('disabled', true); -->
+                <!-- (document.getElementById("datetimepicker1")).disabled = true; -->
+                <!-- <!-- (document.getElementById("time")).disabled = true; --> -->
+                <!-- <!-- document.getElementById("time").style.backgroundColor = '#e9ecef'; --> -->
+                <!-- (document.getElementById("job_occur_type")).disabled = false; -->
+                <!-- (document.getElementById("mon")).disabled = true; -->
+                <!-- (document.getElementById("tue")).disabled = true; -->
+                <!-- (document.getElementById("wed")).disabled = true; -->
+                <!-- (document.getElementById("thur")).disabled = true; -->
+                <!-- (document.getElementById("fri")).disabled = true; -->
+                <!-- (document.getElementById("sat")).disabled = true; -->
+                <!-- (document.getElementById("sun")).disabled = true; -->
+                <!-- (document.getElementById("day")).disabled = true; -->
+                <!-- (document.getElementById("week")).disabled = true; -->
+                <!-- // (document.getElementById("hrdaily")).disabled = false; -->
+                <!-- // document.getElementById("hrdaily").style.backgroundColor = 'white'; -->
+                <!-- $('#datetimepicker2 .form-control').prop('disabled', false); -->
+                <!-- $('#datetimepicker3 .form-control').prop('disabled', false); -->
+                //(document.getElementById("end")).disabled = false;
+                $("#whole_div *").prop('disabled', false);
+                $("#whole_div").css("background", "none");
+                $("#recurring *").prop('disabled', false);
+                $("#recurring").css("background", "none");
+                $("#one_time *").prop('disabled', true);
+                $('input:radio[name=daily_radio]').filter('[value=daily_radio_at]').prop('checked', true);
+                $('#job_occur_type').val("");
+                $("#daily").show();
+                $(".weekly").show();
+                $("#daily_radio_occurs_div *").prop('disabled', true);
+                $(".weekly *").prop('disabled', true);
+                $("#daily *").prop('disabled', true);
+            }
+        }
+
+        $('#next').on("click", function() {
+		    finaljson["source"] = srcdata;
+            finaljson["target"] = trgdata;
+            finaljson["connection"] = conn_arr;
+            finaljson["transformation"] = trns_arr;
+            console.log(JSON.stringify(finaljson));
+            $("#wrapper").hide();
+            $("#next").hide();
+            $('#workflow').addClass('done');
+            $('#schedule').addClass('active');
+            $('#schedule').removeClass('done');
+            $("#next1").show();
+            $("#back1").show();
+            $("#start_workflow").hide();
+            $("#wrapper_Schedule").show();
+            <!-- window.open('jobscheduling_23APR.html','_self'); -->
+        });
+        $('#back1').on("click", function() {
+            $("#wrapper").show();
+            $("#next").show();
+            $('#workflow').addClass('done');
+            $('#schedule').removeClass('active');
+            $('#schedule').addClass('done');
+            $("#next1").hide();
+            $("#back1").hide();
+            $("#start_workflow").show();
+            $("#wrapper_Schedule").hide();
+
+        });
+        $('#schedule').on("click", function() {
+            $("#wrapper_Schedule").show();
+            $("#next").hide();
+            $('#workflow').addClass('done');
+            $('#schedule').removeClass('done');
+            $('#schedule').addClass('active');
+            $("#next1").show();
+            $("#back1").show();
+            $("#start_workflow").hide();
+            $("#wrapper").hide();
+            <!-- window.open('jobscheduling_23APR.html','_self'); -->
+        });
+        $('#workflow').on("click", function() {
+            $("#wrapper").show();
+            $("#next").show();
+            $("#next1").hide();
+            $("#back1").hide();
+            $('#schedule').removeClass('active');
+            <!-- $("#next1").show(); -->
+            $("#start_workflow").show();
+            $("#wrapper_Schedule").hide();
+            <!-- window.open('jobscheduling_23APR.html','_self'); -->
+        });
+        var scheduler = {};
+        $('#next1').on("click", function() {
+            debugger;
+            var schedule = (document.getElementById("jobtype")).value;
+            if (schedule == "Immediate") {
+                scheduler_details = {
+                    module: (document.getElementById("jobtype")).value,
+                    jobname: (document.getElementById("jobname")).value
+                }
+                console.log(scheduler_details);
+                finaljson["scheduler"] = scheduler_details;
+                console.log(finaljson);
+            }
+            if (schedule == "one Time") {
+
+                option = {
+                    date: (document.getElementById("datepicker1")).value,
+                    time: (document.getElementById("clockpickerinput1")).value
+                }
+                scheduler_details = {
+                    module: (document.getElementById("jobtype")).value,
+                    option: option,
+                    jobname: (document.getElementById("jobname")).value
+                }
+                console.log(scheduler_details);
+                finaljson["scheduler"] = scheduler_details;
+                console.log(finaljson);
+            }
+        });
+    </script>
+</body>
+
+</html>

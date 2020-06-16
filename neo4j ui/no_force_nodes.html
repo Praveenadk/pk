@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <title>Force Layout Example 1</title>
+    <style>
+
+.node {
+    fill: #ccc;
+    stroke: black;
+    stroke-width: 2px;
+	
+}
+.shadow1{
+white-space: pre-line
+}
+.link {
+    stroke: #777;
+    stroke-width: 2px;
+}
+.node_head{
+border-bottom:1px solid black;
+}
+    </style>
+</head>
+<body>
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <script>
+var data = {
+   nodes: [{
+     tname: "Customer",
+	 cname:"PK  Customer_ID \n First_Name \n Other Details",
+     x: 200,
+     y: 150
+   }, {
+     tname: "Account",
+	 cname:"PK  Account_ID \n FK  Customer_ID \n Account_Name \n Other Details",
+     x: 200,
+     y: 350
+   }, {
+     tname: "Financial_Transactions",
+	 cname:"PK  Transaction_ID \nFK  Account_ID \n FK  Customer_ID \n First_Name \n Other Details",
+     x: 60,
+     y: 350
+   }, {
+     tname: "Reference _Transaction_Details",
+	 cname:"PK  Transaction_ID \nFK  Account_ID \n FK  Customer_ID \n First_Name \n Other Details",
+     x: 340,
+     y: 350
+   }],
+   links: [{
+     source: 0,
+     target: 1
+   }, {
+     source: 1,
+     target: 2
+   }, {
+     source: 2,
+     target: 3
+   },
+ {
+     source: 1,
+     target: 3
+   }   ]
+ };
+
+ var c10 = d3.scale.category10();
+ var svg = d3.select("body")
+   .append("svg")
+   .attr("width", 1200)
+   .attr("height", 800);
+
+ var drag = d3.behavior.drag()
+   .on("drag", function(d, i) {
+     d.x += d3.event.dx
+     d.y += d3.event.dy
+     d3.select(this).attr("cx", d.x).attr("cy", d.y);
+     links.each(function(l, li) {
+       if (l.source == i) {
+         d3.select(this).attr("x1", d.x).attr("y1", d.y);
+       } else if (l.target == i) {
+         d3.select(this).attr("x2", d.x).attr("y2", d.y);
+       }
+     });
+   });
+
+ var links = svg.selectAll("link")
+   .data(data.links)
+   .enter()
+   .append("line")
+   .attr("class", "link")
+   .attr("x1", function(l) {
+     var sourceNode = data.nodes.filter(function(d, i) {
+       return i == l.source
+     })[0];
+     d3.select(this).attr("y1", sourceNode.y+75);
+     return sourceNode.x+50
+   })
+   .attr("x2", function(l) {
+     var targetNode = data.nodes.filter(function(d, i) {
+       return i == l.target
+     })[0];
+     d3.select(this).attr("y2", targetNode.y+75);
+     return targetNode.x+50
+   })
+   .attr("fill", "none")
+   .attr("stroke", "white");
+
+ var nodes = svg.selectAll("node")
+   .data(data.nodes)
+   .enter()
+   .append("rect")
+   .attr("class", "node")
+   .attr("x", function(d) {
+     return d.x
+   })
+   .attr("y", function(d) {
+     return d.y
+   })
+   .attr("width", 100)
+      .attr("height", 150)
+   .attr("fill", function(d, i) {
+     return c10(i);
+   })
+   
+.call(drag);
+
+ <!-- svg.selectAll(".nodelabel") -->
+	<!-- .data(data.nodes) -->
+	<!-- .enter() -->
+	<!-- .append("text") -->
+    <!-- .attr("width", 100) -->
+    <!-- .attr("height", 200) -->
+	<!-- .attr("class", "nodelabel") -->
+    <!-- .style("font", "14px 'Helvetica Neue'") -->
+	<!-- .attr({"x":function(d){return d.x;}, -->
+           <!-- "y":function(d){return d.y;}}) -->
+    <!-- .text(function(d){ return d.tname}); -->
+
+
+    var nodelabels = svg.selectAll(".nodelabel") 
+       .data(data.nodes)
+       .enter()
+       .append("text")
+	   .attr("class", "text")
+       .attr({"x":function(d){return d.x+50;},
+              "y":function(d){return d.y+15;},                                    
+              "class":"nodelabel",
+              "stroke":"black",
+              "class": "shadow",
+              "font-size":"15px",
+              "text-shadow": "13px 13px",
+              "text-anchor": "middle",
+              "font-family": "Century Gothic"})
+			  .text(function(d){return d.tname});
+		  var nodelabels1 = svg.selectAll(".nodelabel") 
+       .data(data.nodes)
+       .enter()
+       .append("text")
+	   .attr("class", "text1")
+       .attr({"x":function(d){return d.x+30;},
+              "y":function(d){return d.y+35;},                                    
+              "class":"nodelabel1",
+              "stroke":"black",
+              "class": "shadow1",
+              "font-size":"13px",
+              "text-shadow": "13px 13px",
+              "text-anchor": "middle",
+              "font-family": "Century Gothic"})
+			  .text(function(d){return d.cname});
+	//.html(function(d){return "<tspan class='node_head'>"+d.tname+"</tspan><tspan class='node_sub'>"+d.cname+"</tspan>"});
+			  
+	<!-- nodelabels.append("tspan") -->
+		<!-- .attr("class", "node_head") -->
+	  <!-- .text(function(d){return d.tname;}) -->
+	  <!-- nodelabels.append("tspan") -->
+	  <!-- .attr("class", "node_sub") -->
+	  <!-- .text(function(d){return d.cname}); -->
+    </script>
+</body>
+</html>

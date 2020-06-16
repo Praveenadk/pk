@@ -1,0 +1,1234 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Drag & Drop</title>
+    <link rel="icon" href="../images/ingestion.png" type="image" sizes="16x16">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.10.2/jquery.js "></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.15/js/bootstrap-multiselect.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.15/css/bootstrap-multiselect.css" type="text/css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsPlumb/1.4.1/jquery.jsPlumb-1.4.1-all-min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.css" />
+    <link rel="stylesheet" href="../css/mdtimepicker.min.css">
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/dmuy/MDTimePicker/mdtimepicker.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/dmuy/MDTimePicker/mdtimepicker.css" />
+        <script src="../js/mdtimepicker.js"></script> <!-- <link href="mdtimepicker.min.css" rel="stylesheet" type="text/css"> --> <!-- <script src="//code.jquery.com/jquery-latest.min.js"></script> --> <!-- <script src="mdtimepicker.min.js"></script> -->
+<style>
+		@media screen and (max-width: 1366px) {
+            .nav-side-menu {
+                margin-left: -113px !important;
+            }
+            #wrapper_up {
+                margin-left: 104px !important;
+                margin-top: 51px;
+            }
+        }
+        
+        @media screen and (min-width: 1500px) {
+            .nav-side-menu {
+                margin-left: -180px
+            }
+            #wrapper_up {
+                margin-left: 38px;
+                margin-top: 51px;
+            }
+        }
+        
+        body {
+            font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif;
+        }
+        
+        @import 'https://fonts.googleapis.com/css?family=Cairo|Slabo+27px';
+        .nav-side-menu {
+            margin-left: -142px;
+            margin-top: 49px;
+            overflow: auto;
+            font-size: 12px;
+            font-weight: 200;
+            background-color: #2e353d;
+            position: fixed;
+            top: 0px;
+            width: 217px;
+            height: 100%;
+            color: #e1ffff;
+        }
+        
+        @media (min-width: 768px) {
+            .navbar {
+                border-radius: 2px !important;
+            }
+        }
+        
+        .nav-side-menu .brand {
+            background-color: #23282e;
+            line-height: 50px;
+            display: block;
+            text-align: center;
+            font-size: 14px;
+        }
+        
+        .nav-side-menu .toggle-btn {
+            display: none;
+        }
+        
+        .nav-side-menu ul,
+        .nav-side-menu li {
+            list-style: none;
+            padding: 0px;
+            margin: 0px;
+            line-height: 35px;
+            cursor: pointer!important;
+        }
+        
+        .nav-side-menu ul:not(collapsed) .arrow:before,
+        .nav-side-menu li:not(collapsed) .arrow:before {
+            font-family: FontAwesome;
+            content: "\f078";
+            display: inline-block;
+            padding-left: 10px;
+            padding-right: 10px;
+            vertical-align: middle;
+            float: right;
+        }
+        
+        .nav-side-menu ul .active,
+        .nav-side-menu li .active {
+            border-left: 3px solid #d19b3d;
+            background-color: #4f5b69;
+        }
+        
+        .nav-side-menu ul .sub-menu li.active,
+        .nav-side-menu li .sub-menu li.active {
+            color: #d19b3d;
+        }
+        
+        .nav-side-menu ul .sub-menu li.active a,
+        .nav-side-menu li .sub-menu li.active a {
+            color: #d19b3d;
+        }
+        
+        .nav-side-menu ul .sub-menu li,
+        .nav-side-menu li .sub-menu li {
+            background-color: #181c20;
+            border: none;
+            line-height: 40px;
+            border-bottom: 1px solid #23282e;
+            margin-left: 0px;
+        }
+        
+        .nav-side-menu li a {
+            text-decoration: none;
+            color: #e1ffff;
+        }
+        
+        .nav-side-menu li a i {
+            padding-left: 10px;
+            width: 20px;
+            padding-right: 20px;
+        }
+        
+        .nav-side-menu li:hover {
+            border-left: 3px solid #d19b3d;
+            background-color: #4f5b69;
+            -webkit-transition: all 1s ease;
+            -moz-transition: all 1s ease;
+            -o-transition: all 1s ease;
+            -ms-transition: all 1s ease;
+            transition: all 1s ease;
+        }
+        
+        @media (max-width: 767px) {
+            .nav-side-menu {
+                position: relative;
+                width: 100%;
+                margin-bottom: 10px;
+            }
+            .nav-side-menu .toggle-btn {
+                display: block;
+                cursor: pointer!important;
+                position: absolute;
+                right: 10px;
+                top: 10px;
+                z-index: 10 !important;
+                padding: 3px;
+                background-color: #ffffff;
+                color: #000;
+                width: 40px;
+                text-align: center;
+            }
+            .brand {
+                text-align: left !important;
+                font-size: 22px;
+                padding-left: 20px;
+                line-height: 50px !important;
+            }
+        }
+        
+        @media (min-width: 767px) {
+            .nav-side-menu .menu-list .menu-content {
+                display: block;
+                font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif;
+                font-size: 14px;
+            }
+        }
+        
+        body {
+            background-color: #f9fafb;
+            background-size: 14px 14px;
+            background-image: linear-gradient(to right, rgba(229, 235, 237, 1) 1px, transparent 1px), linear-gradient(to bottom, rgba(229, 235, 237, 1) 1px, transparent 1px);
+            z-index: 1;
+        }
+        
+        #transformdiv li {
+            display: inline-block;
+            width: auto;
+            list-style: outside none none;
+            margin-left: 48px;
+            padding: 7px 18px;
+        }
+        
+        #targetdiv li {
+            padding: 7px 14px 7px 17px !important;
+        }
+        
+        li {
+            list-style-type: none;
+            font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif;
+        }
+        
+        .fa {
+            display: inline-block;
+            font: normal normal normal 14px/1 FontAwesome;
+            font-size: 18px;
+            text-rendering: auto;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            padding: 6px 1px 0px 18px;
+            color: #004849;
+        }
+        
+        #transformdiv {
+            margin-left: -6.5%;
+            height: 121%;
+            margin-top: 0px;
+            /* background-color: #fff; */
+            position: relative;
+            margin-bottom: 1em;
+            display: block;
+            width: 74%;
+            white-space: nowrap;
+        }
+        
+        #sourcediv {
+            height: 118%;
+            margin-left: -38.5%;
+            margin-top: 12px;
+            <!-- margin-left: -38%;
+            -->
+            /* background-color: #fff; */
+            position: relative;
+            /* margin-bottom: 1em; */
+            /* display: block; */
+            width: 28%;
+            float: left;
+        }
+        
+        #targetdiv {
+            margin-left: 72%;
+            height: 118%;
+            margin-top: -80.5%;
+            <!-- height: 141%;
+            --> <!-- margin-top: -94%;
+            --> <!-- margin-left: 73%;
+            --> display: block;
+            width: 29%;
+        }
+        
+        .drag {
+            margin-top: 13px;
+            margin-left: 1px;
+            color: #a0a0a0;
+            position: fixed;
+            text-align: center;
+        }
+        
+        .drag1 {
+            margin-top: 26px;
+            margin-left: 168px;
+            color: #a0a0a0;
+            position: fixed;
+            text-align: center;
+        }
+        
+        .drag2 {
+            margin-top: 16px;
+            margin-left: 6px;
+            color: #a0a0a0;
+            position: fixed;
+            text-align: center;
+        }
+        
+        .source {
+            font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif !important;
+            color: black !important;
+            margin: 4px;
+            width: 63%;
+            padding: 6px;
+            height: 51px;
+            box-shadow: 0 10px 30px rgba(#333333, 0.4);
+            position: relative;
+            margin-top: 119%;
+            text-align: center;
+            font-family: 'Cairo', sans-serif;
+            overflow: none;
+            border: 1px solid #004849;
+            -moz-border-radius: 8px;
+            border-radius: 8px;
+            opacity: 0.8;
+            cursor: pointer!important;
+            background-color: white;
+            font-size: 13px;
+            position: relative;
+        }
+        
+        .transform {
+            font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif !important;
+            color: black !important;
+            text-align: center;
+            font-family: 'Cairo', sans-serif;
+            border: 1px solid #004849;
+            -moz-border-radius: 8px;
+            border-radius: 8px;
+            opacity: 0.8;
+            cursor: pointer!important;
+            background-color: white;
+            font-size: 13px;
+            font-family: 'Cairo', sans-serif;
+            position: relative;
+            font-size: 14px;
+            margin: 4px;
+            width: 26%;
+            /* overflow: hidden; */
+            padding: 13px;
+            height: 51px;
+            position: relative;
+            margin-top: 41%;
+        }
+        
+        .target {
+            font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif !important;
+            color: black !important;
+            border-radius: 8px;
+            border: 1px solid #004849;
+            opacity: 0.8;
+            cursor: pointer!important;
+            background-color: white;
+            margin: 4px;
+            width: 63%;
+            padding: 7px;
+            height: 51px;
+            position: relative;
+            margin-top: 114%;
+            text-align: center;
+            font-family: 'Cairo', sans-serif;
+            font-size: 13px;
+        }
+        
+        .highlightborder {
+            background-color: #c1c1c1;
+        }
+        
+        .disableborder {
+            background-color: none;
+        }
+        
+        .item {
+            background-color: none;
+            width: 100px;
+            height: 100px;
+            position: absolute;
+        }
+        
+        #dragbutton {
+            background-color: #ddffdd;
+        }
+        
+        #wrapper {
+            <!-- width: 800px;
+            --> <!-- height: 527px;
+            --> position: relative;
+            margin-top: 16% !important;
+            margin-left: 8%;
+        }
+        
+        circle {
+            cx: 7;
+            cy: 7;
+            r: 0;
+            fill: rgb(122, 176, 44);
+            stroke: #fff;
+        }
+        
+        .multiselect {
+            width: 122%;
+        }
+        
+        .source,
+        .transform,
+        .target {
+            box-shadow: 0px 5px 8px 0px rgba(0, 0, 0, 0.2), 0px 17px 24px 0px rgba(0, 0, 0, 0.19);
+        }
+        
+        ._jsPlumb_connector {
+            cursor: pointer!important;
+        }
+        
+        #play {
+            margin-top: -25.5%;
+            margin-left: 101%;
+        }
+        
+        #circulardiv {
+            background: lightsteelblue;
+            height: 30px;
+            width: 30px;
+            border-radius: 50px;
+            text-align: center;
+            cursor: pointer!important;
+        }
+        
+        .fields {
+            margin-bottom: 12px;
+        }
+        
+        option[title]:hover:after {
+            content: attr(title);
+            padding: 4px 8px;
+            position: absolute;
+            left: 0;
+            top: 100%;
+            white-space: nowrap;
+            z-index: 20px;
+            background: gray;
+        }
+        
+        .field-icon {
+            float: right;
+            color: black;
+            margin-right: 19px;
+            font-size: 16px;
+            margin-top: -32px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .opensrc,
+        .opentrans,
+        .opentrg {
+            text-align: center;
+        }
+        
+        img:hover {
+            background-color: #286090;
+        }
+        
+        pre {
+            background: aliceblue;
+            border-radius: 15px;
+            font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif;
+            color: black;
+        }
+        
+        .info {
+            width: 26%;
+            position: absolute;
+            box-shadow: 0px 5px 8px 0px rgba(0, 0, 0, 0.2), 0px 17px 24px 0px rgba(0, 0, 0, 0.19);
+            border: 1px solid lightblue;
+            background: white;
+            padding: 10px;
+            border-radius: 3px;
+        }
+        
+        #src_nullcheck {
+            margin-left: -21%;
+            margin-top: 40%;
+        }
+        
+        #nullcheck_dateformat {
+            margin-left: 16%;
+            margin-top: 44%;
+        }
+        
+        #dateformat_trg {
+            margin-left: 59%;
+            margin-top: 40%;
+        }
+        
+        .upperdiv {
+            background: #aabbc3;
+            padding: 6px;
+            width: 26%;
+            position: absolute;
+            text-align: center;
+            border-style: solid;
+            border-width: 1px 1px 1px 1px;
+            border-color: lightblue;
+            box-shadow: 0px 5px 8px 0px rgba(0, 0, 0, 0.2), 0px 17px 24px 0px rgba(0, 0, 0, 0.19);
+        }
+        
+        #upperdiv3 {
+            margin-left: 59%;
+            margin-top: 35.8%;
+        }
+        
+        #upperdiv2 {
+            margin-left: 16%;
+            margin-top: 39.8%;
+        }
+        
+        #upperdiv1 {
+            margin-left: -21%;
+            margin-top: 35.8%;
+        }
+        
+        .nav-side-menu li {
+            padding-left: 0px;
+            border-left: 3px solid #2e353d;
+            border-bottom: 1px solid #23282e;
+        }
+        
+        .nav-side-menu ul .sub-menu li:hover,
+        .nav-side-menu li .sub-menu li:hover {
+            background-color: #020203;
+        }
+        
+        .nav-side-menu ul .sub-menu li:before,
+        .nav-side-menu li .sub-menu li:before {
+            font-family: FontAwesome;
+            content: "\";
+ display: inline-block;
+            padding-left: 10px;
+            padding-right: 10px;
+            vertical-align: middle;
+        }
+        
+        #wrapper_up {
+            margin-left: 75px;
+            margin-top: 51px;
+        }
+        
+        html {
+            -webkit-font-smoothing: antialiased!important;
+            -moz-osx-font-smoothing: grayscale!important;
+            -ms-font-smoothing: antialiased!important;
+        }
+        
+        .md-stepper-horizontal {
+            display: table;
+            width: 85.3%;
+            position: fixed;
+            z-index: 2;
+            margin: 0 auto;
+            background-color: #FFFFFF;
+            box-shadow: 0 3px 8px -6px rgba(0, 0, 0, .50);
+        }
+        
+        .md-stepper-horizontal .md-step {
+            display: table-cell;
+            position: relative;
+            padding: 18px 22px 4px 24px;
+            <!-- padding: 18px 24px 4px 24px !important;
+            -->
+        }
+        
+        .md-stepper-horizontal .md-step:hover,
+        .md-stepper-horizontal .md-step:active {
+            background-color: rgba(0, 0, 0, 0.04);
+        }
+        
+        .md-stepper-horizontal .md-step:active {
+            border-radius: 15% / 75%;
+        }
+        
+        .md-stepper-horizontal .md-step:first-child:active {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+        
+        .md-stepper-horizontal .md-step:last-child:active {
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+        
+        .md-stepper-horizontal .md-step:hover .md-step-circle {
+            background-color: #757575;
+        }
+        
+        .md-stepper-horizontal .md-step:first-child .md-step-bar-left,
+        .md-stepper-horizontal .md-step:last-child .md-step-bar-right {
+            display: none;
+        }
+        
+        .md-stepper-horizontal .md-step .md-step-circle {
+            width: 30px;
+            height: 30px;
+            margin: 0 auto;
+            background-color: #999999;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #FFFFFF;
+        }
+        
+        .md-stepper-horizontal.green .md-step.active .md-step-circle {
+            background-color: #00AE4D;
+        }
+        
+        .md-stepper-horizontal.orange .md-step.active .md-step-circle {
+            background-color: #F96302;
+        }
+        
+        .md-stepper-horizontal .md-step.active .md-step-circle {
+            background-color: #286090;
+        }
+        
+        .md-stepper-horizontal .md-step.done .md-step-circle:before {
+            font-family: 'FontAwesome';
+            font-weight: 100;
+            content: "\f00c";
+        }
+        
+        .md-stepper-horizontal .md-step.done .md-step-circle *,
+        .md-stepper-horizontal .md-step.editable .md-step-circle * {
+            display: none;
+        }
+        
+        .md-stepper-horizontal .md-step.editable .md-step-circle {
+            -moz-transform: scaleX(-1);
+            -o-transform: scaleX(-1);
+            -webkit-transform: scaleX(-1);
+            transform: scaleX(-1);
+        }
+        
+        .md-stepper-horizontal .md-step.editable .md-step-circle:before {
+            font-family: 'FontAwesome';
+            font-weight: 100;
+            content: "\f040";
+        }
+        
+        .md-stepper-horizontal .md-step .md-step-title {
+            margin-top: 16px;
+            font-size: 16px;
+            font-weight: 600;
+        }
+        
+        .md-stepper-horizontal .md-step .md-step-title,
+        .md-stepper-horizontal .md-step .md-step-optional {
+            text-align: center;
+            color: rgba(0, 0, 0, .26);
+        }
+        
+        .md-stepper-horizontal .md-step.active .md-step-title {
+            font-weight: 600;
+            color: rgba(0, 0, 0, .87);
+        }
+        
+        .md-stepper-horizontal .md-step.active.done .md-step-title,
+        .md-stepper-horizontal .md-step.active.editable .md-step-title {
+            font-weight: 600;
+        }
+        
+        .md-stepper-horizontal .md-step .md-step-optional {
+            font-size: 12px;
+        }
+        
+        .md-stepper-horizontal .md-step.active .md-step-optional {
+            color: rgba(0, 0, 0, .54);
+        }
+        
+        .md-stepper-horizontal .md-step .md-step-bar-left,
+        .md-stepper-horizontal .md-step .md-step-bar-right {
+            position: absolute;
+            top: 36px;
+            height: 1px;
+            border-top: 1px solid #DDDDDD;
+        }
+        
+        .md-stepper-horizontal .md-step .md-step-bar-right {
+            right: 0;
+            left: 50%;
+            margin-left: 20px;
+        }
+        
+        .md-stepper-horizontal .md-step .md-step-bar-left {
+            left: 0;
+            right: 50%;
+            margin-right: 20px;
+        }
+        
+        #jobname {
+            display: inline-block;
+            margin-left: 14px;
+        }
+        
+        #jobtype {
+            width: 100%;
+            margin-left: 14px;
+            display: inline-block;
+            margin-top: 7px;
+        }
+        
+        #line {
+            border-top: 1px solid #abb3b9;
+            width: 89%;
+            position: relative;
+            top: -14px;
+            left: 156px;
+        }
+        
+        #daily {
+            position: absolute;
+            margin-top: 1%;
+        }
+        
+        #day {
+            margin-left: -225%;
+            width: 79%;
+            display: inline-block;
+        }
+        
+        #week1 {
+            position: absolute;
+            margin-top: 4%;
+        }
+        
+        #week2 {
+            position: absolute;
+            margin-top: 7.5%;
+        }
+        
+        .container1 {
+            margin-left: 34px;
+        }
+        
+        #occur_start_date {
+            margin-left: 28%;
+            margin-top: -10%;
+            width: 71%;
+        }
+        
+        #occur_end_date {
+            margin-top: -30px;
+            margin-left: 85px;
+        }
+        
+        #week {
+            margin-left: -230%;
+            width: 63%;
+            display: inline-block;
+        }
+        
+        #daily_radio_at_div {
+            position: relative;
+            top: -61px;
+            left: 26px;
+        }
+        
+        #daily_radio_occurs_div {
+            position: relative;
+            top: -52px;
+            left: 26px;
+        }
+		label {
+    display: inline-block;
+    max-width: 100%;
+    margin-bottom: 5px; 
+    font-weight: 700;
+}
+    </style>
+</head>
+
+<body oncontextmenu="return false">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" style="width: 100%;position: fixed !important;border-bottom: 2px solid #2e353d !important;z-index:1;background-color: #2e353d !important;">
+        <div>
+            <img src="../images/ingestion1.png" style="width: 35px;margin-left: 10px;margin-top: -8px;border-radius: 12px;height: 35px;">
+            <span style="display: inline-block;margin-left: 1%;margin-top: 8px;font-size: 22px;color: white;">INGESTION FRAMEWORK</span>
+            <i class="fa fa-home" id="clear" style="font-size:26px;color:white;margin-left: 69%;cursor:pointer;"></i>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="nav-side-menu">
+            <i class="fa fa-bars fa-2x toggle-btn" data-toggle="collapse" data-target="#menu-content"></i>
+            <div class="menu-list">
+                <ul id="menu-content" class="menu-content collapse out">
+
+                    <li data-toggle="collapse" data-target="#source" class="collapsed active">
+                        <a href="#"><img src="../images/source.png" style="width: 26px;height: 26px;">&nbsp;Sources <span class="arrow"></span></a>
+                    </li>
+                    <ul class="sub-menu collapse" id="source">
+                        <li id="mysql" class="opensrc" ondragstart="return srcStart(event)" ondrag="srcdragging(event)" draggable="true">Mysql</li>
+                        <li id="oracle" class="opensrc" ondragstart="return srcStart(event)" ondrag="srcdragging(event)" draggable="true">Oracle</li>
+                        <!-- <li id="DB2" ondragstart="return srcStart(event)" ondrag="srcdragging(event)" draggable="true">DB2</li> -->
+                    </ul>
+                    <li data-toggle="collapse" data-target="#transform" class="collapsed">
+                        <a href="#"><img src="../images/transform.png" style="width: 26px;height: 26px;">&nbsp;Transform <span class="arrow"></span></a>
+                    </li>
+                    <ul class="sub-menu collapse" id="transform">
+                       <li id="nullcheck" class="opentrans" ondragstart="return transformStart(event)" ondrag="transformdragging(event)" draggable="true">Null Check</li>
+                        <li id="dateformat" class="opentrans" ondragstart="return transformStart(event)" ondrag="transformdragging(event)" draggable="true">Date Format Change</li>
+						<li id="ssnvalidate" class="opentrans" ondragstart="return transformStart(event)" ondrag="transformdragging(event)" draggable="false">SSN Validator</li>
+						<li id="phonevalidate" class="opentrans" ondragstart="return transformStart(event)" ondrag="transformdragging(event)" draggable="false">Phone Validator</li>
+						<li id="executespark" class="opentrans" ondragstart="return transformStart(event)" ondrag="transformdragging(event)" draggable="false">Execute Spark </li>
+                    </ul>
+                    <li data-toggle="collapse" data-target="#target" class="collapsed">
+                        <a href="#"><img src="../images/target.png" style="width: 26px;height: 26px;">&nbsp;Target <span class="arrow"></span></a>
+                    </li>
+                    <ul class="sub-menu collapse" id="target">
+                        <li id="HDFS" class="opentrg" ondragstart="return targetStart(event)" ondrag="targetdragging(event)" draggable="true" style="text-align:center;">HDFS</li>
+						<li id="Hive" class="opentrg" ondragstart="return targetStart(event)" ondrag="targetdragging(event)" draggable="true" style="text-align:center;">Hive</li>
+						<li id="HBase" class="opentrg" ondragstart="return targetStart(event)" ondrag="targetdragging(event)" draggable="false" style="text-align:center;">HBase</li>
+						<li id="Kafka" class="opentrg" ondragstart="return targetStart(event)" ondrag="targetdragging(event)" draggable="false" style="text-align:center;">Kafka</li>
+						<li id="Cassandra" class="opentrg" ondragstart="return targetStart(event)" ondrag="targetdragging(event)" draggable="false" style="text-align:center;">Cassandra</li>
+                        <!-- <li id="target2" ondragstart="return targetStart(event)" ondrag="targetdragging(event)"  draggable="true">target2</li> -->
+                        <!-- <li id="target3" ondragstart="return targetStart(event)" ondrag="targetdragging(event)"  draggable="true">target3</li> -->
+
+                    </ul>
+                </ul>
+            </div>
+        </div>
+        <div id="wrapper_up">
+            <div class="md-stepper-horizontal Dark blue">
+                <div class="md-step active done" id="workflow">
+                    <div class="md-step-circle"><span>1</span></div>
+                    <div class="md-step-title">Workflow</div>
+                    <div class="md-step-optional">Define the Workflow</div>
+                    <div class="md-step-bar-left"></div>
+                    <div class="md-step-bar-right"></div>
+                </div>
+                <div class="md-step active">
+                    <div class="md-step-circle"><span>2</span></div>
+                    <div class="md-step-title">Job Scheduling</div>
+                    <div class="md-step-optional">Schedule the Job</div>
+                    <div class="md-step-bar-left"></div>
+                    <div class="md-step-bar-right"></div>
+                </div>
+                <div class="md-step">
+                    <div class="md-step-circle"><span>3</span></div>
+                    <div class="md-step-title">History</div>
+                    <div class="md-step-optional">View the History</div>
+                    <div class="md-step-bar-left"></div>
+                    <div class="md-step-bar-right"></div>
+                </div>
+                <div class="md-step">
+                    <div class="md-step-circle"><span>4</span></div>
+                    <div class="md-step-title">Review</div>
+                    <div class="md-step-optional">Schedule the Job</div>
+                    <div class="md-step-bar-left"></div>
+                    <div class="md-step-bar-right"></div>
+                </div>
+            </div>
+        </div>
+        <div id="wrapper">
+            <div>
+                <table>
+                    <tr>
+                        <td>
+                            <label for="jobname">Job Name:</label>
+                        </td>
+                        <td>
+                            <input minlength="5" maxlength="20" class='form-control' type='text' id='jobname' name='jobname' required>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="job_type" style="margin-top: 15px;">Select Schedule Type:</label>
+                        </td>
+                        <td>
+                            <div>
+                                <select class='form-control' type='text' id='jobtype' name='jobtype' onchange="scheduleOption()">
+                                    <option value=''>select</option>
+                                    <option value='Immediate'>Immediate</option>
+                                    <option value='one Time'>One Time</option>
+                                    <option value='Recurring'>Recurring</option>
+                                </select>
+
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            </br>
+            <div id='whole_div'>
+                <div id='one_time'>
+                    <label id='onetime_label'>One-time Occurence:</label>
+                    <div id='line'></div>
+                    <table>
+                        <tr>
+                            <td>
+                                <label>Date:</label>
+                            </td>
+                            <td>
+                                <!-- <div class="form-group" style="margin-left: 9px;"> -->
+                                <!-- <div class='input-group date' id='datetimepicker1'> -->
+                                <!-- <input type='text' class="form-control" /> -->
+                                <!-- <span class="input-group-addon"> -->
+                                <!-- <span class="glyphicon glyphicon-calendar"></span> -->
+                                <!-- </span> -->
+                                <!-- </div> -->
+                                <!-- </div> -->
+                                <div class="input-group date" data-provide="datepicker" style="margin-left:11px;">
+                                    <input type="text" class="form-control">
+                                    <div class="input-group-addon">
+                                        <span class="glyphicon glyphicon-th"></span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td style="padding:9px;">
+                                <label>Time:</label>
+                            </td>
+                            <td>
+                                <td>
+                                    <div class="input-group">
+
+                                        <input type="text" id="timepicker" class="form-control">
+                                        <span class="input-group-addon time"><i class="glyphicon glyphicon-time"></i></span>
+                                    </div>
+                                </td>
+                                <!-- <input type="text" id="timepicker"/> -->
+                            </td>
+                        </tr>
+                    </table>
+                    <br>
+                </div>
+                <div id='recurring'>
+                    <label id='onetime_label' style='left: 80px; width: 94%;'>Frequency:</label>
+                    <div style='left: 83px; width: 96%;' id='line'></div>
+                    <table>
+                        <tr>
+                            <td style='width: 2%;'>
+                                <label>Occurs:</label>
+                            </td>
+                            <td>
+                                <select style='width: 18%;margin-left: 15px;' class='form-control' type='text' id='job_occur_type' name='job_occur_type' onchange="Option()">
+                                    <option>select</option>
+                                    <option value='Daily'>Daily&nbsp;&nbsp;&nbsp;&nbsp;</option>
+                                    <option value='Weekly'>Weekly</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr id='daily'>
+                            <td>
+                                <label>Recurs every:</label>
+                            </td>
+                            <td style='width: 27%;'>
+                                <input type="number" id="day" class="form-control">&nbsp;
+                                <label>day(s)</label>
+                            </td>
+                        </tr>
+                        <tr class='weekly' id="week1">
+                            <td>
+                                <label>Recurs every:</label>
+                            </td>
+                            <td style='width: 27%;'>
+
+                                <input type="number" id="week" class="form-control">&nbsp;
+                                <label>week(s)</label>
+                                <br />
+                            </td>
+                        </tr>
+                        <tr class='weekly' id="week2">
+                            <td>
+                                <label class="container1">Monday
+                                    <input type="checkbox" class='days_check' value="monday" id="mon" name="checkboxes">
+
+                                </label>
+                                <label class="container1">Tuesday
+                                    <input type="checkbox" class='days_check' value="tuesday" id="tue" name="checkboxes">
+
+                                </label>
+                                <label class="container1">Wednesday
+                                    <input type="checkbox" class='days_check' value="wednesday" id="wed" name="checkboxes">
+
+                                </label>
+                                <label class="container1">Thursday
+                                    <input type="checkbox" class='days_check' value="thursday" id="thur" name="checkboxes">
+
+                                </label>
+                                <label class="container1">Friday
+                                    <input type="checkbox" class='days_check' value="friday" id="fri" name="checkboxes">
+
+                                </label>
+                                <label class="container1">Saturday
+                                    <input type="checkbox" class='days_check' value="saturday" id="sat" name="checkboxes">
+
+                                </label>
+                                <label class="container1">Sunday
+                                    <input type="checkbox" class='days_check' value="sunday" id="sun" name="chechboxes">
+
+                                </label>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <br>
+                <label id='onetime_label' style="margin-top: 12%;">Daily frequency:</label>
+                <div style='left: 126px;width: 92%;' id='line'></div>
+                <input type='radio' name='daily_radio' value='daily_radio_at' checked style="margin-top:17px;">
+                <div id='daily_radio_at_div'>
+                    <table style="margin-top: 3%;">
+                        <td>
+                            <label>Occurs once at:</label>
+                        </td>
+                        <td>
+                            <div id="timeinput" style="margin-left:10px;">
+                                <div class="input-group">
+
+                                    <input type="text" id="timepicker1" class="form-control">
+                                    <span class="input-group-addon time"><i class="glyphicon glyphicon-time"></i></span>
+                                </div>
+                            </div>
+                        </td>
+                    </table>
+                </div>
+                <input type='radio' name='daily_radio' value='daily_radio_occurs' >
+                <div id='daily_radio_occurs_div'>
+                    <table>
+                        <td>
+                            <label>Occurs every:</label>
+                        </td>
+                        <td>
+
+                            <input type="number" id="hrdaily" style='display:inline-block;width: 27%;margin-left:10px;' class="form-control">&nbsp;
+                            <label>hour(s)</label>
+
+                        </td>
+                        <td>
+                            <div id="occur_start">
+                                <label>Starting At:</label>
+                                <div id="occur_start_date">
+                                    <div class="input-group">
+
+                                        <input type="text" id="timepicker2" class="form-control">
+                                        <span class="input-group-addon time"><i class="glyphicon glyphicon-time"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <label style="margin-top: 27px;">Ending At:</label>
+                            <div id="occur_end_date">
+                                <div class="input-group">
+
+                                    <input type="text" id="timepicker3" class="form-control">
+                                    <span class="input-group-addon time"><i class="glyphicon glyphicon-time"></i></span>
+                                </div>
+                            </div>
+                        </td>
+                    </table>
+                </div>
+				
+				<div style="margin-top: -40px;"><label id='onetime_label'>Duration:</label></div>
+					<div style='left: 65px;width: 99%;' id='line'></div>
+					<table>
+						<tr>
+							<td>
+								<label>Start date:</label>
+								<div style="display:inline-block">
+		  <div class="input-group date" data-provide="datepicker1" style="margin-left:11px;">
+                                    <input type="text" class="form-control">
+                                    <div class="input-group-addon">
+                                        <span class="glyphicon glyphicon-th"></span>
+                                    </div>
+                                </div>
+  </div>
+							</td>
+							<td>
+								<input type='radio' name='end_date' value='true' checked style="margin-left:35px;">
+								<div id='end_date_div' style='display: inline-block;'>
+									<label>End date:</label>
+									<div style="display:inline-block">
+		  <div class="input-group date" data-provide="datepicker2" style="margin-left:11px;">
+                                    <input type="text" class="form-control">
+                                    <div class="input-group-addon">
+                                        <span class="glyphicon glyphicon-th"></span>
+                                    </div>
+                                </div>
+  </div>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td>
+								<input type='radio' name='end_date' value='false' style="margin-top: 18px;margin-left: 35px;">
+								<label>No end date</label>
+							</td>
+						</tr>
+					</table>
+				
+            </div>
+        </div>
+        <!-- <button onclick="goBack()">Go Back</button> -->
+        <!-- <div id="play" style="display:none;cursor:pointer;"> -->
+        <!-- <button type="button" onclick="goBack()" class="btn" style="background:#16494a;border-color: #004849;color: white;cursor:pointer;position: absolute;z-index: 2;margin-left: 7.3em; -->
+        <!-- margin-top: 1.3em;">Back</button> -->
+		<div>
+        <!-- <button type="button" id="back" onclick="goBack()" class="btn" style="z-index: 2;float: right;cursor: pointer;margin-left: 3em;background: #16494a;border-color: #004849;color: white;">Back</button> -->
+		<button type="button" id="next" class="btn" style="z-index: 2;float: right;cursor: pointer;margin-left: 3em;background: #16494a;border-color: #004849;color: white;">Next</button>
+		</div>
+        <!-- </div> -->
+        <!-- <div> -->
+        <!-- <button type="button" id="UUID" style="z-index: 2;cursor:pointer;">UUID Generator</button> -->
+        <!-- </div> -->
+
+    </div>
+    <script>
+        function goBack() {
+            window.history.back();
+            //var data = e.target.getAttribute('data-name'),
+            //url = data + ".html";
+            //history.pushState(null, null, url);
+            //history.pushState(data, null, url);
+        }
+       $(document).ready(function(){
+            $('#datepicker').datepicker({
+                format: 'yyyy-mm-dd'
+            });
+           $('#datepicker1').datepicker({
+                format: 'yyyy-mm-dd'
+            });
+			$('#datepicker2').datepicker({
+                format: 'yyyy-mm-dd'
+            });
+            $('#timepicker').mdtimepicker({
+                readOnly: false,
+                timeFormat: 'hh:mm:ss',
+                format: 'hh:mm:ss'
+            });
+            $('#timepicker1').mdtimepicker({
+                readOnly: false,
+                timeFormat: 'hh:mm:ss',
+                format: 'hh:mm:ss'
+            });
+            $('#timepicker2').mdtimepicker({
+                readOnly: false,
+                timeFormat: 'hh:mm:ss',
+                format: 'hh:mm:ss'
+            });
+            $('#timepicker3').mdtimepicker({
+                readOnly: false,
+                timeFormat: 'hh:mm:ss',
+                format: 'hh:mm:ss'
+            });
+        });
+
+        function Option() {
+            debugger;
+            console.log("optionnnnn");
+            var frequency = (document.getElementById("job_occur_type")).value;
+            console.log(frequency);
+            if (frequency == "Daily") {
+                (document.getElementById("day")).disabled = false;
+                (document.getElementById("mon")).disabled = true;
+                (document.getElementById("tue")).disabled = true;
+                (document.getElementById("wed")).disabled = true;
+                (document.getElementById("thur")).disabled = true;
+                (document.getElementById("fri")).disabled = true;
+                (document.getElementById("sat")).disabled = true;
+                (document.getElementById("sun")).disabled = true;
+                (document.getElementById("week")).disabled = true;
+            } else if (frequency == "Weekly") {
+                (document.getElementById("day")).disabled = true;
+                (document.getElementById("mon")).disabled = false;
+                (document.getElementById("tue")).disabled = false;
+                (document.getElementById("wed")).disabled = false;
+                (document.getElementById("thur")).disabled = false;
+                (document.getElementById("fri")).disabled = false;
+                (document.getElementById("sat")).disabled = false;
+                (document.getElementById("sun")).disabled = false;
+                (document.getElementById("week")).disabled = false;
+            }
+        }
+
+        function scheduleOption() {
+            debugger;
+            var schedule = (document.getElementById("jobtype")).value;
+            console.log(schedule);
+            if (schedule == "Immediate") {
+                $('#datetimepicker1 .form-control').prop('disabled', true);
+                (document.getElementById("job_occur_type")).disabled = true;
+                (document.getElementById("mon")).disabled = true;
+                (document.getElementById("tue")).disabled = true;
+                (document.getElementById("wed")).disabled = true;
+                (document.getElementById("thur")).disabled = true;
+                (document.getElementById("fri")).disabled = true;
+                (document.getElementById("sat")).disabled = true;
+                (document.getElementById("sun")).disabled = true;
+                (document.getElementById("day")).disabled = true;
+                (document.getElementById("week")).disabled = true;
+                $('#datetimepicker2 .form-control').prop('disabled', true);
+                $('#datetimepicker3 .form-control').prop('disabled', true);
+                //(document.getElementById("timedaily")).disabled = true;
+                //document.getElementById("timedaily").style.backgroundColor = '#e9ecef';
+                // (document.getElementById("hrdaily")).disabled = true;
+                $('#datetimepicker2 .form-control').prop('disabled', true);
+                $('#datetimepicker3 .form-control').prop('disabled', true);
+            } else if (schedule == "one Time") {
+                $('#datetimepicker1 .form-control').prop('disabled', false);
+                (document.getElementById("job_occur_type")).disabled = true;
+                (document.getElementById("mon")).disabled = true;
+                (document.getElementById("tue")).disabled = true;
+                (document.getElementById("wed")).disabled = true;
+                (document.getElementById("thur")).disabled = true;
+                (document.getElementById("fri")).disabled = true;
+                (document.getElementById("sat")).disabled = true;
+                (document.getElementById("sun")).disabled = true;
+                (document.getElementById("day")).disabled = true;
+                (document.getElementById("week")).disabled = true;
+                <!-- (document.getElementById("timedaily")).disabled = true; -->
+                // (document.getElementById("hrdaily")).disabled = true;
+                // document.getElementById("hrdaily").style.backgroundColor = '#e9ecef';
+                $('#datetimepicker2 .form-control').prop('disabled', true);
+                $('#datetimepicker3 .form-control').prop('disabled', true);
+                //(document.getElementById("end")).disabled = true;
+            } else if (schedule == "Recurring") {
+                $('#datetimepicker1 .form-control').prop('disabled', true);
+                (document.getElementById("datetimepicker1")).disabled = true;
+                <!-- (document.getElementById("time")).disabled = true; -->
+                <!-- document.getElementById("time").style.backgroundColor = '#e9ecef'; -->
+                (document.getElementById("job_occur_type")).disabled = false;
+                (document.getElementById("mon")).disabled = true;
+                (document.getElementById("tue")).disabled = true;
+                (document.getElementById("wed")).disabled = true;
+                (document.getElementById("thur")).disabled = true;
+                (document.getElementById("fri")).disabled = true;
+                (document.getElementById("sat")).disabled = true;
+                (document.getElementById("sun")).disabled = true;
+                (document.getElementById("day")).disabled = true;
+                (document.getElementById("week")).disabled = true;
+                // (document.getElementById("hrdaily")).disabled = false;
+                // document.getElementById("hrdaily").style.backgroundColor = 'white';
+                $('#datetimepicker2 .form-control').prop('disabled', false);
+                $('#datetimepicker3 .form-control').prop('disabled', false);
+                //(document.getElementById("end")).disabled = false;
+            }
+        }
+		$('#workflow').on("click", function() {
+		   window.open('workflow_23APR.html','_self');
+		  });
+    </script>
+</body>
+
+</html>

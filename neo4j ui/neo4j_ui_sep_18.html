@@ -1,0 +1,1232 @@
+
+
+From: Kedarinath K 
+Sent: Thursday, August 30, 2018 9:45 AM
+To: Kiranmai Chunduri <kiranmai.chunduri@slkgroup.com>
+Subject: working dashboard code one level 
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport"
+content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<title>M&T Master Data Graph</title>
+<!--------------------------------------- Required Style sheets and scripts--------------------------------------->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+<link href="https://mdbootstrap.com/previews/docs/latest/css/bootstrap.min.css" rel="stylesheet">
+<!--  <link href="https://mdbootstrap.com/previews/docs/latest/css/mdb.min.css" rel="stylesheet">  -->
+<link href="./css/bootstrap.min.css" rel="stylesheet" />
+<link href="./css/now-ui-dashboard.css?v=1.0.1" rel="stylesheet" />
+<!--------------------CSS Just for demo purpose, don't include it in your project-------------------------------->
+<link href="./demo/demo.css" rel="stylesheet" />
+<link href="../css/custom.css" rel="stylesheet">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+<link href=" https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.css" rel="stylesheet" />
+<link href="https://cdn.datatables.net/1.10.18/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm"crossorigin="anonymous"></script>
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+<!-- <script src="https://d3js.org/d3.v4.min.js"></script> -->
+<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<!-- <script src="https://d3js.org/d3-selection-multi.v1.min.js"></script> -->
+</head>
+
+<!--------------------------------------- End of the Style sheets and scripts--------------------------------------->
+
+<!------------------------------------------------- STYLES STARTS---------------------------------------------------->
+
+<style>
+@media ( max-height : 992px) .side-nav .logo-wrapper , . side-nav
+.logo-wrapper a {
+height
+:
+
+113
+px
+;
+}
+
+.black-skin .top-nav-collapse 
+{
+background-color: #007b56;
+}
+
+.black-skin .navbar {
+background-color: #4f5763;
+}
+
+.black-skin .side-nav .collapsible li .collapsible-header.active,
+.black-skin .side-nav .collapsible li .collapsible-header:hover {
+background-color: #4f5763a1;
+}
+
+.black-skin .side-nav .sidenav-bg.mask-strong:after, .black-skin .side-nav .sidenav-bg:after
+{
+background: #4f5763a1;
+}
+
+body {
+font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif;
+background-image: url("neo4j_background3.gif");
+}
+
+#tooltip {
+    /* margin: auto; */
+    padding: 20px;
+    border: 1px solid #076d48;
+   background: #ffffff; 
+    margin-top: 6%;
+    margin-left: -17%;
+    width: 10%;
+    margin-bottom: -174px;
+    border-radius: 10px;
+    display: none;
+    line-height: 39px;
+    color: #717172;
+    font-size: 13px;
+    position: relative;
+    background-color: #fff;
+    white-space: pre-line;
+    overflow: hidden;
+    position: fixed;
+
+   text-align:left;
+}
+
+.black-skin .page-footer, .black-skin .side-nav {
+    background-color: #222;
+    width: 17%;
+}
+
+#chart1 {
+position: relative;
+/* left: 629px;
+height: 260px;
+width: 1000px;
+margin-top: -31%;
+margin-left: -17%; */
+}
+
+#chart2 {
+position: relative;
+height: 180px;
+width: 450px;
+left: 820px;
+}
+
+.form-control {
+display: block;
+width: 30%;
+left: 534px;
+top: 10px;
+padding: .375rem .75rem;
+font-size: 1rem;
+line-height: 1.5;
+color: #495057;
+background-color: #fff;
+background-clip: padding-box;
+border: 1px solid #ced4da;
+border-radius: .25rem;
+transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+.panel-header 
+{
+padding-top: 73px;
+padding-left: 22%;
+/* Center and scale the image nicely */
+background-position: center;
+background-repeat: no-repeat;
+background-size: cover;
+position: relative;
+}
+
+.main-panel {
+position: relative;
+top: -522px;
+float: right;
+width: calc(100% - 260px);
+/* background-color: #E3E3E3;
+    background-color: #ebecf1; */
+-webkit-transition: all 0.5s cubic-bezier(0.685, 0.0473, 0.346, 1);
+transition: all 0.5s cubic-bezier(0.685, 0.0473, 0.346, 1);
+}
+
+.form-control {
+display: block;
+width: 15%;
+margin-left: 30px;
+padding: .375rem .75rem;
+font-size: 1rem;
+line-height: 1.5;
+color: #495057;
+background-color: #fff;
+background-clip: padding-box;
+border: 1px solid #ced4da;
+border-radius: .25rem;
+transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+/* .sidebar, .off-canvas-sidebar {
+    position: fixed;
+    top: 0;
+    height: 100%;
+    bottom: 0;
+    width: 80px;
+    left: 0;
+    z-index: 1030;
+} */
+.wrapper {
+position: relative;
+left: -19%;
+width: 126%;
+top: 0;
+height: 100vh;
+}
+
+* {
+font-size: 100%;
+font-family: "Century Gothic";
+}
+
+#subradio {
+display: none;
+}
+
+.button {
+color: white;
+background-color: #008cc2;
+border-color: white;
+border-width: 2px;
+border-radius: 5px;
+border: 1px solid #008cc2;
+width: 100px;
+height: 35px;
+margin-left: 40px;
+cursor:pointer;
+}
+
+.button:hover {
+color: #fff;
+background-color: #7bba05;
+border: 1px solid #7bba05;
+border-radius: 5px;
+cursor:pointer;
+}
+/**datatable***/
+#example_length {
+display: none;
+}
+/* .node circle {
+cursor: pointer;
+stroke: #bbb;
+stroke-width: 0.7px;
+fill: url(#mainGradient);
+}
+.stop-left {
+                stop-color: #ED8E5E; 
+            }
+
+            .stop-right {
+                stop-color: #FBDB88;  
+            }
+  */
+#example_filter {
+display: none;
+}
+
+.card-category {
+display: none;
+}
+
+#example_info {
+display: none;
+}
+
+.pagination {
+display: none;
+}
+
+.container-fluid {
+color: white;
+}
+
+.links line {
+stroke: #999;
+stroke-opacity: 0.6;
+}
+
+.nodes circle {
+stroke: #fff;
+stroke-width: 1.5px;
+transform: translate(150px, 115px);
+}
+
+#chart {
+position: relative;
+top: 100px;
+background-color: white;
+}
+
+.bg-primary {
+background-color: #007b56 !important;
+}
+
+* {
+margin: 0;
+}
+
+html, body {
+height: 100%;
+}
+
+.page-wrap {
+min-height: 100%;
+/* equal to footer height */
+margin-bottom: -142px;
+}
+
+.page-wrap:after {
+content: "";
+display: block;
+}
+
+.site-footer, .page-wrap:after {
+height: 142px;
+}
+
+.site-footer {
+background: #086944;
+height: 40px;
+width: 1500px;
+margin-top: 117px;
+margin-left: -129px;
+}
+
+.text-center {
+text-align: center !important;
+margin-top: -52px;
+}
+
+@
+keyframes click-wave { 0% {
+height: 40px;
+width: 40px;
+opacity: 0.35;
+position: relative;
+}
+
+100%
+{
+height
+:
+
+200
+px
+;
+
+    
+width
+:
+
+200
+px
+;
+
+    
+margin-left
+:
+
+-80
+px
+;
+
+    
+margin-top
+:
+
+-80
+px
+;
+
+    
+opacity
+:
+
+0;
+}
+}
+body {
+/* overflow: hidden;*/
+}
+
+.option-input {
+-webkit-appearance: none;
+-moz-appearance: none;
+-ms-appearance: none;
+-o-appearance: none;
+appearance: none;
+position: relative;
+top: 13.33333px;
+right: 0;
+bottom: 0;
+left: 0;
+height: 40px;
+width: 40px;
+transition: all 0.15s ease-out 0s;
+background: #cbd1d8;
+border: none;
+color: #fff;
+cursor: pointer;
+display: inline-block;
+margin-right: 0.5rem;
+outline: none;
+position: relative;
+z-index: 1000;
+}
+
+.option-input:hover {
+background: #9faab7;
+}
+
+.option-input:checked {
+background: #40e0d0;
+}
+
+.option-input:checked::before {
+height: 40px;
+width: 40px;
+position: absolute;
+content: '✔';
+display: inline-block;
+font-size: 26.66667px;
+text-align: center;
+line-height: 40px;
+}
+
+.option-input:checked::after 
+{
+-webkit-animation: click-wave 0.65s;
+-moz-animation: click-wave 0.65s;
+animation: click-wave 0.65s;
+background: #40e0d0;
+content: '';
+display: block;
+position: relative;
+z-index: 100;
+}
+
+.option-input.radio {
+border-radius: 50%;
+}
+
+.option-input.radio::after {
+border-radius: 50%;
+}
+
+.navbar-default {
+background-color: #f8f8f8;
+border-color: #e7e7e7;
+height: 40px;
+wodth: 108px;
+margin-top: 25px;
+}
+
+}
+#preloader {
+position: fixed;
+top: 301px;
+left: 612px;
+width: 10%;
+height: 10%;
+}
+
+#loader1{
+display: none;
+}
+#loader {
+position: relative;
+left: 50%;
+top: -5%;
+width: 150px;
+height: 150px;
+margin: -75px 0 0 -75px;
+border-radius: 50%;
+border: 3px solid transparent;
+border-top-color: #9370DB;
+-webkit-animation: spin 2s linear infinite;
+animation: spin 2s linear infinite;
+display: none;
+}
+
+#loader:before {
+content: "";
+position: absolute;
+top: 5px;
+left: 5px;
+right: 5px;
+bottom: 5px;
+border-radius: 50%;
+border: 3px solid transparent;
+border-top-color: #BA55D3;
+-webkit-animation: spin 3s linear infinite;
+animation: spin 3s linear infinite;
+}
+
+#loader:after {
+content: "";
+position: absolute;
+top: 15px;
+left: 15px;
+right: 15px;
+bottom: 15px;
+border-radius: 50%;
+border: 3px solid transparent;
+border-top-color: #FF00FF;
+-webkit-animation: spin 1.5s linear infinite;
+animation: spin 1.5s linear infinite;
+}
+
+@
+-webkit-keyframes spin { 0% {
+-webkit-transform: rotate(0deg);
+-ms-transform: rotate(0deg);
+transform: rotate(0deg);
+}
+
+100%
+{
+-webkit-transform
+:
+
+rotate
+(360deg);
+
+        
+-ms-transform
+:
+
+rotate
+(360deg);
+
+        
+transform
+:
+
+rotate
+(360deg);
+
+    
+}
+}
+@
+keyframes spin { 0% {
+-webkit-transform: rotate(0deg);
+-ms-transform: rotate(0deg);
+transform: rotate(0deg);
+}
+
+100%
+{
+-webkit-transform
+:
+
+rotate
+(360deg);
+
+        
+-ms-transform
+:
+
+rotate
+(360deg);
+
+        
+transform
+:
+
+rotate
+(360deg);
+
+    
+}
+}
+/* img {
+    vertical-align: middle;
+    border-style: none;
+    margin-top: -3px;
+    margin-left: 1022px;
+    height: 43px;
+    width: 55px;
+} */
+#sidenav-overlay 
+{
+position: fixed;
+top: 0;
+left: 0;
+right: 0;
+height: 120vh;
+background: none ! important;
+z-index: 997;
+}
+
+#relationsdropdown 
+{
+display: inline-block !important;
+cursor: pointer;
+}
+
+#nodedropdown {
+    display: inline-block !important;
+    cursor: pointer;
+    margin-left: -61px;
+    width: 15%;
+}
+#condropdown
+
+{
+display: inline-block !important;
+cursor: pointer;
+}
+
+#search-btn
+{
+display: inline-block !important;
+}
+
+strong 
+{
+font-weight: bold;
+}
+
+input[disabled], select[disabled] 
+{
+cursor: not-allowed;
+}
+
+
+.content
+{
+    width: 75%;
+    margin-top:5.5%;
+    margin-left: 20%;
+    background-color: #fff;
+    padding: 1em;
+padding-left: 8%;
+    margin-bottom: 1em;
+    display:block;
+    min-height:400px;
+    border: 1px solid #ebeff6;
+    border-radius: 0px;
+    -webkit-border-radius: 0px;
+    -o-border-radius: 0px;
+    -moz-border-radius: 0px;
+    -ms-border-radius: 0px;
+    -webkit-box-shadow: 0px 0px 5px -2px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 0px 5px -2px rgba(0,0,0,0.75);
+    box-shadow: 0px 0px 5px -2px rgba(0,0,0,0.75);
+} 
+#limitdrop{
+display: inline-block !important;
+cursor: pointer;
+
+}
+
+
+.side-nav 
+{
+position: fixed;
+left: 0;
+top: 63px;
+margin: 0;
+-webkit-transform: translateX(-100%);
+-ms-transform: translateX(-100%);
+transform: translateX(-100%);
+height: 85.5%;
+/* background-size: cover; */
+/* background-repeat: no-repeat; */
+/* background-position: center; */
+/* z-index: 1040; */
+-webkit-backface-visibility: hidden;
+/* overflow: hidden; */
+will-change: transform;
+/* backface-visibility: hidden; */
+padding: 0;
+/* box-shadow: 0 2px 5px 0 rgba(0,0,0,.16), 0 2px 10px 0 rgba(0,0,0,.12); */
+}
+svg{
+width:100%;
+height:100%;
+
+}
+</style>
+
+<!-------------------------------------------------STYLES ENDS---------------------------------------------------->
+
+<!-------------------------------------------------BODY STARTS--------------------------------------------------->
+
+<body class="fixed-sn black-skin">
+<header>
+<div id="slide-out" class="side-nav sn-bg-4 fixed">
+<ul class="custom-scrollbar">
+<li>
+<div class="logo-wrapper waves-light">
+<a href=" "><img src="Logo.png" class="img-fluid flex-center"
+style="height: 91px; margin-left: 23px; margin-top: -5px;">
+</div>
+</li>
+<li></li>
+<li>
+<form class="search-form" role="search"></form>
+</li>
+<li>
+<ul class="collapsible collapsible-accordion"
+style="margin-top: -199px;">
+<li><a class="collapsible-header waves-effect arrow-r"
+onclick='nodes_display();'>
+<i class="fa fa-binoculars"></i>
+Manual Generation</a></li>
+<br>
+<!-- <li><a id="sys_gen"
+class="collapsible-header waves-effect arrow-r"><i
+class="fa fa-cogs"></i> System Generation<i
+class="fa fa-angle-down rotate-icon"></i></a><br>
+<div class="collapsible-body">
+<ul class="list-unstyled" id='relationship_ul'>
+</ul>
+</div></li> -->
+</ul> 
+</ul>
+<div class="sidenav-bg mask-strong"></div>
+</div>
+<nav
+class="navbar fixed-top navbar-toggleable-md navbar-expand-lg scrolling-navbar double-nav">
+<div class="float-left">
+<a href="#" data-activates="slide-out" class="button-collapse"><i
+class="fa fa-bars"></i></a>
+</div>
+<div class="breadcrumb-dn mr-auto">
+<p>
+<strong>Neo4J</strong> 
+</p>
+</div>
+<img src="../images/neo_icon.png" style="width: 2%;margin-left: -52%;margin-right:  90%;margin-top: 1px;" "height:="" 2%;"="">
+</nav>
+</header>
+<div style='min-height:569px;'>
+
+<div>
+<div class="panel-header panel-header-lg" id='nodes_div'>
+
+<select id="nodedropdown" class='form-control'>
+
+<option value="value">Select Node</option>
+
+</select> <select id="relationsdropdown" class='form-control'>
+<option value='select'>Select</option>
+</select> 
+<select id="condropdown" class='form-control'onChange="changetextbox();">
+<option value='Like'>Like</option>
+<option value='Equal to'>Equal to</option>
+<option value='NotEqual to'>NotEqual to</option>
+</select>
+<select id="limitdrop" class='form-control'>
+<option value='select'>Select Limit</option>
+<option value='select'>5</option>
+<option value='select'>10</option>
+<option value='select'>15</option>
+<option value='select'>20</option>
+<option value='select'>25</option>
+</select>
+<input type="text"  id="search-btn" class="form-control" placeholder=" Search By" />
+<button type="button" id="go" class="button" onclick=loadgraph()>Fetch</button>
+<pre id="tooltip" style="margin-bottom: -180px; width: 18%; display: none;"></pre>
+
+</div>
+</div>
+<div class="content">
+<div id="preloader">
+<div id="loader1"><img style='width: 16%;height: 16%;margin-left: 34%;margin-top: 7%;' src='giphy.gif'></div>
+</div>
+   </div>
+   </div>
+<div role="navigation" class="navbar navbar-default navbar-static-top"
+style="margin-top: 11%;">
+<div class="container-fluid"
+style="text-align: center; margin-left: 35%;">© 2018
+Copyright:SLK Software Services</div>
+
+</div>
+
+<!--  <script type="text/javascript" src="https://mdbootstrap.com/previews/docs/latest/js/jquery-3.3.1.min.js"></script> -->
+
+<!-- Tooltips -->
+<!-- <script type="text/javascript" src="https://mdbootstrap.com/previews/docs/latest/js/popper.min.js"></script>
+  -->
+<script type="text/javascript"
+src="https://mdbootstrap.com/previews/docs/latest/js/bootstrap.min.js"></script>
+
+<!-- MDB core JavaScript -->
+<script type="text/javascript"
+src="https://mdbootstrap.com/previews/docs/latest/js/mdb.min.js"></script>
+<!------------------------------------------------- SCRIPT STARTS------------------------------------------->
+<script>
+var newdata;
+var nodes_data;
+    $("#sys_gen").click(function(e) {
+        e.preventDefault();
+    $.ajax({
+        type: 'GET',
+        contentType: 'application/json',
+      
+        url: 'http://10.60.57.66:8082/MasterGraph/services/main/displayrelation',
+       
+       
+        success: function(data)
+        { console.log(data);
+        $("#relationship_ul").empty();
+        for(i=0;i<data.relsType.length;i++){
+        
+        $("#relationship_ul").append('<li><a onClick="relationfunc(\''+data.relsType[i].relsType+'\')" class="waves-effect">'+data.relsType[i].relsType+'</a></li><br>');
+        }
+        },
+        error: function( errorThrown){
+        console.log('update Stock error: ' ); }
+       
+        });
+    });
+/*-----------------------------------------------------------------------------------------------------------*/
+function relationfunc(reltype){
+console.log(reltype);
+    $.ajax({
+        type: 'POST',
+        contentType: 'application/json',
+      
+        url: 'http://10.60.57.66:8082/MasterGraph/services/main/relationship',
+        data:{
+        "data":reltype
+        },
+        success: function(data){
+       
+        console.log(data);
+        var jsondata=JSON.stringify(data);
+        
+        },
+      
+        error: function( errorThrown){
+        console.log('update Stock error: ' ); }
+       
+        });
+}    
+  
+/*--------------------------------------------------------------------------------------------------------*/   
+    $(".button-collapse").sideNav();$(".button-collapse").sideNav();
+        function changetextbox()
+        { 
+            if (document.getElementById("condropdown").value === "Equal to") {
+               
+            $('#search-btn').prop("disabled", false);
+            //$('#dependentdropdown').prop("disabled", true);
+            } else {
+            $('#search-btn').prop("disabled", true);
+            //$('#dependentdropdown').prop("disabled", false);
+            }
+        }
+        
+        $( "input[name=example]" ).change(function() {
+        if($( "input[name=example]" ).val()== "relationship"){
+        console.log($( "input[name=example]" ).val());
+        $("#subradio").show();
+        }
+        else{
+        console.log($( "input[name=example]" ).val());
+        $("#subradio").hide();
+        }
+        });
+        function displayallnodes(){
+        $.ajax({
+        type: 'GET',
+        contentType: 'application/json',
+      
+        url: 'http://10.60.57.66:8082/MasterGraph/services/main/loadnodes',
+        success: function(data){
+$("#nodedropdown").empty();
+$("#nodedropdown").append("<option>Select Node</option>");
+        console.log(data);
+        var jsondata=JSON.stringify(data);
+            $(function() {
+            var select = $("#nodedropdown");
+                var responsedata =JSON.parse(jsondata);
+                $(responsedata.msg).each(function(index, item) {
+                    select.append($("<option>").val(item.name).text(item.name));
+                });
+               
+            })
+      
+   
+        },
+       error: function( errorThrown){
+        console.log('update Stock error: ' ); }
+       
+        });
+      
+        }
+        $("#nodedropdown").change(function(){
+        var data = {"node":$('#nodedropdown :selected').val()}
+        $.ajax({
+        type: 'POST',
+        contentType: 'application/json',
+      
+        url: 'http://10.60.57.66:8082/MasterGraph/services/main/loadcolumns',
+        data:{
+        "data":JSON.stringify(data)
+        },
+      
+        
+        success: function(data){
+        $("#relationsdropdown").empty();
+        $("#relationsdropdown").append("<option value='select'>Select</option>");
+
+         
+        console.log(data);
+        var jsondata=JSON.stringify(data);
+            $(function() {
+            var select = $("#relationsdropdown");
+          
+                var responsedata =JSON.parse(jsondata);
+          
+                $(responsedata.msg[0].columns).each(function(index, item) {
+              
+                           
+select.append($("<option>").val(item).text(item));
+                           
+                        });
+                
+            })
+      
+        
+        },
+      
+        error: function( errorThrown){
+        console.log('update Stock error: ' ); }
+       
+        });
+      
+        })
+var nodes_data;    
+function loadgraph(){
+d3.json("http://localhost:3000/nodes", function(error, treeData) {
+nodes_data=treeData;
+console.log(nodes_data);
+update();
+});
+
+		
+ }
+   	
+
+        var x=0,y=0;
+        var w = 1000;
+            var h = 600;
+        var force = d3.layout.force()
+            .linkDistance(130)
+                        .friction(0.3)
+            .charge(-650)
+                        .chargeDistance(400)
+            .gravity(0.05)
+            .size([w, h]);
+          //  .on("tick", tick);
+
+       
+function update() {
+console.log(nodes_data);
+var nodes = flatten(nodes_data),
+edges = d3.layout.tree().links(nodes);
+var drag = force.drag()
+.on("dragstart", dragstart); 
+function flatten(root) {
+var nodes = [], i = 0;
+for(j=0;j<root.length;j++){
+recurse(root[j]);
+}
+function recurse(node) {
+if (node.children) node.children.forEach(recurse);
+if (!node.id) node.id = i++;
+nodes.push(node);
+}
+return nodes;
+}
+var linkDistance=100;
+console.log(nodes);
+var dataset = {
+"nodes":nodes,
+"edges":edges,
+};
+console.log(dataset);
+$("svg").remove();
+var svg = d3.select(".content").append("svg")
+.attr("width", "960")
+.attr("height", "500");
+var svgDefs = svg.append('defs');
+force.nodes(dataset.nodes)
+.links(dataset.edges)
+.start();
+var edges = svg.selectAll("line")
+.data(dataset.edges)
+.enter()
+.append("line")
+.attr("id",function(d,i) {return 'edge'+i})
+.attr('marker-end',function(d) { console.log(d.target.type); if(d.target.type=="forward"){return 'url(#end-arrow)'}else{return ''}})
+.attr('marker-start',function(d) { console.log(d.target.type); if(d.target.type=="backward"){return 'url(#start-arrow)'}else{return ''}})
+.style("stroke","#bbb")
+.style("pointer-events", "none");
+　
+var gradient = svg.append("svg:defs")
+.append("svg:linearGradient")
+.attr("id", "gradient")
+.attr("x1", "0%")
+.attr("y1", "0%")
+.attr("x2", "100%")
+.attr("y2", "100%")
+.attr("spreadMethod", "pad");
+gradient.append("svg:stop")
+.attr("offset", "0%")
+.attr("stop-color", "#11998e")
+.attr("stop-opacity", 1);
+gradient.append("svg:stop")
+.attr("offset", "100%")
+.attr("stop-color", "#38ef7d")
+.attr("stop-opacity", 1);
+var nodes = svg.selectAll("circle")
+.data(dataset.nodes)
+.enter()
+.append("g")
+.attr("class", "node")
+.append("circle")
+.on("click", click)
+.attr("r","30")
+.attr("fill", 'url(#gradient)')
+.on('mouseover', function(d){
+d3.select(this)
+.style('stroke', '#cfebfe')
+.style('stroke-width','8px');
+var data={};
+var text='';
+$.each(d, function( key, value) 
+{
+//console.log(d);
+if(key=="x" || key=="y" || key=="px" || key=="py" || key=="fx" || key=="fy" || key=="index" || key=="id" || key=="children" ||key=="weight" ||key=="type" ||key=="fixed"){
+}
+else{
+data[key]=value.val;
+}
+}); 
+$.each(data, function( nodes, value) 
+{
+text+=nodes+":"+value;
+console.log(text)
+});
+$("#tooltip").text(text);
+$("#tooltip").show();
+})
+.on('mouseout', function(d)
+{
+d3.select(this)
+.style('stroke', 'none');
+$("#tooltip").text('');
+$("#tooltip").hide(); 
+})
+.call(drag);
+　
+var gradient = svg.append("svg:defs")
+.append("svg:linearGradient")
+.attr("id", "gradient")
+.attr("x1", "0%")
+.attr("y1", "0%")
+.attr("x2", "100%")
+.attr("y2", "100%")
+.attr("spreadMethod", "pad");
+gradient.append("svg:stop")
+.attr("offset", "0%")
+.attr("stop-color", "#11998e")
+.attr("stop-opacity", 1);
+gradient.append("svg:stop")
+.attr("offset", "100%")
+.attr("stop-color", "#38ef7d")
+.attr("stop-opacity", 1); 
+var nodelabels = svg.selectAll(".nodelabel") 
+.data(dataset.nodes)
+.enter()
+.append("text")
+.text(function (d) {
+<!-- console.log(d); -->
+<!-- var key_text=Object.keys(d)[0]; -->
+<!-- if(d[key_text]["val"]){ return d[key_text]["val"].substr(0,5)+"...";} -->
+<!-- else{ -->
+<!-- var key_dup=d["properties"]; -->
+<!-- var key_dup1=Object.keys(key_dup)[0]; -->
+<!-- return d["properties"][key_dup1]["val"].substr(0,5)+"..."; -->
+<!-- } -->
+return d.name;
+})
+.style("text-anchor", "middle")
+.style("fill", "black")
+.style("font-family", "century gothic")
+.style("font-weight", "medium")
+.style("font-size", 12); 
+/* .attr({"x":function(d){return d.x;},
+"y":function(d){return d.y;}, 
+"class":"nodelabel",
+"stroke":"black",
+"class": "shadow",
+"font-size":"13px",
+"text-shadow": "13px 13px",
+"text-anchor": "middle",
+"font-family": "Century Gothic"}) */
+　
+var edgepaths = svg.selectAll(".edgepath")
+.data(dataset.edges)
+.enter()
+.append('path')
+.attr({'d': function(d) {return 'M '+d.source.x+' '+d.source.y+' L '+ d.target.x +' '+d.target.y},
+'class':'edgepath',
+'fill-opacity':0,
+'stroke-opacity':0,
+'fill':'blue',
+'stroke':'#bbb',
+'id':function(d,i) {return 'edgepath'+i}})
+.style("pointer-events", "none");
+var edgelabels = svg.selectAll(".edgelabel")
+.data(dataset.edges)
+.enter()
+.append('text')
+.style("pointer-events", "none")
+.attr({'class':'edgelabel',
+'id':function(d,i){return 'edgelabel'+i},
+'dx':40,
+'dy':12,
+'text-anchor':'center',
+'fill':'#bbb'})
+.style("font-size", 8); 
+edgelabels.append('textPath')
+.attr('xlink:href',function(d,i) {return '#edgepath'+i})
+.style("pointer-events", "none")
+.text(function (d) { return d.target.relationtype; })
+//.text(function(d,i){return 'label '+i});
+/* 
+svg.append('defs').append('marker')
+.attr({'id':'arrowhead',
+'viewBox':'-0 -5 10 10',
+'refX':35,
+'refY':0,
+//'markerUnits':'strokeWidth',
+'orient':'auto',
+'markerWidth':10,
+'markerHeight':10,
+'xoverflow':'visible'})
+.append('svg:path')
+.attr('d', 'M 0,-5 L 10 ,0 L 0,5')
+.attr('fill', '#bbb')
+.attr('stroke','#ccc');
+*/
+svg.append('svg:defs').append('svg:marker')
+.attr('id', 'start-arrow')
+.attr('viewBox', '0 -5 10 10')
+.attr('refX', 45)
+.attr('refY', 0)
+.attr('markerWidth', 8)
+.attr('markerHeight', 14)
+.attr('orient', 'auto-start-reverse')
+.attr('xoverflow','visible')
+.append('svg:path')
+/* .attr('d', 'M 0 0 L 10 5 L 0 10 z')*/
+.attr('d', 'M 0,-5 L 10 ,0 L 0,5')
+.attr('fill', '#bbb');
+svg.append('defs').append('marker')
+.attr({'id':'end-arrow',
+'viewBox':'-0 -5 10 10',
+'refX':35,
+'refY':0,
+//'markerUnits':'strokeWidth',
+'orient':'auto',
+'markerWidth':10,
+'markerHeight':10,
+'xoverflow':'visible'})
+.append('svg:path')
+.attr('d', 'M 0,-5 L 10 ,0 L 0,5')
+.attr('fill', '#bbb')
+.attr('stroke','#ccc');
+force.on("tick", function(){
+edges.attr({"x1": function(d){return d.source.x;},
+"y1": function(d){return d.source.y;},
+"x2": function(d){return d.target.x;},
+"y2": function(d){return d.target.y;}
+});
+nodes.attr({"cx":function(d){return d.x;},
+"cy":function(d){return d.y;}
+});
+nodelabels.attr("x", function(d) { return d.x; }) 
+.attr("y", function(d) { return d.y; });
+edgepaths.attr('d', function(d) { var path='M '+d.source.x+' '+d.source.y+' L '+ d.target.x +' '+d.target.y;
+//console.log(d)
+return path}); 
+edgelabels.attr('transform',function(d,i){
+if (d.target.x<d.source.x){
+bbox = this.getBBox();
+rx = bbox.x+bbox.width/2;
+ry = bbox.y+bbox.height/2;
+return 'rotate(180 '+rx+' '+ry+')';
+}
+else {
+return 'rotate(0)';
+}
+});
+});
+/* function color(d) {
+return d._children ? "#3182bd" // collapsed package
+: d.children ? "#c6dbef" // expanded package
+: "#fd8d3c"; // leaf node
+} */
+function dragstart(d) {
+d3.select(this).classed("fixed", d.fixed = true);
+}
+}
+function click(d) {
+console.log(d);
+  if (d3.event.defaultPrevented) return; 
+  
+var data=[{"children":[{"siccode":{"val":"None Supplied"},"type":"sicode"} ,{"postcode":{"val":"PO9 3NT"},"country":{"val":"UNITED KINGDOM","line1":"33 BROOKLANDS ROAD"},"type":"sicode"} ],
+"parent":[{"nationality":{"val":"Norwegian"},"name":{"val":"Fredrik Holmsen"},"country_of_residence":{"val":"Norway"},"type":"person"},{"nationality":{"val":"Norwegian"},"name":{"val":"Fredrik Holmsen"},"country_of_residence":{"val":"Norway"},"type":"person"}]}];
+var child_arr=[];
+for(i=0;i<data[0].children.length;i++){
+data[0].children[i]["link"]="forward",
+child_arr.push(data[0].children[i]);
+} 
+for(i=0;i<data[0].parent.length;i++){
+data[0].parent[i]["link"]="backward",
+child_arr.push(data[0].parent[i]);
+} 
+console.log(child_arr);
+ d["children"]= child_arr;
+   
+   update();
+}
+function nodes_display(){
+$("#nodes_div").toggle();
+displayallnodes();
+}
+<!------------------------------------------------- Node Data------------------------------------------------->
+<!------------------------------------------------- Node Data------------------------------------------------->
+</script>
+　
+</body>
+　
+　
+　
+　
+</html>
+
+
+

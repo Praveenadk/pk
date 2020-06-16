@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-sweetalert/1.0.1/sweetalert.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-sweetalert/1.0.1/sweetalert.css">
+    <!-- <link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel = "stylesheet"> -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script> -->
+
+    <style>
+        body {
+		    font-family: Century Gothic,CenturyGothic,AppleGothic,sans-serif;
+            background-image: url("../images/bg3.jpg");
+            background-size: 1428px 1120px;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+        
+        .container {
+            margin-top: 6%;
+        }
+        
+        .navbar {
+            overflow: hidden;
+            background-color: #10486b;
+            color: white;
+            border-bottom: 4px solid #f58426;
+            position: fixed;
+            /* Set the navbar to fixed position */
+            top: 0;
+            /* Position the navbar at the top of the page */
+            width: 100%;
+            /* Full width */
+            
+            font-weight: 500;
+            font-size: 35px;
+            z-index: 10;
+            font-family: 'Aleo', serif;
+        }
+        
+        #oldrecords,
+        #newrecords {
+            background-color: #fff;
+            padding: 5px 10px 25px 10px;
+            overflow: auto;
+            <!-- width: 97%;
+            --> <!-- margin-left: 16px;
+            --> font-size: 16px !important;
+            border: 1px solid #ebeff6;
+            <!-- width: 40%;
+            --> <!-- margin-left: 100px;
+            --> border-radius: 0px;
+            font-family: "Times New Roman", Times, serif;
+            -webkit-border-radius: 0px;
+            -o-border-radius: 0px;
+            -moz-border-radius: 0px;
+            -ms-border-radius: 0px;
+            -webkit-box-shadow: 0px 0px 5px -2px rgba(0, 0, 0, 0.75);
+            -moz-box-shadow: 0px 0px 5px -2px rgba(0, 0, 0, 0.75);
+            box-shadow: 0px 0px 5px -2px rgba(0, 0, 0, 0.75);
+        }
+        
+        .form-group {
+            margin-bottom: 0px;
+        }
+        
+        .btn-primary {
+            color: #fff !important;
+            background-color: #3f6586 !important;
+            border-color: #2e6da4 !important;
+        }
+        
+        .btn-primary:hover {
+            color: #fff !important;
+            background-color: #10486b;
+            border-color: #10486b;
+        }
+        
+        .tab {
+            padding-top: 3px;
+            overflow: hidden;
+            border: 1px solid #ccc;
+            //background-color: #f1f1f1;
+			    background-color: #c7d1d8;
+            height: 39px;
+            text-align: center;
+            font-size: 21px;
+        }
+        
+        .newrecordsdisplay {
+            
+        }
+        
+        <!-- #lastnamenew {
+            --> <!-- margin-left: 17px;
+            --> <!-- margin-top: -31px;
+            --> <!--
+        }
+        
+        --> .new {
+            margin-left: -7px;
+        }
+			.heading{
+		display: inline-block;
+    margin-left: 41%;
+		}
+		.icon{
+		display: inline-block;
+    margin-left: 34%;
+	color:white;
+		}
+		.fa:hover{
+		color:white;
+		cursor:pointer;
+		opacity:0.8;
+		}
+		 .text-muted{
+   font-size: 15px;
+    word-break: break-word;
+	color:black;
+}
+label{
+	    text-transform: capitalize;
+		font-size:16px;
+	}
+	.form-control[readonly]{
+	background-color:white;
+	}
+    </style>
+</head>
+
+<body>
+    <div class="navbar"><div class="heading">Data Summary</div><a href="Match&Merge_Form.html"class="icon"><i class="fa fa-home " style="font-size:24px"></i></a></div>
+    <div class="container">
+       
+		<div id="summary">
+		 <div class="col-md-6 col-md-offset-3">
+                    <div class="tab">Merged Info</div>
+                    <div id="newrecords">
+                        <form class="form" style="//margin-top: -12px;">
+                            <div class="form-group">
+                                <div class="new col-md-6">
+                                    <label for="firstname"></label>
+                                    <h4>Firstname </h4>
+                                    <input type="text" class="form-control newrecordsdisplay" name="Firstname" id="first_name" placeholder="FirstName" title="Enter Firstname">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="new col-md-6">
+                                    <label for="lastname"></label>
+                                    <h4>Lastname </h4>
+                                    <input type="text" class="form-control newrecordsdisplay" name="lastname" id="last_name" placeholder="LastName" title="Enter Lastname">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="new col-md-6" style="//margin-top: -12px;">
+                                    <label for="BirthDate"></label>
+                                    <h4>BirthDate</h4>
+                                    <input type="text" class="form-control newrecordsdisplay" name="BirthDate" id="birth_date" placeholder="DD-MM-YYYY" title="Enter BirthDate">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="new col-md-6" style="//margin-top: -12px;">
+                                    <label for="Email"></label>
+                                    <h4>Email</h4>
+                                    <input type="text" class="form-control newrecordsdisplay" name="Email" id="email" placeholder="Email" title="Enter Email">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="new col-md-6" style="//margin-top: -12px;">
+                                    <label for="Maritalstatus"></label>
+                                    <h4>Marital Status</h4>
+                                    <!-- <input type="text" class="form-control newrecordsdisplay" name="Maritalstatus" id="marital_status" placeholder="Maritalstatus" title="Enter Maritalstatus"> -->
+							<select  class="form-control newrecordsdisplay" name="Maritalstatus" id="marital_status">
+							 <option value="">Select Marital Status</option>
+							 <option  value="unmarried">Unmarried</option>
+							 <option  value="married">Married</option>
+							 </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="new col-md-6" style="//margin-top: -12px;">
+                                    <label for="opendate"></label>
+                                    <h4>Phone Number</h4>
+                                    <input type="text" class="form-control newrecordsdisplay" name="PhoneNumber" id="phone_number" placeholder="Phone Number" title="Enter Last Open_date">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="new col-md-6" style="//margin-top: -12px;">
+                                    <label for="ssn"></label>
+                                    <h4>SSN</h4>
+                                    <input type="text" class="form-control newrecordsdisplay" id="ssn" placeholder="SSN" title="Enter SSN">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="new col-md-6" style="//margin-top: -12px;">
+                                    <label for="Gender"></label>
+                                    <h4>Gender</h4></label>
+                                    <!-- <input type="text" class="form-control newrecordsdisplay" name="Gender" id="gender" placeholder="Gender" title="Enter Gender"> -->
+									 <select  class="form-control newrecordsdisplay" name="Gender" id="gender">
+								<option value="">Select Gender</option>
+								<option  value="female">Female</option>
+								<option  value="male">Male</option>
+							 
+							 </select>
+									
+									
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="new col-md-6" style="//margin-top: -12px;">
+                                    <label for="Address"></label>
+                                    <h4>Address</h4>
+                                    <input type="text" class="form-control newrecordsdisplay" name="Address" id="address_line_1" placeholder="Address" title="Enter Address">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="new col-md-6" style="//margin-top: -12px;">
+                                    <label for="City"></label>
+                                    <h4>City</h4>
+                                    <input type="text" class="form-control newrecordsdisplay" name="City" id="city" placeholder="City" title="Enter City">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="new col-md-6" style="//margin-top: -12px;">
+                                    <label for="Country"></label>
+                                    <h4>Country</h4>
+                                    <input type="text" class="form-control newrecordsdisplay" name="Country" id="country" placeholder="Country" title="Enter Country">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="new col-md-6" style="//margin-top: -12px;">
+                                    <label for="postalcode"></label>
+                                    <h4>Postal Code</h4>
+                                    <input type="text" class="form-control newrecordsdisplay" name="postalcode" id="postal_code" placeholder="Postalcode" title="Enter Postalcode">
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>	
+		</div>
+        <!-- <div class="form-group" style="margin-top: 18px;float: right;"> -->
+            <!-- <a href="Match&Merge_form.html" class="btn btn-primary btn-md" >Home</a>&nbsp;&nbsp; -->
+
+        <!-- </div> -->
+
+    </div>
+
+    <script>
+        var summary;
+        
+        $(document).ready(function() {
+            summary = JSON.parse(localStorage.getItem('summary'));
+            
+           
+			$(".form").empty();
+            $.each(summary, function(key, value) {
+               
+				$(".form").append('<div class="form-group"><div class="new col-md-6"><label >'+key+'</label><input type="text" class="form-control" value="'+value+'" readonly> </div></div>');
+                
+            });
+			console.log(arr);
+          
+
+        });
+	
+    </script>
+</body>
+
+</html>

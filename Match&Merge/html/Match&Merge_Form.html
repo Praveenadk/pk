@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> 
+<link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel = "stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+<style>
+.container{
+   margin-top: 4%;
+}
+.navbar {
+   overflow: hidden;
+   background-color: #10486b ;
+   color:white;
+   border-bottom: 4px solid #f58426 ;
+   position: fixed; /* Set the navbar to fixed position */
+   top: 0; /* Position the navbar at the top of the page */
+   width: 100%; /* Full width */
+   text-align : cEnter;
+   font-weight:400;
+   font-size : 32px;
+   z-index: 10;
+   font-family: 'Aleo', serif;
+}
+body {
+font-family: Century Gothic,CenturyGothic,AppleGothic,sans-serif;
+   background-image: url("../images/bg3.jpg");
+   background-size: 1428px 1120px;
+   background-repeat:no-repeat;
+   background-attachment: fixed;
+}
+.col-md-12{
+   margin-left: 1%;
+}
+.btn-primary {
+    color: #fff !important;
+    background-color: #3f6586 !important;
+    border-color: #2e6da4 !important;
+	 } 
+	 .btn-primary :hover {
+    color: #fff !important;
+   background-color: #10486b;
+    border-color: #10486b;
+	 } 
+	 label{
+	     font-size: 16px;
+		 margin:10px 0px;
+	 }
+</style>
+</head>
+<body>
+<div class="navbar" > Enter The Details</div>
+<div class="container">
+    <div class="row">
+  		 <div class="col-md-12">
+         <form class="form" id="form">
+                      <div class="form-group">
+                          <div class="col-md-6">
+                              <label for="firstname">Firstname </label>
+                              <input type="text" class="form-control" name="Firstname" id="firstname" placeholder="FirstName" title="Enter Firstname">
+                          </div>
+                      </div>
+                      <div class="form-group">
+                          <div class="col-md-6">
+                            <label for="lastname">Lastname</label>
+                              <input type="text" class="form-control" name="lastname" id="lastname" placeholder="LastName" title="Enter Lastname">
+                          </div>
+                      </div>
+                      <div class="form-group">
+                           <div class="col-md-6">
+                              <label for="BirthDate">BirthDate</label>
+                              <input type="text" class="form-control" name="BirthDate" id="BirthDate" placeholder="DD-MM-YYYY" title="Enter BirthDate">
+                          </div>
+                      </div>
+					    <div class="form-group">
+                           <div class="col-md-6">
+                              <label for="Email">Email</label>
+                              <input type="text" class="form-control" name="Email" id="Email" placeholder="Email" title="Enter Email">
+                          </div>
+                      </div>
+                      <div class="form-group">
+                          <div class="col-md-6">
+                             <label for="Maritalstatus">Marital Status</label>
+							 <select  class="form-control" name="Maritalstatus" id="Maritalstatus">
+							 <option value="">Select Marital Status</option>
+							 <option  value="unmarried">Unmarried</option>
+							 <option  value="married">Married</option>
+							 
+							 </select>
+                              <!-- <input type="text" class="form-control" name="Maritalstatus" id="Maritalstatus" placeholder="Maritalstatus" title="Enter Maritalstatus"> -->
+                          </div>
+                      </div>
+                      <div class="form-group">
+                          <div class="col-md-6">
+                              <label for="opendate">Phone Number</label>
+                              <input type="text" class="form-control" name="PhoneNumber" id="PhoneNumber" placeholder="Phone Number" title="Enter Last Open_date">
+                          </div>
+                      </div>
+                      <div class="form-group">
+                          <div class="col-md-6">
+                              <label for="ssn">SSN</label>
+                              <input type="text" class="form-control" id="ssn" placeholder="SSN" title="Enter SSN">
+                          </div>
+                      </div>
+                      <div class="form-group">
+                          <div class="col-md-6">
+                              <label for="Gender">Gender</label>
+							  <select  class="form-control" name="Gender" id="Gender">
+							 <option value="">Select Gender</option>
+							 <option  value="female">Female</option>
+							 <option  value="male">Male</option>
+							 
+							 </select>
+                              <!-- <input type="text" class="form-control" name="Gender" id="Gender" placeholder="Gender" title="Enter Gender"> -->
+                          </div>
+                      </div>
+                      <div class="form-group">
+                          <div class="col-md-6">
+                            <label for="Address">Address</label>
+                              <input type="text" class="form-control" name="Address" id="Address" placeholder="Address" title="Enter Address">
+                          </div>
+                      </div>
+					   <div class="form-group">
+                          <div class="col-md-6">
+                            <label for="City">City</label>
+                              <input type="text" class="form-control" name="City" id="City" placeholder="City" title="Enter City">
+                          </div>
+                      </div>
+					   <div class="form-group">
+                          <div class="col-md-6">
+                            <label for="Country">Country</label>
+                              <input type="text" class="form-control" name="Country" id="Country" placeholder="Country" title="Enter Country">
+                          </div>
+                      </div>
+					   <div class="form-group">
+                          <div class="col-md-6">
+                            <label for="postalcode">Postal Code</label>
+                              <input type="text" class="form-control" name="postalcode" id="postalcode" placeholder="Postalcode" title="Enter Postalcode">
+                          </div>
+                      </div>
+					  </form>
+                      <div class="form-group">
+                           <div>
+                                <button class="btn btn-primary btn-md" id="formsave" style="margin-top: 2%; margin-left: 43%;"><i class="glyphicon glyphicon-ok-sign"></i>&nbsp;Next</button>
+								&nbsp;&nbsp;
+                               	<button class="btn btn-primary btn-md" id="reset" style="margin-top: 2%;" ><i class="glyphicon glyphicon-repeat"></i> Reset</button>
+                            </div>
+                      </div>
+              
+             </div><!--/col-md-12-->
+         </div><!--/row-->
+      </div><!--/container-->
+	  <script>
+		$('#formsave').click(function(){
+		debugger;
+		 var formData = {
+          first_name : document.getElementById("firstname").value,
+          last_name : document.getElementById("lastname").value,
+          birth_date : document.getElementById("BirthDate").value,
+          email : document.getElementById("Email").value,
+		  marital_status: document.getElementById("Maritalstatus").value,
+		  phone_number : document.getElementById("PhoneNumber").value,
+		  ssn : document.getElementById("ssn").value,
+		  gender : document.getElementById("Gender").value,
+		  address_line_1 : document.getElementById("Address").value,
+		  city : document.getElementById("City").value,
+		  country : document.getElementById("Country").value,
+		  postal_code : document.getElementById("postalcode").value
+		 }
+		 console.log(formData);
+		 $.each(formData, function(key, value){
+              if (value === "" || value === null){
+              delete formData[key];
+              }
+           });
+		  console.log(formData);
+		 console.log(JSON.stringify(formData));
+		
+		  if (typeof(Storage) !== "undefined") { 
+					 localStorage.setItem("formData", JSON.stringify(formData));
+					  console.log(formData); 
+				} 
+				  window.open('Match&Merge_Data_List.html','_self');
+		});
+		$('#reset').click(function(){
+		$("#form")[0].reset();
+		});
+		
+	  </script>
+   </body>
+ </html>                                             

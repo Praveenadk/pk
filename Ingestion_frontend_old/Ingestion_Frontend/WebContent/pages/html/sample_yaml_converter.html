@@ -1,0 +1,146 @@
+ <!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Drag & Drop</title>
+    <link rel="icon" href="../images/ingestion.png" type="image" sizes="16x16">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	  <script src="https://cdnjs.cloudflare.com/ajax/libs/yamljs/0.3.0/yaml.min.js"
+            type="text/javascript"></script>
+			<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.js"
+            type="text/javascript"></script>
+     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/yamljs/0.3.0/yaml.legacy.js" -->
+            <!-- type="text/javascript"></script> -->
+			<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/yamljs/0.3.0/yaml.debug.js" -->
+            <!-- type="text/javascript"></script> -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.10.2/jquery.js "></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.15/js/bootstrap-multiselect.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.15/css/bootstrap-multiselect.css" type="text/css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsPlumb/1.4.1/jquery.jsPlumb-1.4.1-all-min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2"></script>
+ 
+ </head>
+
+ 
+ <button type="button" id="start_workflow" class="btn" style="background: #16494a;border-color: #004849;color: white;cursor:pointer;position: absolute;z-index: 2;"><img src="../images/loader5.gif" id="ajax_loader1" style="display:none;margin-left:-8px;"></img>StartWorkflow</button>
+ <script> 
+ $('#start_workflow').on("click", function() {
+ debugger;
+ var data  = {};
+ data = {
+  "source": [
+    {
+      "sourceid": "mysql0",
+      "source_type": "mysql",
+      "configuration": {
+        "host": "10.41.2.15",
+        "port": "3306",
+        "username": "root",
+        "password": "slk@SOFT123",
+        "databasename": "test",
+        "tablename": "emp",
+        "maxconnection": "1"
+      }
+    }
+  ],
+  "target": [
+    {
+      "targetid": "Target0",
+      "target_type": "HDFS",
+      "configuration": {
+        "host": "10.41.2.15",
+        "port": "3306",
+        "username": "root",
+        "password": "slk@321SOFT",
+        "maxconnection": "1"
+      }
+    }
+  ],
+  "connection": [
+    {
+      "connectionid": "con_16",
+      "configuration": {
+        "from": "mysql0",
+        "to": "nullcheckTransform0"
+      }
+    },
+    {
+      "connectionid": "con_20",
+      "configuration": {
+        "from": "nullcheckTransform0",
+        "to": "dateTransform0"
+      }
+    },
+    {
+      "connectionid": "con_24",
+      "configuration": {
+        "from": "dateTransform0",
+        "to": "Target0"
+      }
+    }
+  ],
+  "transformation": [
+    {
+      "transformationid": "nullcheckTransform0",
+      "transformation_type": "nullcheck",
+      "configuration": {
+        "option": {
+          "type": "replace value",
+          "configuration": {
+            "gender": "female"
+          }
+        },
+        "columns": [
+          "gender"
+        ]
+      }
+    },
+    {
+      "transformationid": "dateTransform0",
+      "transformation_type": "dateformat",
+      "configuration": {
+        "option": {
+          "type": "change format",
+          "configuration": {
+            "date": "dd-mm-yyyy"
+          }
+        },
+        "columns": [
+          "date"
+        ]
+      }
+    }
+  ]
+}
+
+
+console.log(data);
+var test = (JSON.stringify(data));
+  var YAML = require([jsontoyml])
+    , ymlText
+    ;
+ 
+    ymlText = YAML.stringify({
+     data
+    });
+ 
+    console.log(ymlText);
+//var YAML = require(['json2yaml']), test;
+
+    <!-- ymlText = YAML.stringify({ -->
+      <!-- "foo": "bar" -->
+    <!-- , "baz": "corge" -->
+    <!-- }); -->
+
+    <!-- console.log(ymlText); -->
+			 <!-- var yaml = json2yaml(test); -->
+             <!-- console.log(yaml); -->
+			 });
+ </script>
+ </html>

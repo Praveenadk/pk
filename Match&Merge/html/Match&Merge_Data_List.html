@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> 
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-sweetalert/1.0.1/sweetalert.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-sweetalert/1.0.1/sweetalert.css">
+<!-- <link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel = "stylesheet"> -->
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script> -->
+
+<style>
+body {
+font-family: Century Gothic,CenturyGothic,AppleGothic,sans-serif;
+   background-image: url("../images/bg3.jpg");
+   background-size: 1428px 1120px;
+   background-repeat:no-repeat;
+   background-attachment: fixed;
+}
+.container{
+    margin-top: 6%;
+}
+.navbar {
+            overflow: hidden;
+            background-color: #10486b;
+            color: white;
+            border-bottom: 4px solid #f58426;
+            position: fixed;
+            /* Set the navbar to fixed position */
+            top: 0;
+            /* Position the navbar at the top of the page */
+            width: 100%;
+            /* Full width */
+            
+            font-weight: 500;
+            font-size: 35px;
+            z-index: 10;
+            font-family: 'Aleo', serif;
+        }
+.content{
+	    background-color: #fff;
+		padding: 10px;
+		overflow:auto;
+		<!-- width: 97%; -->
+        <!-- margin-left: 16px; -->
+		font-size: 16px !important;
+	    border: 1px solid #ebeff6;
+		<!-- width:40%; -->
+		margin-top: 3%;
+		<!-- margin-left: 100px; -->
+	    border-radius: 0px;
+		font-family: "Times New Roman", Times, serif;
+	    -webkit-border-radius: 0px;
+	    -o-border-radius: 0px;
+	    -moz-border-radius: 0px;
+	    -ms-border-radius: 0px;
+	    -webkit-box-shadow: 0px 0px 5px -2px rgba(0,0,0,0.75);
+	    -moz-box-shadow: 0px 0px 5px -2px rgba(0,0,0,0.75);
+	    box-shadow: 0px 0px 5px -2px rgba(0,0,0,0.75);
+	} 
+	.maindetails{
+	box-shadow: 0px 0px 5px -2px rgba(0,0,0,0.75);
+  // background: #2d6284;
+      background: #929ca2;
+    color: white;
+    padding: 5px;
+	font-weight:600;
+	}
+	.labels{
+	font-weight:bold;
+	}
+	.icon{
+	display:inline;
+	float:right;
+	}
+	#score{
+	border-color: #cccccc;
+	 width: 75px;
+    height: 75px;
+	 vertical-align: middle; 
+      text-align: center;
+    margin-top: -68px;
+    -moz-border-radius: 50px;
+    -webkit-border-radius: 50px;
+    border-radius: 50px;
+	 -webkit-box-shadow: 0px 0px 5px -2px rgba(0,0,0,0.75);
+	    -moz-box-shadow: 0px 0px 5px -2px rgba(0,0,0,0.75);
+	    box-shadow: 0px 0px 5px -2px rgba(0,0,0,0.75);
+	}
+	.col-md-2{
+	float:right;
+	}
+	.form-check-input{
+	position: absolute;
+  top: 0;
+  left: 0;
+  height: 18px;
+  width: 18px;
+  background-color: #eee;
+	}
+	input[type=checkbox], input[type=radio] {
+    margin: 6px 25px 10px;
+    margin-top: 1px\9;
+    line-height: normal;
+	}
+	.form-check{
+	    margin-top: 21px;
+	}
+	.col-md-6{
+	    margin-bottom: 15px;
+	}
+	.btn-primary {
+    color: #fff !important;
+    background-color: #3f6586 !important;
+    border-color: #2e6da4 !important;
+	 } 
+	 .btn-primary :hover {
+    color: #fff !important;
+   background-color: #10486b;
+    border-color: #10486b;
+	 }
+ .text-muted{
+   font-size: 15px;
+    word-break: break-word;
+	color:black;
+} 
+#no_records{
+display:none;
+}
+	.heading{
+		display: inline-block;
+    margin-left: 41%;
+		}
+		.icon1{
+		display: inline-block;
+    margin-left: 34%;
+	color:white;
+		}
+		.fa:hover{
+		color:white;
+		cursor:pointer;
+		opacity:0.8;
+		}
+</style>
+</head>
+<body>
+<div class="navbar"><div class="heading">List of Matches</div><a href="Match&Merge_Form.html" class="icon1"><i class="fa fa-home " style="font-size:24px"></i></a></div></a>
+<div class="container">
+<div id="display">
+<div id='ajax_loader' style=" margin-left: 27%;margin-top: 8%; display: none;">
+				<img  src="../images/loading_dots.gif"></img>
+			</div>
+<div class="alert alert-danger" id="no_records">
+ <strong>No substantial matches are found</strong>
+</div>
+</div>
+ <div class="form-group" style="margin-top: 18px;float: right;position:relative;">
+     <div>
+        <button class="btn btn-primary btn-md" id="merge" style="display:none;">Next</button>&nbsp;&nbsp;
+        <button class="btn btn-primary btn-md" id="createnew"></i>Create New</button>
+         </div>
+    </div>
+<div>
+</div>
+
+<script>
+var formData;
+ $(document).ready(function() {
+ formData = JSON.parse(localStorage.getItem('formData')); 
+ console.log(formData);
+ //var formData(JSON.parse(formData));
+  $.ajax({
+              type: 'POST',
+                // url: 'http://10.60.64.92:8080/MatchMerge/Match',
+				url: 'http://10.60.24.39:8080/MatchMerge/Match',
+                 data:JSON.stringify(formData),
+				 beforeSend: function() { 
+				 $("#ajax_loader").show();
+			},
+                 success: function(msg) {
+                     console.log(msg); 
+					var msg1 =  {
+    "Total Matches": 1,
+    "matching documents": [
+        {
+            "score": 4.0343244,
+            "highlight": [
+                {
+                    "column": "phone_number",
+                    "fragments": [
+                        "</highlight>544<highlight>-</highlight>627<highlight>-</highlight>9699<highlight>"
+                    ]
+                },
+                {
+                    "column": "first_name",
+                    "fragments": [
+                        "</highlight>Nydia<highlight>"
+                    ]
+                }
+            ],
+            "document": {
+                "country": "USA",
+                "account_start_date": "09-12-2015",
+                "city": "Concord",
+                "birth_date": "05-05-1983",
+                "last_name": "Gilson",
+                "account_end_date": "05-10-2016",
+                "death_date": "07-05-1998",
+                "acct_no": "101433",
+                "address_line_1": "91 Auburn St",
+                "phone_number": "544-627-9699",
+                "id": "1828",
+                "postal_code": "3301",
+                "first_name": "Nydia"
+            }
+        },
+		{
+            "score": 0.5348759943,
+            "highlight": [
+                {
+                    "column": "phone_number",
+                    "fragments": [
+                        "</highlight>544<highlight>-</highlight>627<highlight>-</highlight>9699<highlight>"
+                    ]
+                },
+                {
+                    "column": "first_name",
+                    "fragments": [
+                        "</highlight>Nydia<highlight>"
+                    ]
+                }
+            ],
+            "document": {
+                "country": "USA",
+                "account_start_date": "09-12-2015",
+                "city": "Concord",
+                "birth_date": "05-05-1983",
+                "last_name": "Gilson",
+                "account_end_date": "05-10-2016",
+                "death_date": "07-05-1998",
+                "acct_no": "101433",
+                "address_line_1": "91 Auburn St",
+                "phone_number": "544-627-9699",
+                "id": "1828",
+                "postal_code": "3301",
+                "first_name": "Nydia"
+            }
+        }
+    ]
+ } 
+ if(msg["Total Matches"]>0){
+var data1 = msg["matching documents"];
+console.log(data1);
+
+for(i=0;i<data1.length;i++)
+{
+   var data2= data1[i].document;
+   var Score = data1[i].score;
+   console.log(Score);
+   //integer.toString().substr(0, 1);
+   var scoresub = Score.toString().substr(0,5);
+   var id = data2.id;
+   console.log(id);
+   console.log(scoresub);
+   $("#display").append( 
+    '<div id="group'+i+'"><div><div class="col-md-6"><div class="content" style="font-size:16px;"><div class="form-check"><input type="radio" name="optradio" class="form-check-input" id="Check'+i+'"></div><span class="labels">FirstName : </span><span id="first_name">' + data2.first_name + '</span></br><span class="labels">LastName : </span><span id="last_name">' + data2.last_name + '</span></br><span class="labels">Account Number : </span><span id="acct_no">' + data2.acct_no + '</span></br><span class="labels">Phone Number : </span><span id="phone_number">' + data2.phone_number + '</span><div class="content col-md-2" id="score"><span class="labels">Score : </span><span>'+scoresub+'</span></div></div><div class="maindetails">More Details<div class="icon"><i class="fa fa-chevron-down"></i></div></div><div class="moredetails content" style="display:none;font-size:16px;"><span class="labels">DeathDate : </span><span id="death_date">' + data2.death_date + '</span></br><span class="labels">BirthDate : </span><span id="birth_date">' + data2.birth_date + '</span></br><span class="labels">Account Startdate : </span><span id="account_start_date">' + data2.account_start_date + '</span></br><span class="labels">Account Enddate : </span><span id="account_end_date">' + data2.account_end_date + '</span></br><span class="labels">Address : </span><span id="address_line_1">' + data2.address_line_1 + '</span></br><span class="labels">City : </span><span id="city">' + data2.city + '</span></br><span class="labels">Country : </span><span id="country">' + data2.country + '</span></br><span class="labels">Postal Code : </span><span id="postal_code">' + data2.postal_code + '</span><span id="id" style="display:none;">' + data2.id+ '</span></div></div></div></div>'
+       ) ;
+	   <!-- if(Score > 35 ){ -->
+   <!-- $("#group"+i+" #score").css("background-color","#ff704d") -->
+   <!-- } -->
+   <!-- else if(Score < 15 ){ -->
+   <!-- $("#group"+i+" #score").css("background-color","#8cd98c") -->
+   <!-- } -->
+   <!-- else{ -->
+   <!-- $("#group"+i+" #score").css("background-color","#ffad33") -->
+   <!-- } -->
+      if(Score > 35 ){
+   $("#group"+i+" #score").css("background","linear-gradient(to right, #ff704d, #ffad99)")
+   }
+   else if(Score < 15 ){
+   $("#group"+i+" #score").css("background" ,"linear-gradient(to right, #66cc66, #b3e6b3)")
+   }
+   else{
+   $("#group"+i+" #score").css("background","linear-gradient(to right, #ffa31a, #ffcc80)")
+   }
+}
+}
+else{
+$("#no_records").show();
+}
+   },complete:function(){  
+          $("#ajax_loader").hide();
+		},
+		});
+  });
+   $(document).on("click",".maindetails",function(){
+ debugger;
+   var downicon = $(this).find(".icon").html();
+   if( downicon=='<i class="fa fa-chevron-down"></i>'  ){
+   $(this).find(".icon").html('<i class="fa fa-chevron-up"></i>')
+   }
+   else{
+    $(this).find(".icon").html('<i class="fa fa-chevron-down"></i>')  
+   }
+    $(this).next().slideToggle("slow");
+  });
+  var matchData={};
+    $(document).on("click",".form-check-input",function(){
+    debugger;
+	$("#merge").show();
+	console.log($(this));
+    console.log($(this).closest(".col-md-6"));
+	 matchData = {
+          first_name : $(this).closest(".col-md-6").find('#first_name').html(),
+          last_name : $(this).closest(".col-md-6").find('#last_name').html(),
+          birth_date : $(this).closest(".col-md-6").find('#birth_date').html(),
+          death_date : $(this).closest(".col-md-6").find('#death_date').html(),
+		  acct_no : $(this).closest(".col-md-6").find('#acct_no').html(),
+		  phone_number : $(this).closest(".col-md-6").find('#phone_number').html(),
+		  account_start_date : $(this).closest(".col-md-6").find('#account_start_date').html(),
+		  account_end_date : $(this).closest(".col-md-6").find('#account_end_date').html(),
+		  address_line_1 : $(this).closest(".col-md-6").find('#address_line_1').html(),
+		  city : $(this).closest(".col-md-6").find('#city').html(),
+		  country : $(this).closest(".col-md-6").find('#country').html(),
+		  postal_code : $(this).closest(".col-md-6").find('#postal_code').html(),
+		  id : $(this).closest(".col-md-6").find('#id').html()
+		 }
+		 
+	 
+  });
+  $('#merge').click(function(){
+  debugger;
+   if (typeof(Storage) !== "undefined") { 
+					 localStorage.setItem("matchData", JSON.stringify(matchData));
+					  console.log(matchData); 
+				}
+	 console.log(matchData); 
+				   window.open('Match&Merge_New_Values.html','_self');
+	<!-- var arr=[]; -->
+	<!-- var msg1 = {}; -->
+
+	<!-- $.each(formData,function(key,value){ -->
+	<!-- arr.push(key); -->
+	  <!-- }); -->
+	<!-- console.log(arr); -->
+	<!-- var submitobj={}; -->
+	<!-- var finalobj= {}; -->
+	<!-- finalobj["id"]= matchData["id"]; -->
+	<!-- /* for(i=0;i<arr.length;i++){ -->
+	<!-- submitobj[arr[i]]= matchData[arr[i]]; -->
+	<!-- } */ -->
+	<!-- finalobj["properties"] = formData; -->
+	<!-- console.log(finalobj); -->
+	<!-- console.log(JSON.stringify(finalobj)); -->
+	<!-- $.ajax({ -->
+              <!-- type: 'POST', -->
+                 <!-- url: 'http://10.60.65.15:8080/MatchMerge/Merge', -->
+                 <!-- data:JSON.stringify(finalobj), -->
+                 <!-- success: function(msg) { -->
+				 <!-- console.log(msg); -->
+				 <!-- viewdata = msg["Properties"]; -->
+				 <!-- var viewdataclick = (JSON.stringify(viewdata)); -->
+				  <!-- msg1 = msg["merge_summary"]; -->
+                     <!-- if('No of Properties set' in msg1  == true){ -->
+					 <!-- swal({ -->
+                    <!-- title: 'Success!', -->
+                    <!-- text: 'Data has been Merged Succesfully', -->
+                    <!-- type: 'success', -->
+					<!-- showCancelButton: true, -->
+                    <!-- confirmButtonClass: "btn btn-md btn-success", -->
+                    <!-- confirmButtonText: "View Data", -->
+                    <!-- cancelButtonText: "Ok", -->
+                    <!-- closeOnConfirm: false, -->
+                    <!-- closeOnCancel: true -->
+                      <!-- },function(isConfirm) { -->
+            <!-- if (isConfirm) { -->
+            	 <!-- swal({title:'',text:viewdataclick},function() {window.location = "Match&Merge_Form.html";}); -->
+	           <!-- } -->
+          <!-- }); -->
+					 <!-- }else{ -->
+					<!-- swal({ -->
+                    <!-- title: 'Error!', -->
+                    <!-- text: 'Data has not been Merged', -->
+                    <!-- type: 'error' -->
+                      <!-- }); -->
+					 <!-- }; -->
+					 
+                <!-- } -->
+           <!-- });				 -->
+	});
+	$('#createnew').click(function(){
+	 debugger;
+	 console.log(formData);
+	 $.ajax({
+              type: 'POST',
+                 url: 'http://10.60.24.39:8080/MatchMerge/CreateNew',
+                 data:JSON.stringify(formData),
+                 success: function(msg) {
+                     console.log(msg);
+					 var createdNode = msg["created_node"];
+					 var creationSummary = msg["creation_summary"]
+					  var createdNodeclick = (JSON.stringify(createdNode));
+					  var creationSummaryclick = (JSON.stringify(creationSummary));
+					    if('creation_summary' in msg  == true){
+					 swal({
+                    title: 'Success!',
+                    text: 'NewNode Created Succesfully',
+                    type: 'success',
+					showCancelButton: true,
+                    confirmButtonClass: "btn-success",
+                    confirmButtonText: "View Data",
+                    cancelButtonText: "Ok",
+                    closeOnConfirm: false,
+                    closeOnCancel: true
+                      },function(isConfirm) {
+                      if(isConfirm) {
+                     localStorage.setItem('summary',createdNodeclick)
+            	window.location = "mergeSummary.html";
+	                   }
+					   else{
+					 window.location = "Match&Merge_Form.html";  
+					   }
+                     });
+					 }else{
+					swal({
+                    title: 'Error!',
+                    text: 'NewNode not created',
+                    type: 'error'
+                      });
+					 };
+                }
+           });
+	});
+</script>
+   </body>
+ </html>                                             

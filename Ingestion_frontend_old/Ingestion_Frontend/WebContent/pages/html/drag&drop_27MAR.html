@@ -1,0 +1,1784 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Drag & Drop</title>
+    <link rel="icon" href="../images/ingestion.png" type="image" sizes="16x16">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	  <script src="https://cdnjs.cloudflare.com/ajax/libs/yamljs/0.3.0/yaml.js"
+            type="text/javascript"></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/yamljs/0.3.0/yaml.legacy.js"
+            type="text/javascript"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.10.2/jquery.js "></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.15/js/bootstrap-multiselect.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.15/css/bootstrap-multiselect.css" type="text/css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsPlumb/1.4.1/jquery.jsPlumb-1.4.1-all-min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2"></script>
+    <!-- <link rel="stylesheet" href="../css/Drag&Drop.css"> -->
+    <!-- <script src="../js/Drag&Drop.js"></script> -->
+    <style>
+        @media screen and (max-width: 1366px) {
+            .nav-side-menu {
+                margin-left: -113px !important;
+            }
+        }
+        
+        body {
+            font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif;
+        }
+        
+        @import 'https://fonts.googleapis.com/css?family=Cairo|Slabo+27px';
+        .nav-side-menu {
+            margin-left: -142px;
+            margin-top: 49px;
+            overflow: auto;
+            font-size: 12px;
+            font-weight: 200;
+            background-color: #2e353d;
+            position: fixed;
+            top: 0px;
+            width: 217px;
+            height: 100%;
+            color: #e1ffff;
+        }
+        
+        @media (min-width: 768px) {
+            .navbar {
+                border-radius: 2px !important;
+            }
+        }
+        
+        .nav-side-menu .brand {
+            background-color: #23282e;
+            line-height: 50px;
+            display: block;
+            text-align: center;
+            font-size: 14px;
+        }
+        
+        .nav-side-menu .toggle-btn {
+            display: none;
+        }
+        
+        .nav-side-menu ul,
+        .nav-side-menu li {
+            list-style: none;
+            padding: 0px;
+            margin: 0px;
+            line-height: 35px;
+            cursor: pointer!important;
+        }
+        
+        .nav-side-menu ul:not(collapsed) .arrow:before,
+        .nav-side-menu li:not(collapsed) .arrow:before {
+            font-family: FontAwesome;
+            content: "\f078";
+            display: inline-block;
+            padding-left: 10px;
+            padding-right: 10px;
+            vertical-align: middle;
+            float: right;
+        }
+        
+        .nav-side-menu ul .active,
+        .nav-side-menu li .active {
+            border-left: 3px solid #d19b3d;
+            background-color: #4f5b69;
+        }
+        
+        .nav-side-menu ul .sub-menu li.active,
+        .nav-side-menu li .sub-menu li.active {
+            color: #d19b3d;
+        }
+        
+        .nav-side-menu ul .sub-menu li.active a,
+        .nav-side-menu li .sub-menu li.active a {
+            color: #d19b3d;
+        }
+        
+        .nav-side-menu ul .sub-menu li,
+        .nav-side-menu li .sub-menu li {
+            background-color: #181c20;
+            border: none;
+            line-height: 40px;
+            border-bottom: 1px solid #23282e;
+            margin-left: 0px;
+        }
+        
+        .nav-side-menu li a {
+            text-decoration: none;
+            color: #e1ffff;
+        }
+        
+        .nav-side-menu li a i {
+            padding-left: 10px;
+            width: 20px;
+            padding-right: 20px;
+        }
+        
+        .nav-side-menu li:hover {
+            border-left: 3px solid #d19b3d;
+            background-color: #4f5b69;
+            -webkit-transition: all 1s ease;
+            -moz-transition: all 1s ease;
+            -o-transition: all 1s ease;
+            -ms-transition: all 1s ease;
+            transition: all 1s ease;
+        }
+        
+        @media (max-width: 767px) {
+            .nav-side-menu {
+                position: relative;
+                width: 100%;
+                margin-bottom: 10px;
+            }
+            .nav-side-menu .toggle-btn {
+                display: block;
+                cursor: pointer!important;
+                position: absolute;
+                right: 10px;
+                top: 10px;
+                z-index: 10 !important;
+                padding: 3px;
+                background-color: #ffffff;
+                color: #000;
+                width: 40px;
+                text-align: center;
+            }
+            .brand {
+                text-align: left !important;
+                font-size: 22px;
+                padding-left: 20px;
+                line-height: 50px !important;
+            }
+        }
+        
+        @media (min-width: 767px) {
+            .nav-side-menu .menu-list .menu-content {
+                display: block;
+                font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif;
+                font-size: 14px;
+            }
+        }
+        
+        body {
+            background-color: #f9fafb;
+            background-size: 14px 14px;
+            background-image: linear-gradient(to right, rgba(229, 235, 237, 1) 1px, transparent 1px), linear-gradient(to bottom, rgba(229, 235, 237, 1) 1px, transparent 1px);
+            z-index: 1;
+        }
+        
+        #transformdiv li {
+            display: inline-block;
+            width: auto;
+            list-style: outside none none;
+            margin-left: 48px;
+            padding: 7px 18px;
+        }
+        
+        #targetdiv li {
+            padding: 7px 14px 7px 17px !important;
+        }
+        
+        li {
+            list-style-type: none;
+            font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif;
+        }
+        
+        .fa {
+            display: inline-block;
+            font: normal normal normal 14px/1 FontAwesome;
+            font-size: 18px;
+            text-rendering: auto;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            padding: 6px 1px 0px 18px;
+            color: #004849;
+        }
+        
+        #transformdiv {
+            height: 140%;
+            margin-top: -142px;
+            margin-left: -5%;
+            /* background-color: #fff; */
+            position: relative;
+            margin-bottom: 1em;
+            display: block;
+            width: 74%;
+            white-space: nowrap;
+        }
+        
+        #sourcediv {
+            height: 141%;
+            margin-top: -1px;
+            margin-left: -38%;
+            /* background-color: #fff; */
+            position: relative;
+            /* margin-bottom: 1em; */
+            /* display: block; */
+            width: 28%;
+            float: left;
+        }
+        
+        #targetdiv {
+            height: 141%;
+            margin-top: -94%;
+            margin-left: 73%;
+            display: block;
+            width: 29%;
+        }
+        
+        .drag {
+            margin-top: 0px;
+            margin-left: 1px;
+            color: #a0a0a0;
+            position: fixed;
+            text-align: center;
+        }
+        
+        .drag1 {
+            margin-top: 1px;
+            margin-left: 168px;
+            color: #a0a0a0;
+            position: fixed;
+            text-align: center;
+        }
+        
+        .drag2 {
+            margin-top: 0px;
+            margin-left: 6px;
+            color: #a0a0a0;
+            position: fixed;
+            text-align: center;
+        }
+        
+        .source {
+            font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif !important;
+            color: black !important;
+            margin: 4px;
+            width: 63%;
+            padding: 6px;
+            height: 51px;
+            box-shadow: 0 10px 30px rgba(#333333, 0.4);
+            position: relative;
+            margin-top: 119%;
+            text-align: center;
+            font-family: 'Cairo', sans-serif;
+            overflow: none;
+            border: 1px solid #004849;
+            -moz-border-radius: 8px;
+            border-radius: 8px;
+            opacity: 0.8;
+            cursor: pointer!important;
+            background-color: white;
+            font-size: 13px;
+            position: relative;
+        }
+        
+        .transform {
+            font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif !important;
+            color: black !important;
+            text-align: center;
+            font-family: 'Cairo', sans-serif;
+            border: 1px solid #004849;
+            -moz-border-radius: 8px;
+            border-radius: 8px;
+            opacity: 0.8;
+            cursor: pointer!important;
+            background-color: white;
+            font-size: 13px;
+            font-family: 'Cairo', sans-serif;
+            position: relative;
+            font-size: 14px;
+            margin: 4px;
+            width: 26%;
+            /* overflow: hidden; */
+            padding: 13px;
+            height: 51px;
+            position: relative;
+            margin-top: 41%;
+        }
+        
+        .target {
+            font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif !important;
+            color: black !important;
+            border-radius: 8px;
+            border: 1px solid #004849;
+            opacity: 0.8;
+            cursor: pointer!important;
+            background-color: white;
+            margin: 4px;
+            width: 63%;
+            padding: 7px;
+            height: 51px;
+            position: relative;
+            margin-top: 114%;
+            text-align: center;
+            font-family: 'Cairo', sans-serif;
+            font-size: 13px;
+        }
+        
+        .highlightborder {
+            background-color: #c1c1c1;
+        }
+        
+        .disableborder {
+            background-color: none;
+        }
+        
+        .item {
+            background-color: none;
+            width: 100px;
+            height: 100px;
+            position: absolute;
+        }
+        
+        #dragbutton {
+            background-color: #ddffdd;
+        }
+        
+        #wrapper {
+            width: 800px;
+            height: 527px;
+            position: relative;
+            margin-top: 17%;
+            margin-left: 34%;
+        }
+        
+        circle {
+            cx: 7;
+            cy: 7;
+            r: 0;
+            fill: rgb(122, 176, 44);
+            stroke: #fff;
+        }
+        
+        .multiselect {
+            width: 122%;
+        }
+        
+        .source,
+        .transform,
+        .target {
+            box-shadow: 0px 5px 8px 0px rgba(0, 0, 0, 0.2), 0px 17px 24px 0px rgba(0, 0, 0, 0.19);
+        }
+        
+        ._jsPlumb_connector {
+            cursor: pointer!important;
+        }
+        
+        #play {
+            margin-top: -26.5%;
+            margin-left: 101%;
+        }
+        
+        #circulardiv {
+            background: lightsteelblue;
+            height: 30px;
+            width: 30px;
+            border-radius: 50px;
+            text-align: center;
+            cursor: pointer!important;
+        }
+        
+        .fields {
+            margin-bottom: 12px;
+        }
+        
+        option[title]:hover:after {
+            content: attr(title);
+            padding: 4px 8px;
+            position: absolute;
+            left: 0;
+            top: 100%;
+            white-space: nowrap;
+            z-index: 20px;
+            background: gray;
+        }
+        
+        .field-icon {
+            float: right;
+            color: black;
+            margin-right: 19px;
+            font-size: 16px;
+            margin-top: -32px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .opensrc,
+        .opentrans,
+        .opentrg {
+            text-align: center;
+        }
+        
+        img:hover {
+            background-color: #286090;
+        }
+        
+        pre {
+            background: aliceblue;
+            border-radius: 15px;
+            font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif;
+            color: black;
+        }
+        
+        .info {
+            width: 26%;
+            position: absolute;
+            box-shadow: 0px 5px 8px 0px rgba(0, 0, 0, 0.2), 0px 17px 24px 0px rgba(0, 0, 0, 0.19);
+            border: 1px solid lightblue;
+            background: white;
+            padding: 10px;
+            border-radius: 3px;
+        }
+        
+        #src_nullcheck {
+            margin-left: -21%;
+            margin-top: 40%;
+        }
+        
+        #nullcheck_dateformat {
+            margin-left: 16%;
+            margin-top: 44%;
+        }
+        
+        #dateformat_trg {
+            margin-left: 59%;
+            margin-top: 40%;
+        }
+        
+        .upperdiv {
+            background: #aabbc3;
+            padding: 6px;
+            width: 26%;
+            position: absolute;
+            text-align: center;
+            border-style: solid;
+            border-width: 1px 1px 1px 1px;
+            border-color: lightblue;
+            box-shadow: 0px 5px 8px 0px rgba(0, 0, 0, 0.2), 0px 17px 24px 0px rgba(0, 0, 0, 0.19);
+        }
+        
+        #upperdiv3 {
+            margin-left: 59%;
+            margin-top: 35.8%;
+        }
+        
+        #upperdiv2 {
+            margin-left: 16%;
+            margin-top: 39.8%;
+        }
+        
+        #upperdiv1 {
+            margin-left: -21%;
+            margin-top: 35.8%;
+        }
+        
+        .nav-side-menu li {
+            padding-left: 0px;
+            border-left: 3px solid #2e353d;
+            border-bottom: 1px solid #23282e;
+        }
+        
+        .nav-side-menu ul .sub-menu li:hover,
+        .nav-side-menu li .sub-menu li:hover {
+            background-color: #020203;
+        }
+        
+        .nav-side-menu ul .sub-menu li:before,
+        .nav-side-menu li .sub-menu li:before {
+            font-family: FontAwesome;
+            content: "\";
+ display: inline-block;
+            padding-left: 10px;
+            padding-right: 10px;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+
+<body oncontextmenu="return false">
+    <div class="modal fade" id="mysqlConfig" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                    <h4 class="modal-title">Source Configuration</h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="Input">Host</label>
+                            <Input type="text" class="form-control" id="hostmysql" placeholder="Enter the Host" required="required">
+                        </div>
+                        <div class="form-group">
+                            <label for="Input">Port</label>
+                            <Input type="text" class="form-control" id="portmysql" placeholder="Enter the Port" required="required">
+                        </div>
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <Input type="text" class="form-control" id="usernamemysql" placeholder="Enter the Username" required="required">
+                        </div>
+                        <div class="form-group">
+                            <label for="Password">Password</label>
+                            <Input type="password" class="form-control" id="passwordmysql" placeholder="Enter the Password" required>
+                            <span toggle="#passwordmysql" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="databasename">DatabaseName</label>
+                            <Input type="text" class="form-control" id="databasenamemysql" placeholder="Enter the DatabaseName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="tablename">TableName</label>
+                            <Input type="text" class="form-control" id="tablenamemysql" placeholder="Enter the TableName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="tablename">Query</label>
+                            <Input type="text" class="form-control" id="querymysql" placeholder="Enter the Query" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="max_conn">Max Connections</label>
+                            <Input type="number" class="form-control" id="connectionsmysql" placeholder="Enter the max number of connections" required>
+                        </div>
+                        <div class="alert alert-success" style="display:none;margin-bottom:0px !important;" id="success_alert_mysql">
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                            <strong>Connection Success!</strong>
+                        </div>
+                        <div class="alert alert-danger" style="display:none;margin-bottom:0px !important;" id="failure_alert_mysql">
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                            <strong>Connection Failure!</strong>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="test_conn_mysql" style="float:left;" class="btn btn-primary"><img src="../images/loader.gif" id="ajax_loader" style="display:none;margin-left:-8px;"></img>Test Connection</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" id="mysqlconfigsave" class="btn btn-primary" data-dismiss="modal" disabled="disabled">Save</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="oracleConfig" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                    <h4 class="modal-title">Source Configuration</h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="Input">Host</label>
+                            <Input type="text" class="form-control" id="hostoracle" placeholder="Enter the Host" required="required">
+                        </div>
+                        <div class="form-group">
+                            <label for="Input">Port</label>
+                            <Input type="text" class="form-control" id="portoracle" placeholder="Enter the Port" required="required">
+                        </div>
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <Input type="text" class="form-control" id="usernameoracle" placeholder="Enter the Username" required="required">
+                        </div>
+                        <div class="form-group">
+                            <label for="Password">Password</label>
+                            <Input type="password" class="form-control" id="passwordoracle" placeholder="Enter the Password" required>
+                            <span toggle="#passwordoracle" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="databasename">DatabaseName</label>
+                            <Input type="text" class="form-control" id="databasenameoracle" placeholder="Enter the DatabaseName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="tablename">TableName</label>
+                            <Input type="text" class="form-control" id="tablenameoracle" placeholder="Enter the TableName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="max_conn">Max Connections</label>
+                            <Input type="number" class="form-control" id="connectionsoracle" placeholder="Enter the max number of connections" required>
+                        </div>
+                        <div class="alert alert-success" style="display:none;margin-bottom:0px !important;" id="success_alert_orc">
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                            <strong>Connection Success!</strong>
+                        </div>
+                        <div class="alert alert-danger" style="display:none;margin-bottom:0px !important;" id="failure_alert_orc">
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                            <strong>Connection Failure!</strong>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="test_conn_oracle" style="float:left;" class="btn btn-primary"><img src="../images/loader.gif" id="ajax_loader" style="display:none;margin-left:-8px;"></img>Test Connection</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" id="oracleconfigsave" class="btn btn-primary" data-dismiss="modal" disabled="disabled">Save</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="targetConfig" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                    <h4 class="modal-title">Target Configuration</h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="host">Host</label>
+                            <input type="text" class="form-control" id="hosttrg" placeholder="Enter the Host">
+                        </div>
+                        <div class="form-group">
+                            <label for="port">Port</label>
+                            <input type="text" class="form-control" id="porttrg" placeholder="Enter the Port">
+                        </div>
+                        <div class="form-group">
+                            <label for="port">Directory</label>
+                            <input type="text" class="form-control" value="/" id="directorytrg" placeholder="Enter the Directory">
+                        </div>
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="username" class="form-control" id="usernametrg" placeholder="Enter the Username">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="Password">Password</label>
+                            <input type="password" class="form-control" id="passwordtrg" placeholder="Enter the Password">
+                            <span toggle="#passwordtrg" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="max_conn">Max Connections</label>
+                            <Input type="number" class="form-control" id="connectionstrg" placeholder="Enter the max number of connections">
+                        </div>
+                        <div class="alert alert-success" style="display:none;" id="success_alert_trg">
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                            <strong>Connection Success!</strong>
+                        </div>
+                        <div class="alert alert-danger" style="display:none;margin-bottom:0px !important;" id="failure_alert_trg">
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                            <strong>Connection Failure!</strong>
+                        </div>
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="test_conn_trg" style="float:left;" class="btn btn-primary">Test Connection</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" id="trgconfigsave" class="btn btn-primary" data-dismiss="modal">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="nullcheckconfig" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                    <h4 class="modal-title">NullCheck Configuration</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="control-label" for="columns">Select Columns</label>
+                        <div class="dropdown">
+                            <select id="columns1" class="multiselect-ui form-control" multiple="multiple">
+
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="nullchecksel">Action</label>
+                            <select class="form-control" id="nullchecksel" onchange="replacevaluenullcheck()">
+                                <option value="Select">Select Option</option>
+                                <option value="prevent replace">Prevent value Replace</option>
+                                <option value="Replace">Replace Value</option>
+                            </select>
+                        </div>
+
+                        <label for="type" style="display:none;" class="label">Values to replace</label>
+                        <div class="form-group" style="margin-top: 11px;display:none;" id="value_to_replace_nullcheck">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" id="nullcheckconfigsave" class="btn btn-primary" data-dismiss="modal">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="dateformatconfig" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                    <h4 class="modal-title">Dateformat Configuration</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="control-label" for="columns">Select Columns</label>
+                        <div class="dropdown">
+                            <select id="columns2" class="multiselect-ui form-control" multiple="multiple">
+
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="dateformatsel">Action</label>
+                            <select class="form-control" id="dateformatsel" onchange="replacevaluedateformat()">
+                                <option value="Select">Select Option</option>
+                                <option value="prevent replace">Prevent Format Change</option>
+                                <option value="change format">Change Format</option>
+                            </select>
+                        </div>
+
+                        <label for="type" style="display:none;" class="label">Value to replace</label>
+                        <div class="form-group" style="margin-top: 11px;display:none;" id="format_to_change_dateformat">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" id="dateformatconfigsave" class="btn btn-primary" data-dismiss="modal">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" style="width: 100%;position: fixed !important;border-bottom: 2px solid #2e353d !important;z-index:1;background-color: #2e353d !important;">
+        <div>
+            <img src="../images/ingestion1.png" style="width: 35px;margin-left: 10px;margin-top: -8px;border-radius: 12px;height: 35px;">
+            <span style="display: inline-block;margin-left: 1%;margin-top: 8px;font-size: 22px;color: white;">INGESTION FRAMEWORK</span>
+            <i class="fa fa-home" id="clear" style="font-size:26px;color:white;margin-left: 69%;cursor:pointer;"></i>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="nav-side-menu">
+            <i class="fa fa-bars fa-2x toggle-btn" data-toggle="collapse" data-target="#menu-content"></i>
+            <div class="menu-list">
+                <ul id="menu-content" class="menu-content collapse out">
+
+                    <li data-toggle="collapse" data-target="#source" class="collapsed active">
+                        <a href="#"><img src="../images/source.png" style="width: 26px;height: 26px;">&nbsp;Sources <span class="arrow"></span></a>
+                    </li>
+                    <ul class="sub-menu collapse" id="source">
+                        <li id="mysql" class="opensrc" ondragstart="return srcStart(event)" ondrag="srcdragging(event)" draggable="true">Mysql</li>
+                        <li id="oracle" class="opensrc" ondragstart="return srcStart(event)" ondrag="srcdragging(event)" draggable="true">Oracle</li>
+                        <!-- <li id="DB2" ondragstart="return srcStart(event)" ondrag="srcdragging(event)" draggable="true">DB2</li> -->
+                    </ul>
+                    <li data-toggle="collapse" data-target="#transform" class="collapsed">
+                        <a href="#"><img src="../images/transform.png" style="width: 26px;height: 26px;">&nbsp;Transform <span class="arrow"></span></a>
+                    </li>
+                    <ul class="sub-menu collapse" id="transform">
+                        <li id="nullcheck" class="opentrans" ondragstart="return transformStart(event)" ondrag="transformdragging(event)" draggable="true">Null Check</li>
+                        <li id="dateformat" class="opentrans" ondragstart="return transformStart(event)" ondrag="transformdragging(event)" draggable="true">Date Format Change</li>
+                    </ul>
+                    <li data-toggle="collapse" data-target="#target" class="collapsed">
+                        <a href="#"><img src="../images/target.png" style="width: 26px;height: 26px;">&nbsp;Target <span class="arrow"></span></a>
+                    </li>
+                    <ul class="sub-menu collapse" id="target">
+                        <li id="HDFS" class="opentrg" ondragstart="return targetStart(event)" ondrag="targetdragging(event)" draggable="true" style="text-align:center;">HDFS</li>
+                        <!-- <li id="target2" ondragstart="return targetStart(event)" ondrag="targetdragging(event)"  draggable="true">target2</li> -->
+                        <!-- <li id="target3" ondragstart="return targetStart(event)" ondrag="targetdragging(event)"  draggable="true">target3</li> -->
+
+                    </ul>
+                </ul>
+            </div>
+        </div>
+
+        <div id="wrapper">
+            <ul id="sourcediv" class="item" ondragenter="return dragEnter(event)" ondrop="return srcDrop(event)" ondragover="return dragOver(event)"> <span class="drag">Drag source here </span></ul>
+            <div class="upperdiv" id="upperdiv1" style="display:none;">Processor Info</div>
+            <div class="info" id="src_nullcheck" style="display: none;position: absolute;">
+                <span>BytesIn: 1108</span>
+                <br/>
+                <span>Input: 2 (1.08 KB)</span>
+                <br/>
+                <span>BytesOut: 554</span>
+                <br/>
+                <span>Output: 1 (554 bytes)</span>
+                <br/>
+                <span>BytesQueued: 554</span>
+                <br/>
+            </div>
+
+            <div class="upperdiv" id="upperdiv2" style="display:none;">Processor Info</div>
+            <div class="info" id="nullcheck_dateformat" style="display: none;position: absolute;">
+                <span>BytesIn: 2167</span>
+                <br/>
+                <span>Input: 1 (2.08 KB)</span>
+                <br/>
+                <span>BytesOut: 1024</span>
+                <br/>
+                <span>Output: 1 (1024 bytes)</span>
+                <br/>
+                <span>BytesQueued: 1024</span>
+                <br/>
+            </div>
+            <!-- <img src="../images/mainloader.gif" id="ajax_loader1" style="display:none;"></img> -->
+
+            <div class="upperdiv" id="upperdiv3" style="display:none;">Processor Info</div>
+            <div class="info" id="dateformat_trg" style="display: none;position: absolute;">
+                <span>BytesIn: 3212</span>
+                <br/>
+                <span>Input: 1 (1.08 KB)</span>
+                <br/>
+                <span>BytesOut: 3327</span>
+                <br/>
+                <span>Output: 1 (3327 bytes)</span>
+                <br/>
+                <span>BytesQueued: 3327</span>
+                <br/>
+            </div>
+            <ul id="transformdiv" class="item" ondragenter="return dragEnter(event)" ondrop="return transformDrop(event)" ondragover="return dragOver(event)"><span class="drag1"> Drag transformation here </span></ul>
+            <ul id="targetdiv" class="item" ondragenter="return dragEnter(event)" ondrop="return targetDrop(event)" ondragover="return dragOver(event)"> <span class="drag2">Drag Target here </span></ul>
+        </div>
+
+        <div id="play" style="display:none;cursor:pointer;">
+            <!-- <div id="circulardiv"> <i class="fa fa-play" style="margin-left: -12px;cursor:pointer;" aria-hidden="true"></i></div> -->
+            <button type="button" id="start_workflow" class="btn" style="background: #16494a;border-color: #004849;color: white;cursor:pointer;position: absolute;z-index: 2;"><img src="../images/loader5.gif" id="ajax_loader1" style="display:none;margin-left:-8px;"></img>StartWorkflow</button>
+        </div>
+
+    </div>
+    <script>
+        var i = 0,
+            i1 = 0,
+            j = 0,
+            j1 = 0,
+            k = 0,
+            sc = 0,
+            sc1 = 0,
+            tc = 0,
+            trc = 0,
+            trc1 = 0;
+        var a = 0;
+        var src_id;
+        var src_type;
+        var data = [];
+        var finaljson = {};
+        var finalconfig = {};
+        var configuration = {};
+        var nullcheckoption = {};
+        var nullcheckoption1 = {};
+        var dateformatoption1 = {};
+        var dateformatoption = {};
+        var cols_global_nullcheck = [];
+        var columns = [];
+        var configuration_nullcheck = {};
+        var configuration_dateformat = {};
+        var conn_obj = {};
+        var conn_arr = [];
+        var conn_arr_br = [];
+        var finaldata_src = {};
+        var finaldata_trg = {};
+        var srcdata = [];
+        var trgdata = [];
+        var trns_arr = [];
+        var oracleconfigdetails = {};
+        var oracledata = {};
+        var mysqlconfigdetails = {};
+        var mysqldata = {};
+        var e, e1, e2, e3, e4, e5;
+        $(document).ready(function() {
+            $(".toggle-password").click(function() {
+                debugger;
+                $(this).toggleClass("fa-eye fa-eye-slash");
+                var Input = $($(this).attr("toggle"));
+                if (Input.attr("type") == "password") {
+                    Input.attr("type", "text");
+                } else {
+                    Input.attr("type", "password");
+                }
+            });
+            <!-- $('.modal').on('hidden.bs.modal', function(e) { -->
+            <!-- $(".modal-body input").val(""); -->
+            <!-- }); -->
+
+        });
+
+        function replacevaluenullcheck() {
+            $("#value_to_replace_nullcheck").empty();
+            $("#label").show();
+            var selected_value = document.getElementById("nullchecksel").value;
+            console.log(selected_value);
+            if (selected_value == "Replace") {
+                $('#value_to_replace_nullcheck').show();
+                var selected = $("#columns1 option:selected");
+                console.log(selected);
+                var cols = [];
+                var message = "";
+                selected.each(function() {
+                    message = $(this).val();
+                    cols.push(message);
+                });
+                console.log(cols);
+                cols_global_nullcheck = cols;
+                console.log(cols.length);
+                for (var c = 0; c < (cols.length); c++) {
+                    $('#value_to_replace_nullcheck').append('<div><Input type="text" class="form-control fields" id="value_to_replace' + c + '"placeholder="Enter the value to replace for ' + cols[c] + '"/></div>');
+                }
+            } else {
+                $('#value_to_replace_nullcheck').hide();
+                $(".label").hide();
+            }
+        }
+
+        function replacevaluedateformat() {
+            $("#format_to_change_dateformat").empty();
+            var selected_value = document.getElementById("dateformatsel").value;
+            console.log(selected_value);
+            if (selected_value == "change format") {
+                $('#format_to_change_dateformat').show();
+                var selected = $("#columns2 option:selected");
+                console.log(selected);
+                var cols = [];
+                var message = "";
+                selected.each(function() {
+                    message = $(this).val();
+                    cols.push(message);
+                });
+                console.log(cols);
+                cols_global_dateformat = cols;
+                console.log(cols.length);
+                for (var c = 0; c < (cols.length); c++) {
+                    $('#format_to_change_dateformat').append('<div><Input type="text" class="form-control fields" id="format_to_change' + c + '"placeholder="Enter the value to replace for ' + cols[c] + '"/></div>');
+                }
+            } else {
+                $('#format_to_change_dateformat').hide();
+                $(".label").hide();
+            }
+        }
+
+        function dragEnter(ev) {
+            event.preventDefault();
+            return true;
+        }
+
+        function dragOver(ev) {
+            return false;
+        }
+
+        function srcdragging(event) {
+            $("#sourcediv").addClass("highlightborder");
+        }
+
+        function transformdragging(event) {
+            $("#transformdiv").addClass("highlightborder");
+        }
+
+        function targetdragging(event) {
+            $("#targetdiv").addClass("highlightborder");
+        }
+
+        function srcStart(ev) {
+            //debugger;
+            console.log(ev);
+            if (ev.dataTransfer) {
+                <!-- debugger; -->
+                console.log("ev.datatransfer");
+                ev.dataTransfer.effectAllowed = 'move';
+                ev.dataTransfer.setData("Text", ev.target.getAttribute('id'));
+                return true;
+            } else {
+                console.log("no datransfer");
+                return false;
+            }
+        }
+
+        function transformStart(ev) {
+            //debugger;
+            if (ev.dataTransfer) {
+                console.log("ev.datatransfer");
+                ev.dataTransfer.effectAllowed = 'move';
+                ev.dataTransfer.setData("Text", ev.target.getAttribute('id'));
+                return true;
+            } else {
+                console.log("no datransfer");
+                return false;
+            }
+        }
+
+        function targetStart(ev) {
+            //debugger;
+            if (ev.dataTransfer) {
+                console.log("ev.datatransfer");
+                ev.dataTransfer.effectAllowed = 'move';
+                ev.dataTransfer.setData("Text", ev.target.getAttribute('id'));
+                return true;
+            } else {
+                console.log("no datransfer");
+                return false;
+            }
+        }
+
+        var endpointOptions;
+        var jsp;
+        jsPlumb.ready(function() {
+            console.log("khajsdf");
+            jsp = jsPlumb.getInstance({
+                Container: wrapper
+            });
+            endpointOptions = {
+                isSource: true,
+                isTarget: true,
+                connector: "Flowchart",
+                connectorOverlays: [
+                    ["Arrow", {
+                        width: 10,
+                        height: 10,
+                        length: 15,
+                        location: 0.97,
+                        id: "arrow"
+                    }]
+                ],
+                connectorStyle: {
+                    lineWidth: 2.5,
+                    strokeStyle: '#004849'
+                },
+                beforeDrop: function(params) {
+                    debugger;
+                    console.log(params);
+                    console.log(params.sourceId);
+                    console.log(params.targetId);
+                    console.log(params.connection.id);
+                    var src_check = "mysql[0-9]";
+                    var trg_check = "Target[0-9]";
+                    var trnfrm_check2 = "dateTransform[0-9]";
+                    var trnfrm_check1 = "nullcheckTransform[0-9]";
+                    if (((params.sourceId).match(src_check) && (params.targetId).match(trnfrm_check1)) || ((params.sourceId).match(src_check) && (params.targetId).match(trnfrm_check2))) {
+                        $("#src_nullcheck,#upperdiv1").show();
+                    }
+                    if (((params.sourceId).match(trnfrm_check1) && (params.targetId).match(trnfrm_check2)) || ((params.sourceId).match(trnfrm_check2) && (params.targetId).match(trnfrm_check1))) {
+                        $("#nullcheck_dateformat,#upperdiv2").show();
+                    }
+                    if (((params.sourceId).match(trnfrm_check2) && (params.targetId).match(trg_check)) || ((params.sourceId).match(trnfrm_check1) && (params.targetId).match(trg_check))) {
+                        $("#dateformat_trg,#upperdiv3").show();
+                        $('#play').show();
+                    }
+                    if ((params.targetId).match(trg_check)) {
+                        $('#play').show();
+                    }
+                    var conn_id = params.connection.id
+                    console.log(conn_id)
+                    var config = {
+                        from: params.sourceId,
+                        to: params.targetId
+                    }
+                    finalconfig = {
+                        connectionid: conn_id,
+                        configuration: config
+                    }
+                    console.log(finalconfig);
+                    conn_arr.push(finalconfig);
+                    console.log(conn_arr);
+                    conn_arr_br = conn_arr;
+                    conn_obj["Connection"] = conn_arr;
+                    console.log(JSON.stringify(conn_obj));
+                    return true;
+                    //confirm("Connect " + params.sourceId + " to " + params.targetId + "?");
+                },
+                scope: "blueline",
+                maxConnections: 1,
+                dragAllowedWhenFull: false
+            }
+        });
+
+        function srcDrop(ev) {
+            debugger;
+            <!-- data = [{ -->
+            <!-- "column_name": "id", -->
+            <!-- "type": "INT" -->
+            <!-- }, { -->
+            <!-- "column_name": "first_name", -->
+            <!-- "type": "VARCHAR" -->
+            <!-- }, { -->
+            <!-- "column_name": "last_name", -->
+            <!-- "type": "VARCHAR" -->
+            <!-- }, { -->
+            <!-- "column_name": "email", -->
+            <!-- "type": "VARCHAR" -->
+            <!-- }, { -->
+            <!-- "column_name": "gender", -->
+            <!-- "type": "VARCHAR" -->
+            <!-- }, { -->
+            <!-- "column_name": "date", -->
+            <!-- "type": "DATETIME" -->
+            <!-- }] -->
+            console.log(data);
+            console.log("srcccc");
+            console.log(ev);
+            if (ev.target.className == "item highlightborder" || "item") {
+                var src = ev.dataTransfer.getData("Text");
+                console.log(src);
+                if (src == "mysql") {
+                    $(".drag").remove();
+                    $("#sourcediv").removeClass("highlightborder");
+                    if (src != "") {
+                        var nodeCopy = document.getElementById(src).cloneNode(true);
+                        nodeCopy.removeAttribute("Id");
+                        nodeCopy.removeAttribute("draggable");
+                        nodeCopy.className = "source";
+                        nodeCopy.setAttribute("id", "mysql" + i + "");
+                        console.log(nodeCopy);
+                        console.log(nodeCopy.getAttribute('id'));
+                        var id = nodeCopy.getAttribute('id');
+                        var li = document.createElement("i");
+                        li.setAttribute('class', "fa fa-cog");
+                        li.setAttribute('id', "configmysql" + sc + "");
+                        nodeCopy.appendChild(li);
+                        ev.target.appendChild(nodeCopy);
+                        ev.stopPropagation();
+                        src_id = id;
+                        src_type = src;
+                        var e1 = jsp.addEndpoint($("#" + id), {
+                            anchor: "RightMiddle"
+                        }, endpointOptions);
+                        jsp.draggable($("#" + id));
+                        i++;
+                        $('#mysqlconfigsave').click(function() {
+                            debugger;
+                            mysqlconfigdetails = {
+                                host: document.getElementById("hostmysql").value,
+                                port: document.getElementById("portmysql").value,
+                                username: document.getElementById("usernamemysql").value,
+                                password: document.getElementById("passwordmysql").value,
+                                databasename: document.getElementById("databasenamemysql").value,
+                                tablename: document.getElementById("tablenamemysql").value,
+                                query: document.getElementById("querymysql").value,
+                                maxconnection: document.getElementById("connectionsmysql").value,
+                            }
+                            console.log(mysqlconfigdetails);
+                            mysqldata = {
+                                sourceid: src_id,
+                                source_type: src_type,
+                                configuration: mysqlconfigdetails
+                            }
+                            console.log(JSON.stringify(mysqldata));
+                            srcdata.push(mysqldata);
+                            console.log(JSON.stringify(srcdata));
+                            finaldata_src["source"] = srcdata;
+                            console.log(JSON.stringify(finaldata_src));
+                        });
+                        jsp.bind('click', function(e1, e) {
+                            debugger;
+                            console.log(e1.id);
+                            console.log(e);
+                            Swal.fire({
+                                title: 'Delete Connection ?',
+                                text: '',
+                                type: 'warning',
+                                showCancelButton: true,
+                                confirmButtonClass: "btn btn-md btn-primary",
+                                confirmButtonText: "Yes",
+                                cancelButtonText: "No",
+                                closeOnConfirm: true,
+                                closeOnCancel: true
+                            }).then((result) => {
+                                debugger;
+                                if (result.value) {
+                                    console.log(e1);
+                                    console.log(e1.id);
+                                    for (var d = 0; d < conn_arr.length; d++) {
+                                        if (conn_arr[d].connectionid == e1.id)
+                                            conn_arr.splice(d, 1);
+                                    }
+                                    console.log(conn_arr);
+                                    jsp.detach(e1);
+                                }
+                            });
+                        });
+                    }
+                    $("#configmysql" + sc + "").click(function() {
+                        $('#mysqlConfig').modal('show');
+                    });
+                    sc++;
+                } else if (src == "oracle") {
+                    $(".drag").remove();
+                    $("#sourcediv").removeClass("highlightborder");
+                    if (src != "") {
+                        var nodeCopy = document.getElementById(src).cloneNode(true);
+                        nodeCopy.removeAttribute("Id");
+                        nodeCopy.removeAttribute("draggable");
+                        nodeCopy.className = "source";
+                        nodeCopy.setAttribute("id", "oracle" + i1 + "");
+                        console.log(nodeCopy);
+                        console.log(nodeCopy.getAttribute('id'));
+                        var id = nodeCopy.getAttribute('id');
+                        var li = document.createElement("i");
+                        li.setAttribute('class', "fa fa-cog");
+                        li.setAttribute('id', "configoracle" + sc1 + "");
+                        nodeCopy.appendChild(li);
+                        ev.target.appendChild(nodeCopy);
+                        ev.stopPropagation();
+                        src_id = id;
+                        src_type = src;
+                        var e1 = jsp.addEndpoint($("#" + id), {
+                            anchor: "RightMiddle"
+                        }, endpointOptions);
+                        jsp.draggable($("#" + id));
+                        i++;
+                        $('#oracleconfigsave').click(function() {
+                            debugger;
+                            console.log(JSON.stringify(oracledata));
+                            srcdata.push(oracledata);
+                            console.log(JSON.stringify(srcdata));
+                            finaldata_src["source"] = srcdata;
+                            console.log(JSON.stringify(finaldata_src));
+                        });
+                        jsp.bind('click', function(e1, e) {
+                            debugger;
+                            console.log(e1.id);
+                            console.log(e);
+                            Swal.fire({
+                                title: 'Delete Connection ?',
+                                text: '',
+                                type: 'warning',
+                                showCancelButton: true,
+                                confirmButtonClass: "btn btn-md btn-primary",
+                                confirmButtonText: "Yes",
+                                cancelButtonText: "No",
+                                closeOnConfirm: true,
+                                closeOnCancel: true
+                            }).then((result) => {
+                                debugger;
+                                if (result.value) {
+                                    console.log(e1);
+                                    console.log(e1.id);
+                                    for (var d = 0; d < conn_arr.length; d++) {
+                                        if (conn_arr[d].connectionid == e1.id)
+                                            conn_arr.splice(d, 1);
+                                    }
+                                    console.log(conn_arr);
+                                    jsp.detach(e1);
+                                }
+                            });
+                        });
+                    }
+                    $("#configoracle" + sc1 + "").click(function() {
+                        $('#oracleConfig').modal('show');
+                    });
+                    sc1++;
+
+                } else {
+                    $("#transformdiv").removeClass("highlightborder");
+                    $("#targetdiv").removeClass("highlightborder");
+                    Swal.fire("Warning!", "Drop Only Sources !", "warning")
+                }
+                $(".source").on("dblclick", function(e) {
+                    debugger;
+                    if ($(e.target).is('i')) {
+                        e.preventDefault();
+                        return;
+                    }
+                    Swal.fire({
+                        title: 'Remove Source ?',
+                        text: '',
+                        type: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: "Yes",
+                        cancelButtonText: "No",
+                        closeOnConfirm: true,
+                        closeOnCancel: true
+                    }).then((result) => {
+                        if (result.value) {
+                            console.log(e);
+                            console.log(e.target.id);
+                            var div = e.target.id;
+                            jsp.removeAllEndpoints(div);
+                            $("#" + div).remove();
+                            jsp.repaintEverything();
+                        }
+                    })
+                });
+            }
+        }
+
+        function transformDrop(ev) {
+            debugger;
+            console.log("transformmmmmmm");
+            console.log(ev);
+            if (ev.target.className == "item highlightborder" || "item") {
+                var trnfm = ev.dataTransfer.getData("Text");
+                console.log(trnfm);
+
+                if (trnfm == "nullcheck") {
+                    $(".drag1").remove();
+                    $("#transformdiv").removeClass("highlightborder");
+                    if (trnfm != "") {
+                        var nodeCopy = document.getElementById(trnfm).cloneNode(true);
+                        nodeCopy.removeAttribute("Id");
+                        //nodeCopy.removeAttribute("draggable");
+                        nodeCopy.className = "transform";
+                        nodeCopy.setAttribute("id", "nullcheckTransform" + j + "");
+                        for (var z = 0; z < conn_arr_br.length; z++) {
+                            var regex = "Target[0-9]";
+                            var check = (conn_arr_br[z].configuration.to);
+                            console.log(check);
+                            if ((check.match(regex))) {
+                                event.target.appendChild(document.createElement("br"));
+                                conn_arr_br.length = 0;
+                            }
+                        }
+                        if ($('ul#transformdiv li').length % 2 == 0) {
+                            event.target.appendChild(document.createElement("br"));
+                        }
+                        console.log(nodeCopy);
+                        console.log(nodeCopy.getAttribute('id'));
+                        var id = nodeCopy.getAttribute('id');
+                        var li = document.createElement("i");
+                        li.setAttribute('class', "fa fa-cog");
+                        li.setAttribute('id', "nullcheckconfigtrans" + trc + "");
+                        nodeCopy.appendChild(li);
+                        ev.target.appendChild(nodeCopy);
+                        ev.stopPropagation();
+                        for (var b = 0; b < data.length; b++) {
+                            $("#columns1").append($('<option title="' + data[b].type + '" value="' + data[b].column_name + '">' + data[b].column_name + '</option>'));
+                        }
+                        $('#columns1').multiselect();
+                        var e2 = jsp.addEndpoint($("#" + id), {
+                            anchor: "LeftMiddle"
+                        }, endpointOptions);
+                        var e3 = jsp.addEndpoint($("#" + id), {
+                            anchor: "RightMiddle"
+                        }, endpointOptions);
+                        jsp.draggable($("#" + id));
+                        j++;
+                        $('#nullcheckconfigsave').click(function() {
+                            debugger;
+                            console.log(cols_global_nullcheck);
+                            console.log(cols_global_nullcheck.length);
+                            nullcheckoption = {
+                                type: document.getElementById("nullchecksel").value,
+                                configuration: configuration_nullcheck
+                            }
+                            for (a = 0; a < cols_global_nullcheck.length; a++) {
+                                configuration_nullcheck[cols_global_nullcheck[a]] = document.getElementById("value_to_replace" + a + "").value;
+                            }
+                            console.log(configuration);
+                            console.log(nullcheckoption);
+                            nullcheckoption1["option"] = nullcheckoption;
+                            nullcheckoption1["columns"] = cols_global_nullcheck;
+                            nullcheckconfigdetails = {
+                                transformationid: id,
+                                transformation_type: trnfm,
+                                configuration: nullcheckoption1,
+                            }
+                            console.log(JSON.stringify(nullcheckconfigdetails));
+                            trns_arr.push(nullcheckconfigdetails);
+                        });
+                    }
+                    $("#nullcheckconfigtrans" + trc + "").click(function() {
+                        $('#nullcheckconfig').modal('show');
+                    });
+                    trc++;
+
+                } else if (trnfm == "dateformat") {
+                    $(".drag1").remove();
+                    $("#transformdiv").removeClass("highlightborder");
+                    if (trnfm != "") {
+                        var nodeCopy = document.getElementById(trnfm).cloneNode(true);
+                        nodeCopy.removeAttribute("Id");
+                        //nodeCopy.removeAttribute("draggable");
+                        nodeCopy.className = "transform";
+                        nodeCopy.setAttribute("id", "dateTransform" + j1 + "");
+                        if ($('ul#transformdiv li').length % 2 == 0) {
+                            event.target.appendChild(document.createElement("br"));
+                        }
+                        console.log(nodeCopy);
+                        console.log(nodeCopy.getAttribute('id'));
+                        var id = nodeCopy.getAttribute('id');
+                        var li = document.createElement("i");
+                        li.setAttribute('class', "fa fa-cog");
+                        li.setAttribute('id', "dateconfigtrans" + trc1 + "");
+                        for (var z = 0; z < conn_arr_br.length; z++) {
+                            var regex = "Target[0-9]";
+                            var check = (conn_arr_br[z].configuration.to);
+                            console.log(check);
+                            if ((check.match(regex))) {
+                                event.target.appendChild(document.createElement("br"));
+                                conn_arr_br.length = 0;
+                            }
+                        }
+                        nodeCopy.appendChild(li);
+                        ev.target.appendChild(nodeCopy);
+                        ev.stopPropagation();
+                        for (var c = 0; c < data.length; c++) {
+                            $("#columns2").append($('<option title="' + data[c].type + '" value="' + data[c].column_name + '">' + data[c].column_name + '</option>'));
+                        }
+                        $('#columns2').multiselect();
+                        var e4 = jsp.addEndpoint($("#" + id), {
+                            anchor: "LeftMiddle"
+                        }, endpointOptions);
+                        var e5 = jsp.addEndpoint($("#" + id), {
+                            anchor: "RightMiddle"
+                        }, endpointOptions);
+                        jsp.draggable($("#" + id));
+                        j1++;
+                        $('#dateformatconfigsave').click(function() {
+                            debugger;
+
+                            console.log(cols_global_dateformat);
+                            console.log(cols_global_dateformat.length);
+                            dateformatoption = {
+                                type: document.getElementById("dateformatsel").value,
+                                configuration: configuration_dateformat
+                            }
+                            for (a = 0; a < cols_global_dateformat.length; a++) {
+                                configuration_dateformat[cols_global_dateformat[a]] = document.getElementById("format_to_change" + a + "").value;
+                            }
+                            console.log(configuration);
+                            console.log(dateformatoption);
+                            dateformatoption1["option"] = dateformatoption;
+                            dateformatoption1["columns"] = cols_global_dateformat;
+                            dateformatconfigdetails = {
+                                transformationid: id,
+                                transformation_type: trnfm,
+                                configuration: dateformatoption1,
+                            }
+                            console.log(JSON.stringify(dateformatconfigdetails));
+                            trns_arr.push(dateformatconfigdetails);
+                        });
+                    }
+                    $("#dateconfigtrans" + trc1 + "").click(function() {
+                        $('#dateformatconfig').modal('show');
+                    });
+                    trc1++;
+                } else {
+                    $("#sourcediv").removeClass("highlightborder");
+                    $("#targetdiv").removeClass("highlightborder");
+                    Swal.fire("Warning!", "Drop Only Transformations !", "warning")
+                }
+
+                $(".transform").on("dblclick", function(e) {
+                    debugger;
+                    if ($(e.target).is('i')) {
+                        e.preventDefault();
+                        return;
+                    }
+                    Swal.fire({
+                        title: 'Remove Transform ?',
+                        text: '',
+                        type: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: "Yes",
+                        cancelButtonText: "No",
+                        closeOnConfirm: true,
+                        closeOnCancel: true
+                    }).then((result) => {
+                        if (result.value) {
+                            console.log(e);
+                            console.log(e.target.id);
+                            var div = e.target.id;
+                            jsp.removeAllEndpoints(div);
+                            $("#" + div).remove();
+                            jsp.repaintEverything();
+                        }
+                    })
+                });
+
+            }
+        }
+
+        function targetDrop(ev) {
+            debugger;
+            console.log("trgggggg");
+            console.log(ev);
+            if (ev.target.className == "item highlightborder" || "item") {
+                var trg = ev.dataTransfer.getData("Text");
+                console.log(trg);
+                if (trg == "HDFS") {
+                    $(".drag2").remove();
+                    $("#targetdiv").removeClass("highlightborder");
+                    if (trg != "") {
+                        var nodeCopy = document.getElementById(trg).cloneNode(true);
+                        nodeCopy.removeAttribute("Id");
+                        //nodeCopy.removeAttribute("draggable");
+                        nodeCopy.className = "target";
+                        nodeCopy.setAttribute("id", "Target" + k + "");
+                        $(nodeCopy).draggable({
+                            containment: "targetdiv"
+                        });
+                        console.log(nodeCopy);
+                        console.log(nodeCopy.getAttribute('id'));
+                        var id = nodeCopy.getAttribute('id');
+                        var li = document.createElement("i");
+                        li.setAttribute('class', "fa fa-cog");
+                        li.setAttribute('id', "configtrg" + tc + "");
+                        nodeCopy.appendChild(li);
+                        ev.target.appendChild(nodeCopy);
+                        ev.stopPropagation();
+                        var e6 = jsp.addEndpoint($("#" + id), {
+                            anchor: "LeftMiddle"
+                        }, endpointOptions);
+                        jsp.draggable($("#" + id));
+                        k++;
+                        $('#trgconfigsave').click(function() {;
+                            debugger;
+                            trgconfigdetails = {
+                                host: document.getElementById("hosttrg").value,
+                                port: document.getElementById("porttrg").value,
+                                directory: document.getElementById("directorytrg").value,
+                                username: document.getElementById("usernametrg").value,
+                                password: document.getElementById("passwordtrg").value,
+                                maxconnection: document.getElementById("connectionstrg").value,
+                            }
+                            console.log(trgconfigdetails);
+                            Targetdata = {
+                                targetid: id,
+                                target_type: trg,
+                                configuration: trgconfigdetails
+                            }
+                            console.log(JSON.stringify(Targetdata));
+                            trgdata.push(Targetdata);
+                            console.log(trgdata);
+                            finaldata_trg["target"] = trgdata;
+                            console.log(JSON.stringify(finaldata_trg));
+                        });
+
+                    }
+                    $("#configtrg" + tc + "").click(function() {
+                        $('#targetConfig').modal('show');
+                    });
+                    tc++;
+                } else {
+                    $("#sourcediv").removeClass("highlightborder");
+                    $("#transformdiv").removeClass("highlightborder");
+                    Swal.fire("Warning!", "Drop Only Targets !", "warning");
+                }
+            }
+
+            $(".target").on("dblclick", function(e) {
+                debugger;
+                if ($(e.target).is('i')) {
+                    e.preventDefault();
+                    return;
+                }
+                Swal.fire({
+                    title: 'Remove Target ?',
+                    text: '',
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: "Yes",
+                    cancelButtonText: "No",
+                    closeOnConfirm: true,
+                    closeOnCancel: true
+                }).then((result) => {
+                    if (result.value) {
+                        console.log(e);
+                        console.log(e.target.id);
+                        var div = e.target.id;
+                        jsp.removeAllEndpoints(div);
+                        $("#" + div).remove();
+                        jsp.repaintEverything();
+                    }
+                })
+
+            });
+        }
+
+        $('#start_workflow').on("click", function() {
+            debugger;
+            finaljson["source"] = srcdata;
+            finaljson["target"] = trgdata;
+            finaljson["connection"] = conn_arr;
+            finaljson["transformation"] = trns_arr;
+            var test = (JSON.stringify(finaljson));
+			<!-- var yaml = json2yaml(finaljson); -->
+             <!-- console.log(yaml); -->
+            $.ajax({
+                type: 'POST',
+                url: 'http://10.60.24.111:8082/IngestionFramework/FlowExecution',
+                data: JSON.stringify(finaljson),
+                beforeSend: function() {
+                    $("#ajax_loader1").show();
+                },
+                success: function(msg) {
+                    console.log(msg);
+					$.ajax({
+                         type: 'POST',
+                         url: 'http://10.60.24.111:8082/IngestionFramework/Get_ConnectionIds_Info',
+                         data: msg,
+                                 success: function (data) {
+								 console.log(data);
+                                 },
+                                 failure: function (response) {
+								 console.log(response);
+                                 }
+                           });
+                    if (msg.includes("SUCCESS")) {
+                        Swal.fire({
+                            title: 'Success!',
+                            text: '',
+                            type: 'success',
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: "Ok",
+                            closeOnConfirm: true
+                        });
+                    } else {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: '',
+                            type: 'error',
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: "Ok",
+                            closeOnConfirm: true
+                        });
+                    }
+                },
+                complete: function() {
+                    $("#ajax_loader1").hide();
+                },
+            });
+
+        });
+
+        $('#clear').click(function() {
+            debugger;
+            location.reload();
+        });
+
+        $('#test_conn_mysql').on("click", function() {
+            debugger;
+            mysqlconfigdetails = {
+                host: document.getElementById("hostmysql").value,
+                port: document.getElementById("portmysql").value,
+                username: document.getElementById("usernamemysql").value,
+                password: document.getElementById("passwordmysql").value,
+                databasename: document.getElementById("databasenamemysql").value,
+                tablename: document.getElementById("tablenamemysql").value,
+                query: document.getElementById("querymysql").value,
+                maxconnection: document.getElementById("connectionsmysql").value,
+            }
+            console.log(mysqlconfigdetails);
+            mysqldata = {
+                sourceid: src_id,
+                source_type: src_type,
+                configuration: mysqlconfigdetails
+            }
+            console.log(JSON.stringify(mysqldata));
+            $.ajax({
+                type: 'POST',
+                url: 'http://10.60.24.111:8082/IngestionFramework/ConnectionCheck',
+                data: JSON.stringify(mysqldata),
+                beforeSend: function() {
+                    $("#ajax_loader").show();
+                },
+                success: function(msg) {
+                    console.log(msg);
+                    var msg1 = JSON.parse(msg);
+                    if (msg1.connection == "SUCCESS") {
+                        $('#success_alert_mysql').show();
+                        document.getElementById("mysqlconfigsave").disabled = false;
+                        window.setTimeout(function() {
+                            $("#success_alert_mysql").fadeTo(500, 0).slideUp(500, function() {
+                                $(this).remove();
+                            });
+                        }, 1500);
+                        console.log(msg1.columns);
+                        data = msg1.columns;
+                    } else {
+                        $('#failure_alert_mysql').show();
+                        window.setTimeout(function() {
+                            $("#failure_alert_mysql").fadeTo(500, 0).slideUp(500, function() {
+                                $(this).remove();
+                            });
+                        }, 1500);
+                    }
+                },
+                complete: function() {
+                    $("#ajax_loader").hide();
+                },
+            });
+        });
+
+        $('#test_conn_oracle').on("click", function() {
+            debugger;
+            oracleconfigdetails = {
+                host: document.getElementById("hostoracle").value,
+                port: document.getElementById("portoracle").value,
+                username: document.getElementById("usernameoracle").value,
+                password: document.getElementById("passwordoracle").value,
+                databasename: document.getElementById("databasenameoracle").value,
+                tablename: document.getElementById("tablenameoracle").value,
+                maxconnection: document.getElementById("connectionsoracle").value,
+            }
+            console.log(oracleconfigdetails);
+            oracledata = {
+                sourceid: src_id,
+                source_type: src_type,
+                configuration: oracleconfigdetails
+            }
+            console.log(JSON.stringify(oracledata));
+			
+            $.ajax({
+                type: 'POST',
+                url: 'http://10.60.24.111:8082/IngestionFramework/ConnectionCheck',
+                data: JSON.stringify(oracledata),
+                beforeSend: function() {
+                    $("#ajax_loader").show();
+                },
+                success: function(msg) {
+                    console.log(msg);
+                    var msg1 = JSON.parse(msg);
+                    if (msg1.connection == "SUCCESS") {
+                        $('#success_alert_orc').show();
+                        document.getElementById("oracleconfigsave").disabled = false;
+                        window.setTimeout(function() {
+                            $("#success_alert_orc").fadeTo(500, 0).slideUp(500, function() {
+                                $(this).remove();
+                            });
+                        }, 1500);
+                        console.log(msg1.columns);
+                        data = msg1.columns;
+                    } else {
+                        $('#failure_alert_orc').show();
+                        window.setTimeout(function() {
+                            $("#failure_alert_orc").fadeTo(500, 0).slideUp(500, function() {
+                                $(this).remove();
+                            });
+                        }, 1500);
+                    }
+                },
+                complete: function() {
+                    $("#ajax_loader").hide();
+                },
+            });
+        });
+
+        $('#test_conn_trg').on("click", function() {
+            debugger;
+            $.ajax({
+                type: 'POST',
+                url: 'http://10.60.24.111:8082/IngestionFramework/ConnectionCheck',
+                data: JSON.stringify(Sourcedata),
+                beforeSend: function() {
+                    $("#ajax_loader").show();
+                },
+                success: function(msg) {
+                    console.log(msg);
+                },
+                complete: function() {
+                    $("#ajax_loader").hide();
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

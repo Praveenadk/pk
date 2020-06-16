@@ -1,0 +1,390 @@
+import React from 'react';
+import rd3 from 'react-d3-library';
+import FaPlayCircleO from 'react-icons/lib/fa/play-circle-o';
+import FaClose from 'react-icons/lib/fa/close';
+import FaStarO from 'react-icons/lib/fa/star-o';
+//import neo4j from "nodemodules/neo4j-driver/lib/v1/internal";
+
+const divStyle = {
+  margin: '60px',
+  
+  border: '2px solid black',
+  width:'90%',
+  height:'100%',
+  borderRadius:'5px',
+  
+};
+const image = {
+	marginBottom:'-14px'
+	
+}
+const form1 = {
+	marginLeft:'30px',
+	fontSize:'20px',
+	width:'80%',
+	paddings:'10px',
+	height:'30px',
+	borderRadius:'5px',
+	border: '5px solid rgba(128, 128, 128, 0.2)'
+	
+};
+const form2 = {
+	marginLeft:'5px',
+	marginBottom:'10px',
+	fontSize:'15px',
+	width:'100px',
+	height:'25px',
+	backgroundColor:'rgba(121, 85, 72, 0.42)',
+	border:'none',
+	borderRadius:'3px'
+	
+	
+};
+const btn = {
+	    backgroundColor: 'white',
+    border: 'none',
+	height:'62px'
+};
+const form4 = {
+border: '5px solid rgba(128, 128, 128, 0.2)',
+	marginLeft:'30px',
+	fontSize:'20px',
+	width:'93%',
+	paddings:'10px',
+	marginBottom:'40px',
+	borderRadius:'5px'
+};
+const form5 = {
+border: '5px solid rgba(128, 128, 128, 0.2)',
+	marginLeft:'30px',
+	fontSize:'20px',
+	width:'93%',
+	paddings:'10px',
+	marginBottom:'40px',
+	borderRadius:'5px',
+	display:'none'
+};
+
+
+
+
+
+class Product extends React.Component{
+	constructor(){
+		super();
+		this.state={
+			products:[]
+		};
+	}
+	
+
+	componentDidMount(){
+		debugger;
+
+	
+	
+	var width = 800,
+    height = 500
+
+var svg = d3.select("#chart").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+var force = d3.layout.force()
+    .gravity(.05)
+    .distance(100)
+    .charge(-100)
+    .size([width, height]);
+
+d3.json("http://localhost:3000/p", function(error, json) {
+  var edges = [];
+    json.links.forEach(function(e) { 
+    var sourceNode = json.nodes.filter(function(n) { return n.id === e.source; })[0],
+    targetNode = json.nodes.filter(function(n) { return n.id === e.target; })[0],
+    	type=e.type;
+    edges.push({source: sourceNode, target: targetNode,type:type,value: e.Value});
+    });
+    
+	
+
+
+  force
+      .nodes(json.nodes)
+      .links(edges)
+      .start();
+
+  var link = svg.selectAll(".link")
+       .data(edges)
+       .enter().append("line")
+       .attr("class", "link")
+	   .attr("fill", "none")
+	   .attr("stroke", " #000")
+	   .attr("stroke-opacity", " .2")
+	   .style("stroke-width", 3);;
+
+  var node = svg.selectAll(".node")
+      .data(json.nodes)
+      .enter().append("g")
+      .attr("class", "node")
+	  .style("fill",function(d) {
+    if(d.labels =="Company") {
+        return "rgb(222, 155, 249)";
+    } else {
+        return "lightsteelblue";
+    }
+	})
+	   .on("mouseover", function(d) {
+		if(d.labels =="Company"){
+        return tooltip.style("visibility", "visible").text( "<id>=" + d.id+ "   Company Name:  "+d.properties.name.val +"   , Company Number="+d.properties.companynumber.val);
+		}
+		else if (d.labels =="Address"){
+		return tooltip.style("visibility", "visible").text( "<id>=" + d.id+ "   Address:  "+d.properties.line2.val + d.properties.line1.val +"   , PostCode="+d.properties.postcode.val+"       , Country=" + d.properties.country.val);	
+		}})
+		 .on("mouseout", function() {
+       return tooltip.style("visibility", "hidden");
+        })
+      .call(force.drag);
+  var text1 = svg.selectAll('text')
+      .data(json.nodes)
+      .enter().append("svg1:text")
+      .style("font-size", "10px")
+      .text(function(d) { return d.id; })
+	  .attr('text-anchor', 'middle')
+	  .attr('alignment-baseline', 'middle')
+	  .style('font-size', d => d.radius * 0.4 + 'px')
+	  .attr('fill-opacity', 1);
+   node.append("circle")
+      .attr("class", "node")
+      .attr("r", 20 );
+	  
+      link.append("text")
+        .attr("class", "link-label")
+        .attr("font-family", "Arial, Helvetica, sans-serif")
+        .attr("fill", "Black")
+        .style("font", "normal 12px Arial")
+        .style("color", "black")
+        .attr("dy", ".35em")
+        .attr("text-anchor", "middle")
+        .text(function(d) {
+            return d.type;
+        })
+            .attr("x", function(d) {
+                return ((d.source.x + d.target.x)/2);
+            })
+            .attr("y", function(d) {
+                return ((d.source.y + d.target.y)/2);
+            });
+ var tooltip = d3.select("#chart")
+  .append("div")
+  .attr('class', 'tooltip');
+
+
+	 
+
+  
+  force.on("tick", function() {
+    link.attr("x1", function(d) { return d.source.x; })
+        .attr("y1", function(d) { return d.source.y; })
+        .attr("x2", function(d) { return d.target.x; })
+        .attr("y2", function(d) { return d.target.y; });
+     text1.attr("x", function(d) { return d.x ; })
+         .attr("y", function(d) { return d.y ; })
+   
+		
+ 
+    node.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+  });
+});
+
+ /* var force = d3.layout.force()
+     .charge(-700)
+     .linkDistance(20)
+     .size([width, height]);
+ 
+ var svg1 = d3.select("#chart").append("svg")
+     .attr("width", width)
+     .attr("height", height)
+     .append("g")
+     .attr("transform", "translate(0,0)");
+d3.json("http://localhost:3000/p", function(json) {
+   force
+       .nodes(json)
+       .start();
+  var tooltip = d3.select("#chart")
+  .append("div")
+  .attr('class', 'tooltip');
+   var node = svg1.selectAll("circle.node")
+       .data(json)
+     .enter().append("circle")
+       .attr("class", "node")
+       .attr("r",50)
+       .style("fill", "lightsteelblue" )
+       .call(force.drag)
+	   .on("mouseover", function(d) {
+        return tooltip.style("visibility", "visible").text( "<id>=" + d.ID + "   Address:  "+d.Line2+d.Line1+"   , PostCode="+d.postcode+"       , Country=" + d.country);
+         })
+      .on("mousemove", function() {
+      return tooltip.style("top", (event.pageY - 30) + "px")
+      .style("left", event.pageX + "px");
+       })
+      .on("mouseout", function() {
+       return tooltip.style("visibility", "hidden");
+        });
+       
+  var text = svg1.selectAll('text')
+      .data(json)
+      .enter().append("svg1:text")
+      .style("font-size", "10px")
+      .text(function(d) { return d.country; })
+.attr('text-anchor', 'middle')
+  .attr('alignment-baseline', 'middle')
+  .style('font-size', d => d.radius * 0.4 + 'px')
+  .attr('fill-opacity', 1)
+     force.on("tick", function() {
+ 
+     text.attr("x", function(d) { return d.x ; })
+         .attr("y", function(d) { return d.y ; })
+ 
+		
+     node.attr("cx", function(d) { return d.x ; })
+         .attr("cy", function(d) { return d.y; });
+   });
+})
+ */
+
+
+}
+
+
+		 search(){
+
+
+			var arr1=[];
+			var keyword=this.refs.keyword.value;
+			
+			fetch('http://localhost:8080/Dyna/Webproject')
+		.then(res => res.json())
+		.then(res =>{
+			this.setState({
+				products:res
+			});
+			
+		})
+			.catch(error=>{
+				console.log(error)
+			});
+			
+			
+   console.log('length: ' + this.state.products.length) // returning 0 
+    for (let i = 0; i < this.state.products.length; i++) {
+       if (this.state.products[i].country == keyword) {
+		  arr1= this.state.products[i]; 
+		  console.log(arr1);// not running because the length is 0
+    }
+  }
+			
+			
+			var width = 960,
+    height = 500;
+
+ var force = d3.layout.force()
+     .charge(-700)
+     .linkDistance(20)
+     .size([width, height]);
+ d3.select("#chart").remove("svg1");
+ var svg = d3.select("#chart1").style("display", "block" ).append("svg")
+     .attr("width", width)
+     .attr("height", height)
+     .append("g")
+     .attr("transform", "translate(0,0)");
+d3.json("http://localhost:8080/Dyna/Webproject", function(json) {
+	var json1=[0];
+	console.log(json);
+	  console.log('length: ' + json.length) // returning 0 
+    for (let i = 0; i < json.length; i++) {
+       if (json[i].country == keyword) {
+		   
+		  json1[1]= json[i]; 
+		  console.log(json1);// not running because the length is 0
+    }
+  }
+   force
+       .nodes(json1)
+       .start();
+   var tooltip = d3.select("#chart1")
+  .append("div")
+  .attr('class', 'tooltip');
+   var node = svg.selectAll("circle.node")
+       .data(json1)
+     .enter().append("circle")
+       .attr("class", "node")
+       .attr("r", function(d) { return  d.ID /5; } )
+       .style("fill", "lightsteelblue" )
+       .call(force.drag)
+	   .on("mouseover", function(d) {
+        return tooltip.style("visibility", "visible").text( "<id>=" + d.ID + "   Address:  "+d.Line2+d.Line1+"   , PostCode="+d.postcode+"       , Country=" + d.country);
+         })
+      .on("mousemove", function() {
+      return tooltip.style("top", (event.pageY - 30) + "px")
+      .style("left", event.pageX + "px");
+       })
+      .on("mouseout", function() {
+       return tooltip.style("visibility", "hidden");
+        });
+       
+  var text = svg.selectAll('text')
+      .data(json1)
+      .enter().append("svg:text")
+      .style("font-size", "10px")
+      .text(function(d) { return d.country; })
+.attr('text-anchor', 'middle')
+  .attr('alignment-baseline', 'middle')
+  .style('font-size', d => d.radius * 0.4 + 'px')
+  .attr('fill-opacity', 1)
+     force.on("tick", function() {
+ 
+     text.attr("x", function(d) { return d.x ; })
+         .attr("y", function(d) { return d.y ; })
+ 
+		
+     node.attr("cx", function(d) { return d.x ; })
+         .attr("cy", function(d) { return d.y; });
+   });
+  
+})	
+			
+			} 
+
+	render(){
+		return(
+		
+		<div style={divStyle}>
+  <form  id="postData">
+	<div style={{marginTop:'30px'}} >
+	
+			<input type="text" style={form1}  placeholder="Search for Anything....." ref="keyword"
+              name="search" id="search"/>
+			   
+			   <a href="#" >
+			  <FaPlayCircleO size={50} color='#717172' onClick={this.search.bind(this)}  /></a>
+			   <a href="#">
+			   <FaClose size={50} color='#717172' /></a>
+			    <a href="#">
+			    <FaStarO size={50} color='#717172' /></a>
+              
+		 
+	</div>
+ </form>
+<br/>
+		   <div id='chart' style={form4}></div>
+		  <div id='chart1' style={form5}></div> 
+	</div>
+		);
+	}
+	
+}
+
+
+export default Product;
+
+

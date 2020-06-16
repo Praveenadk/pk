@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Drag & Drop</title>
+    <link rel="icon" href="../images/ingestion.png" type="image" sizes="16x16">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.10.2/jquery.js "></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.15/js/bootstrap-multiselect.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.15/css/bootstrap-multiselect.css" type="text/css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsPlumb/1.4.1/jquery.jsPlumb-1.4.1-all-min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2"></script>
+	<script type="text/javascript" src="/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+	 <link rel="stylesheet" href="/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
+	<style>
+	#timeinput{
+    margin-left: -1%;
+}/
+#inputlabel{
+    margin-left: -2%;
+}
+#jobschedulesubmit{
+    margin-top: 9%;
+    margin-left: 30%;
+}
+/* The container */
+.container {
+    display: inline-block;
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 5px;
+    margin-top:9px;
+    cursor: pointer;
+    font-size: 18px;
+    width: 17%;
+    font-weight: 500;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+#daily_radio_at_div{
+    position: relative;
+    top: -33px;
+    left: 13px;
+}
+#daily_radio_occurs_div{
+    position: relative;
+    top: -29px;
+    left: 13px;
+}
+#jobname{
+    display:inline-block;
+}
+#jobtype{
+    width:100%;
+    display:inline-block;
+}
+#duration_end{
+margin-left: 108px;
+}
+#noend_duration{
+    margin-left: 34%;
+    margin-top: 15px;
+}
+#line{
+    border-top: 1px solid #abb3b9;
+    width: 89%;
+    position: relative;
+    top: -14px;
+    left: 156px;
+}
+#daily{
+    position: absolute;
+    margin-top: 1%;
+}
+#week1{
+    position: absolute;
+    margin-top: 4%;
+}
+#week2{
+    position: absolute;
+    margin-top: 6%;
+}
+#day{
+    margin-left: -161%;
+    width: 65%;
+    display:inline-block;
+}
+#week{
+    margin-left: -230%;
+    width: 63%;
+    display:inline-block;
+
+}
+#occur_start_date{
+margin-left: 49%;
+margin-top: -18%;
+}
+#occur_start{
+margin-top: 12%;
+}
+#import{
+    float: right;
+    margin-top: -4%;
+    width: 8%;
+   
+}
+	</style>
+<div class="job_wrapper">
+    <div>
+        <table>
+            <tr>
+                <td>
+                    <label for="jobname">Job Name:</label>
+                </td>
+                <td>
+                    <input required minlength="5" maxlength="20" ngModel #jobname="ngModel" class='form-control' type='text' id='jobname' name='jobname'>
+                    <div class="alert alert-danger" *ngIf="jobname.touched && !jobname.valid">
+                        <div *ngIf="jobname.errors.required">JobName is required</div>
+                        <div *ngIf="jobname.errors.minlength">JobName should be minimum {{jobname.errors.minlength.requiredLength}} characters.</div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="job_type">Select Schedule Type:</label>
+                </td>
+                <td>
+                    <div form-control="jobtype">
+                        <select class='form-control' ngModel required #jobtype="ngModel" type='text' id='jobtype' name='jobtype' (change)="scheduleOption($event)">
+                            <option value=''>select</option>
+                            <option value='Immediate'>Immediate</option>
+                            <option value='one Time'>One Time</option>
+                            <option value='Recurring'>Recurring</option>
+                        </select>
+                        <div class="alert alert-danger" *ngIf="!jobtype.valid && jobtype.touched">
+                            <div *ngIf="jobtype.errors.required">
+                                JobType required.
+                            </div>
+                            <div *ngIf="jobtype.value=='0'">
+                                Select an Option
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <br>
+    <div id='whole_div' [class.disabled]="this.schedule">
+        <div id='one_time'>
+            <label id='onetime_label'>One-time Occurence:</label>
+            <div id='line'></div>
+            <table>
+                <tr>
+                    <td>
+                        <label>Date:</label>
+                    </td>
+                    <td>
+                        <ng-datepicker [(ngModel)]="date" [options]="options" id="date"></ng-datepicker>
+                    </td>
+                    <td></td>
+                    <td>
+                        <label>Time:</label>
+                    </td>
+                    <td>
+                        <div id="timeinput">
+                            <input name="timeinput" id="time" type="time" atp-time-picker value="8:55" [(ngModel)]="time" #timeinput="ngModel">&nbsp;
+                            <!--  <a (click)="submit()"> <i class="fa fa-clock-o" style="font-size:27px" aria-hidden="true" ></i></a> -->
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <br>
+        </div>
+        <div id='recurring'>
+            <label id='onetime_label' style='left: 80px; width: 94%;'>Frequency:</label>
+            <div style='left: 83px; width: 94%;' id='line'></div>
+            <table>
+                <tr>
+                    <td style='width: 2%;'>
+                        <label>Occurs:</label>
+                    </td>
+                    <td>
+                        <select style='width: 18%;' class='form-control' type='text' id='job_occur_type' name='job_occur_type' (change)="Option($event)">
+                            <option>select</option>
+                            <option value='Daily'>Daily&nbsp;&nbsp;&nbsp;&nbsp;</option>
+                            <option value='Weekly'>Weekly</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr id='daily'>
+                    <td>
+                        <label>Recurs every:</label>
+                    </td>
+                    <td style='width: 27%;'>
+
+                        <input type="number" id="day" class="form-control">&nbsp;
+                        <label>day(s)</label>
+                    </td>
+                </tr>
+                <tr class='weekly' id="week1">
+                    <td>
+                        <label>Recurs every:</label>
+                    </td>
+                    <!-- <td style='width: 27%;'>
+
+                        <input type="number" id="week" class="form-control">&nbsp;
+                        <label>week(s)</label>
+                        <br />
+                    </td> -->
+                </tr>
+                <tr class='weekly' id="week2">
+                    <td></td>
+                    <td>
+                        <label class="container">Monday
+                            <input type="checkbox" class='days_check' value="monday" id="mon" name="checkboxes">
+
+                        </label>
+                        <label class="container">Tuesday
+                            <input type="checkbox" class='days_check' value="tuesday" id="tue" name="checkboxes">
+
+                        </label>
+                        <label class="container">Wednesday
+                            <input type="checkbox" class='days_check' value="wednesday" id="wed" name="checkboxes">
+
+                        </label>
+                        <label class="container">Thursday
+                            <input type="checkbox" class='days_check' value="thursday" id="thur" name="checkboxes">
+
+                        </label>
+                        <label class="container">Friday
+                            <input type="checkbox" class='days_check' value="friday" id="fri" name="checkboxes">
+
+                        </label>
+                        <label class="container">Saturday
+                            <input type="checkbox" class='days_check' value="saturday" id="sat" name="checkboxes">
+
+                        </label>
+                        <label class="container">Sunday
+                            <input type="checkbox" class='days_check' value="sunday" id="sun" name="chechboxes">
+
+                        </label>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <br>
+        <label id='onetime_label' style="margin-top: 12%;">Daily frequency:</label>
+        <div style='left: 126px;width: 91.5%;' id='line'></div>
+        <!-- <input type='radio' name='daily_radio' value='daily_radio_at' checked> -->
+        <div id='daily_radio_at_div'>
+            <table style="margin-top: 3%;">
+                <td>
+                    <label>Occurs once at:</label>
+                </td>
+                <td>
+                    <div id="timeinput">
+                        <input name="timeinput" type="time" id="timedaily" atp-time-picker value="8:55" [(ngModel)]="dailytime" #timeinputdaily="ngModel">&nbsp;
+                        <!--  <a (click)="submit()"> <i class="fa fa-clock-o" style="font-size:27px" aria-hidden="true" ></i></a> -->
+                    </div>
+                </td>
+            </table>
+        </div>
+        <!-- <input type='radio' name='daily_radio' value='daily_radio_occurs'> -->
+        <div id='daily_radio_occurs_div'>
+            <table>
+                <!-- <td>
+                    <label>Occurs every:</label>
+                </td> -->
+                <!-- <td>
+
+                    <input type="number" id="hrdaily" style='display:inline-block;width: 27%;' class="form-control">&nbsp;
+                    <label>hour(s)</label>
+
+                </td> -->
+                <td>
+                    <div id="occur_start">
+                        <label>Starting At:</label>
+                        <div id="occur_start_date">
+                            <ng-datepicker [(ngModel)]="startdate" [options]="options"></ng-datepicker>
+                        </div>
+                    </div>
+                    <!-- <label>Ending At:</label>
+                    <ng-datepicker [(ngModel)]="enddate" [options]="options"></ng-datepicker> -->
+                </td>
+            </table>
+        </div>
+        <!-- <label id='onetime_label'>Duration:</label>
+        <div style='left: 70px;width: 95.5%;' id='line'></div> -->
+        <!-- <table>
+            <tr>
+ <td>
+<label>Start date:</label>
+                    <ng-datepicker [(ngModel)]="dration_start_date" [options]="options"></ng-datepicker>
+                </td>
+                <td>
+                    <div id="duration_end">
+                        <input type='radio' name='end_date' value='true' checked>&nbsp;
+                        <div id='end_date_div' style='display: inline-block;'>
+                            <label>End date:</label>
+                            <ng-datepicker [(ngModel)]="duration_end_date" [options]="options"></ng-datepicker>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <div id="noend_duration">
+                        <input type='radio' name='end_date' value='false' id="end">&nbsp;
+                        <label>No end date</label>
+                    </div>
+                </td>
+            </tr>
+        </table> -->
+        <br>
+    </div>
+</div>
+<button class="btn btn-app" [disabled]="!jobname.valid||!jobtype.valid"  id="import" (click)="submit()">IMPORT </button>
+<script>
+  time_date = [];
+  daysofweek = [];
+  wholedivdisable: boolean;
+  dateRange = {};
+  date1 = [];
+  immediateboolean = {};
+  recurringjsonday = {};
+  recurringjsonweek = {};
+  recurringjsonweekcheck = {};
+  daterangeUTC = {};
+  date: Date;
+  time: any;
+  Daily: {};
+  recurringjson_final: {};
+  startdate: any;
+  dailytime: any;
+  dtTrigger: Subject<any> = new Subject();
+  now = new Date();
+  options: DatepickerOptions = {
+    locale: enLocale,
+    barTitleIfEmpty: 'Click to select a date',
+    placeholder: 'Click to select a date',
+    useEmptyBarTitle: false,
+
+  };
+
+
+  constructor(private atp: AmazingTimePickerService, private cd: ChangeDetectorRef, private http: Http) {
+  }
+
+  ngOnInit() {
+    (<HTMLInputElement>document.getElementById("mon")).disabled = true;
+    (<HTMLInputElement>document.getElementById("tue")).disabled = true;
+    (<HTMLInputElement>document.getElementById("wed")).disabled = true;
+    (<HTMLInputElement>document.getElementById("thur")).disabled = true;
+    (<HTMLInputElement>document.getElementById("fri")).disabled = true;
+    (<HTMLInputElement>document.getElementById("sat")).disabled = true;
+    (<HTMLInputElement>document.getElementById("sun")).disabled = true;
+    (<HTMLInputElement>document.getElementById("day")).disabled = true;
+    //(<HTMLInputElement>document.getElementById("week")).disabled = true;
+
+  }
+
+
+  scheduleOption($event) {
+    debugger;
+    this.schedule = (document.getElementById("jobtype") as HTMLInputElement).value;
+    console.log(this.schedule);
+    if (this.schedule == "Immediate") {
+      (<HTMLInputElement>document.getElementById("datepicker-0")).disabled = true;
+      document.getElementById("datepicker-0").style.backgroundColor = '#e9ecef';
+      (<HTMLInputElement>document.getElementById("time")).disabled = true;
+      document.getElementById("time").style.backgroundColor = '#e9ecef';
+      (<HTMLInputElement>document.getElementById("job_occur_type")).disabled = true;
+      (<HTMLInputElement>document.getElementById("mon")).disabled = true;
+      (<HTMLInputElement>document.getElementById("tue")).disabled = true;
+      (<HTMLInputElement>document.getElementById("wed")).disabled = true;
+      (<HTMLInputElement>document.getElementById("thur")).disabled = true;
+      (<HTMLInputElement>document.getElementById("fri")).disabled = true;
+      (<HTMLInputElement>document.getElementById("sat")).disabled = true;
+      (<HTMLInputElement>document.getElementById("sun")).disabled = true;
+      (<HTMLInputElement>document.getElementById("day")).disabled = true;
+      //(<HTMLInputElement>document.getElementById("week")).disabled = true;
+      (<HTMLInputElement>document.getElementById("timedaily")).disabled = true;
+      document.getElementById("timedaily").style.backgroundColor = '#e9ecef';
+      // (<HTMLInputElement>document.getElementById("hrdaily")).disabled = true;
+      (<HTMLInputElement>document.getElementById("datepicker-1")).disabled = true;
+      document.getElementById("datepicker-1").style.backgroundColor = '#e9ecef';
+      // (<HTMLInputElement>document.getElementById("datepicker-2")).disabled = true;
+      // document.getElementById("datepicker-2").style.backgroundColor = '#e9ecef';
+      // (<HTMLInputElement>document.getElementById("datepicker-3")).disabled = true;
+      // document.getElementById("datepicker-3").style.backgroundColor = '#e9ecef';
+      //(<HTMLInputElement>document.getElementById("datepicker-4")).disabled = true;
+      //document.getElementById("datepicker-4").style.backgroundColor = '#e9ecef';
+      //(<HTMLInputElement>document.getElementById("end")).disabled = true;
+      //document.getElementById("whole_div").style.backgroundColor = '#e9ecef';
+    }
+    else if (this.schedule == "one Time") {
+      (<HTMLInputElement>document.getElementById("datepicker-0")).disabled = false;
+      document.getElementById("datepicker-0").style.backgroundColor = 'white';
+      (<HTMLInputElement>document.getElementById("time")).disabled = false;
+      document.getElementById("time").style.backgroundColor = 'white';
+      (<HTMLInputElement>document.getElementById("job_occur_type")).disabled = true;
+      (<HTMLInputElement>document.getElementById("mon")).disabled = true;
+      (<HTMLInputElement>document.getElementById("tue")).disabled = true;
+      (<HTMLInputElement>document.getElementById("wed")).disabled = true;
+      (<HTMLInputElement>document.getElementById("thur")).disabled = true;
+      (<HTMLInputElement>document.getElementById("fri")).disabled = true;
+      (<HTMLInputElement>document.getElementById("sat")).disabled = true;
+      (<HTMLInputElement>document.getElementById("sun")).disabled = true;
+      (<HTMLInputElement>document.getElementById("day")).disabled = true;
+      //(<HTMLInputElement>document.getElementById("week")).disabled = true;
+      (<HTMLInputElement>document.getElementById("timedaily")).disabled = true;
+      document.getElementById("timedaily").style.backgroundColor = '#e9ecef';
+      // (<HTMLInputElement>document.getElementById("hrdaily")).disabled = true;
+      // document.getElementById("hrdaily").style.backgroundColor = '#e9ecef';
+      (<HTMLInputElement>document.getElementById("datepicker-1")).disabled = true;
+      document.getElementById("datepicker-1").style.backgroundColor = '#e9ecef';
+      // (<HTMLInputElement>document.getElementById("datepicker-2")).disabled = true;
+      // document.getElementById("datepicker-2").style.backgroundColor = '#e9ecef';
+      // (<HTMLInputElement>document.getElementById("datepicker-3")).disabled = true;
+      // document.getElementById("datepicker-3").style.backgroundColor = '#e9ecef';
+      //(<HTMLInputElement>document.getElementById("datepicker-4")).disabled = true;
+      //document.getElementById("datepicker-4").style.backgroundColor = '#e9ecef';
+      //(<HTMLInputElement>document.getElementById("end")).disabled = true;
+    }
+    else if (this.schedule == "Recurring") {
+      (<HTMLInputElement>document.getElementById("datepicker-0")).disabled = true;
+      document.getElementById("datepicker-0").style.backgroundColor = '#e9ecef';
+      (<HTMLInputElement>document.getElementById("time")).disabled = true;
+      document.getElementById("time").style.backgroundColor = '#e9ecef';
+      (<HTMLInputElement>document.getElementById("job_occur_type")).disabled = false;
+      (<HTMLInputElement>document.getElementById("timedaily")).disabled = false;
+      document.getElementById("timedaily").style.backgroundColor = 'white';
+      // (<HTMLInputElement>document.getElementById("hrdaily")).disabled = false;
+      // document.getElementById("hrdaily").style.backgroundColor = 'white';
+      (<HTMLInputElement>document.getElementById("datepicker-1")).disabled = false;
+      document.getElementById("datepicker-1").style.backgroundColor = 'white';
+      // (<HTMLInputElement>document.getElementById("datepicker-2")).disabled = false;
+      // document.getElementById("datepicker-2").style.backgroundColor = 'white';
+      // (<HTMLInputElement>document.getElementById("datepicker-3")).disabled = false;
+      // document.getElementById("datepicker-3").style.backgroundColor = 'white';
+      //(<HTMLInputElement>document.getElementById("datepicker-4")).disabled = false;
+      //document.getElementById("datepicker-4").style.backgroundColor = 'white';
+      //(<HTMLInputElement>document.getElementById("end")).disabled = false;
+    }
+  }
+  Option($event) {
+    debugger;
+    this.frequency = (document.getElementById("job_occur_type") as HTMLInputElement).value;
+    console.log(this.frequency);
+    if (this.frequency == "Daily") {
+      (<HTMLInputElement>document.getElementById("day")).disabled = false;
+      (<HTMLInputElement>document.getElementById("mon")).disabled = true;
+      (<HTMLInputElement>document.getElementById("tue")).disabled = true;
+      (<HTMLInputElement>document.getElementById("wed")).disabled = true;
+      (<HTMLInputElement>document.getElementById("thur")).disabled = true;
+      (<HTMLInputElement>document.getElementById("fri")).disabled = true;
+      (<HTMLInputElement>document.getElementById("sat")).disabled = true;
+      (<HTMLInputElement>document.getElementById("sun")).disabled = true;
+      //(<HTMLInputElement>document.getElementById("week")).disabled = true;
+    }
+    else if (this.frequency == "Weekly") {
+      (<HTMLInputElement>document.getElementById("day")).disabled = true;
+      (<HTMLInputElement>document.getElementById("mon")).disabled = false;
+      (<HTMLInputElement>document.getElementById("tue")).disabled = false;
+      (<HTMLInputElement>document.getElementById("wed")).disabled = false;
+      (<HTMLInputElement>document.getElementById("thur")).disabled = false;
+      (<HTMLInputElement>document.getElementById("fri")).disabled = false;
+      (<HTMLInputElement>document.getElementById("sat")).disabled = false;
+      (<HTMLInputElement>document.getElementById("sun")).disabled = false;
+      //(<HTMLInputElement>document.getElementById("week")).disabled = false;
+    }
+  }
+  submit() {
+
+    debugger;
+
+    this.recurringjson_final = {};
+    //Swal('Job Submitted', '', 'success');
+    Swal({
+      type: 'success',
+      title: 'Job Submitted',
+      showConfirmButton: false,
+      timer: 1000
+    })
+    this.schedule = (document.getElementById("jobtype") as HTMLInputElement).value;
+    this.jobname = (document.getElementById("jobname") as HTMLInputElement).value;
+    if (this.schedule == "Immediate") {
+
+      this.immediateboolean = "true";
+      this.date1 = [];
+      this.recurringjson_final["Daily"] = {};
+      this.recurringjson_final["Weekly"] = {};
+    }
+    else if (this.schedule == "one Time") {
+      this.immediateboolean = "false";
+      console.log(this.time);
+      console.log(this.date);
+      //console.log(JSON.stringify(this.date));
+      var datemilliseconds = this.date.getTime();
+      var date = datemilliseconds + 19800000;
+
+      // this.date1["startdate"] =this.date;
+      //this.date1["starttime"] = this.time;
+      this.date1.push(JSON.stringify(date));
+      this.date1.push(this.time);
+      this.recurringjson_final["Daily"] = {};
+      this.recurringjson_final["Weekly"] = {};
+    }
+    else if (this.schedule == "Recurring") {
+      this.frequency = (document.getElementById("job_occur_type") as HTMLInputElement).value;
+      if (this.frequency == "Daily") {
+        var days = (document.getElementById("day") as HTMLInputElement).value;
+        console.log(this.dailytime);
+        console.log(this.startdate);
+        var startdatemilliseconds = this.startdate.getTime();
+        var startdate = startdatemilliseconds + 19800000;
+        this.recurringjsonday["Recurs every_days"] = days;
+        this.recurringjsonday["time"] = this.dailytime;
+        this.recurringjsonday["date"] = JSON.stringify(startdate);
+        console.log(this.recurringjsonday);
+        this.recurringjson_final["Weekly"] = {};
+        this.recurringjson_final["Daily"] = this.recurringjsonday;
+        this.immediateboolean = "false";
+        this.date1 = [];
+        this.recurringjson_final = this.recurringjson_final;
+      }
+      else if (this.frequency == "Weekly") {
+        //var weeks = (document.getElementById("week") as HTMLInputElement).value;
+        console.log(this.dailytime);
+        console.log(this.startdate);
+        var startdatemilliseconds = this.startdate.getTime();
+        var startdate = startdatemilliseconds + 19800000;
+        var checkboxes = document.querySelectorAll('input[name=checkboxes]:checked');
+        var checkboxesChecked = [];
+        for (var i = 0; i < checkboxes.length; i++) {
+          checkboxesChecked.push((checkboxes[i] as HTMLInputElement).value);
+        }
+        console.log(checkboxesChecked);
+        this.daysofweek = checkboxesChecked;
+        console.log(this.recurringjsonweekcheck);
+        this.recurringjsonweek["daysofweek"] = this.daysofweek;
+        this.recurringjsonweek["time"] = this.dailytime;
+        this.recurringjsonweek["date"] = JSON.stringify(startdate);
+        this.recurringjson_final["Daily"] = {};
+        this.recurringjson_final["Weekly"] = this.recurringjsonweek;
+        this.immediateboolean = "false";
+        this.date1 = [];
+        console.log(this.recurringjson_final);
+      }
+    }
+    console.log(this.conditionData);
+    //console.log(JSON.stringify(this.conditionData));
+    console.log(this.targetData);
+    //console.log(JSON.stringify(this.targetData));
+    let Scheduler = {
+      jobName: this.jobname,
+      Immediate: this.immediateboolean,
+      onetime: this.date1,
+      recurring: this.recurringjson_final
+    }
+    console.log(Scheduler);
+    //console.log(JSON.stringify(Scheduler));
+    this.targetData["Scheduler"] = Scheduler;
+    console.log(this.targetData);
+    console.log(JSON.stringify(this.targetData));
+    // $.ajax({
+    //   contentType: "application/json; charset=utf-8",
+    //   type: "POST",
+    //   url: "http://10.41.2.15:8080/demo2/ingestion/import",
+    //   data: JSON.stringify(this.targetData),
+    //   success: (data) => {
+    //     console.log(data);
+    //   },
+    //   beforeSend: function () {
+    //   }
+    // });
+    this.http.post("http://10.41.2.15:8080/demo/ingestion/import", JSON.stringify(this.targetData), { headers: headers })
+      .subscribe(data => {
+        console.log(data['_body']);
+        // location.reload();
+      }, error => {
+        Swal('An Unexpected Error Occurred', '', 'error');
+        console.log(error);
+      });
+  }
+}
+</script>
+</head>
+</html>

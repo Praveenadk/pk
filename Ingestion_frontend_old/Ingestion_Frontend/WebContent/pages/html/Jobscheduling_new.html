@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Drag & Drop</title>
+    <link rel="icon" href="../images/ingestion.png" type="image" sizes="16x16">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.10.2/jquery.js "></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.15/js/bootstrap-multiselect.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.15/css/bootstrap-multiselect.css" type="text/css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsPlumb/1.4.1/jquery.jsPlumb-1.4.1-all-min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2"></script>
+	<style>
+	#timeinput{
+    margin-left: -1%;
+}
+#inputlabel{
+    margin-left: -2%;
+}
+#jobschedulesubmit{
+    margin-top: 9%;
+    margin-left: 30%;
+}
+/* The container */
+<!-- .container { -->
+    <!-- display: inline-block; -->
+    <!-- position: relative; -->
+    <!-- padding-left: 35px; -->
+    <!-- margin-bottom: 5px; -->
+    <!-- margin-top:9px; -->
+    <!-- cursor: pointer; -->
+    <!-- font-size: 18px; -->
+    <!-- width: 17%; -->
+    <!-- font-weight: 500; -->
+    <!-- -webkit-user-select: none; -->
+    <!-- -moz-user-select: none; -->
+    <!-- -ms-user-select: none; -->
+    <!-- user-select: none; -->
+<!-- } -->
+#daily_radio_at_div{
+    position: relative;
+    top: -33px;
+    left: 13px;
+}
+#daily_radio_occurs_div{
+    position: relative;
+    top: -29px;
+    left: 13px;
+}
+#jobname{
+    display:inline-block;
+}
+#jobtype{
+    width:100%;
+    display:inline-block;
+}
+#duration_end{
+margin-left: 108px;
+}
+#noend_duration{
+    margin-left: 34%;
+    margin-top: 15px;
+}
+#line{
+    border-top: 1px solid #abb3b9;
+    width: 89%;
+    position: relative;
+    top: -14px;
+    left: 156px;
+}
+#daily{
+    position: absolute;
+    margin-top: 1%;
+}
+#week1{
+    position: absolute;
+    margin-top: 4%;
+}
+#week2{
+    position: absolute;
+    margin-top: 6%;
+}
+#day{
+    margin-left: -161%;
+    width: 65%;
+    display:inline-block;
+}
+#week{
+    margin-left: -230%;
+    width: 63%;
+    display:inline-block;
+
+}
+#occur_start_date{
+margin-left: 49%;
+margin-top: -18%;
+}
+#occur_start{
+margin-top: 12%;
+}
+#import{
+    float: right;
+    margin-top: -4%;
+    width: 8%;
+   
+}
+	</style>
+	 <div class="container">
+	  <div class="nav-side-menu">
+            <i class="fa fa-bars fa-2x toggle-btn" data-toggle="collapse" data-target="#menu-content"></i>
+            <div class="menu-list">
+                <ul id="menu-content" class="menu-content collapse out">
+
+                    <li data-toggle="collapse" data-target="#source" class="collapsed active">
+                        <a href="#"><img src="../images/source.png" style="width: 26px;height: 26px;">&nbsp;Sources <span class="arrow"></span></a>
+                    </li>
+                    <ul class="sub-menu collapse" id="source">
+                        <li id="mysql" class="opensrc" ondragstart="return srcStart(event)" ondrag="srcdragging(event)" draggable="true">Mysql</li>
+                        <li id="oracle" class="opensrc" ondragstart="return srcStart(event)" ondrag="srcdragging(event)" draggable="true">Oracle</li>
+                        <!-- <li id="DB2" ondragstart="return srcStart(event)" ondrag="srcdragging(event)" draggable="true">DB2</li> -->
+                    </ul>
+                    <li data-toggle="collapse" data-target="#transform" class="collapsed">
+                        <a href="#"><img src="../images/transform.png" style="width: 26px;height: 26px;">&nbsp;Transform <span class="arrow"></span></a>
+                    </li>
+                    <ul class="sub-menu collapse" id="transform">
+                        <li id="nullcheck" class="opentrans" ondragstart="return transformStart(event)" ondrag="transformdragging(event)" draggable="true">Null Check</li>
+                        <li id="dateformat" class="opentrans" ondragstart="return transformStart(event)" ondrag="transformdragging(event)" draggable="true">Date Format Change</li>
+                    </ul>
+                    <li data-toggle="collapse" data-target="#target" class="collapsed">
+                        <a href="#"><img src="../images/target.png" style="width: 26px;height: 26px;">&nbsp;Target <span class="arrow"></span></a>
+                    </li>
+                    <ul class="sub-menu collapse" id="target">
+                        <li id="HDFS" class="opentrg" ondragstart="return targetStart(event)" ondrag="targetdragging(event)" draggable="true" style="text-align:center;">HDFS</li>
+                        <!-- <li id="target2" ondragstart="return targetStart(event)" ondrag="targetdragging(event)"  draggable="true">target2</li> -->
+                        <!-- <li id="target3" ondragstart="return targetStart(event)" ondrag="targetdragging(event)"  draggable="true">target3</li> -->
+
+                    </ul>
+                </ul>
+            </div>
+        </div>
+	 <div class="job_wrapper">
+	 <div>
+        <table>
+            <tr>
+                <td>
+                    <label for="jobname">Job Name:</label>
+                </td>
+                <td>
+                    <input required minlength="5" maxlength="20"  class='form-control' type='text' id='jobname' name='jobname'>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="job_type">Select Schedule Type:</label>
+                </td>
+                <td>
+                    <div form-control="jobtype">
+                        <select class='form-control' type='text' id='jobtype' name='jobtype' (change)="scheduleOption($event)">
+                            <option value=''>select</option>
+                            <option value='Immediate'>Immediate</option>
+                            <option value='one Time'>One Time</option>
+                            <option value='Recurring'>Recurring</option>
+                        </select>
+                        
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+	 </div>
+	 
+	 </div>

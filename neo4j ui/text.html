@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<head>
+  <title>Hierarchy examples</title>
+</head>
+
+<style>
+body {
+  font-family: "Helvetica Neue", Helvetica, sans-serif;
+  font-size: 14px;
+  color: #333;
+}
+
+div {
+  margin: 20px;
+}
+
+div span {
+  font-weight: bold;
+}
+
+</style>
+
+<body>
+  <div id="content"></div>
+<pre id='data'></pre>
+     <script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.2.2/d3.min.js"></script>
+  <script>
+var data = {
+  "name": "A1",
+  "children": [
+    {
+      "name": "B1",
+      "children": [
+        {
+          "name": "C1",
+          "value": 100
+        },
+        {
+          "name": "C2",
+          "value": 300
+        },
+        {
+          "name": "C3",
+          "value": 200
+        }
+      ]
+    },
+    {
+      "name": "B2",
+      "value": 200
+    }
+  ]
+};
+$("#data").text(JSON.stringify(data));
+function showArrayElements(data, title) {
+  d3.select('#content')
+    .append('div')
+    .html('<span>' + title + '</span>: ' + data.map(function(d) {return d.data.name;}).join(', '))
+}
+
+function showLinkArrayElements(data, title) {
+  d3.select('#content')
+    .append('div')
+    .html('<span>' + title + '</span>: ' + data.map(function(d) {return d.source.data.name + ' -> ' + d.target.data.name;}).join(', '))
+}
+
+var root = d3.hierarchy(data)
+console.log(root)
+var ancestors = root.children[0].children[1].ancestors()
+var descendants = root.descendants()
+var leaves = root.leaves()
+var path = root.path(root.children[0].children[1])
+var links = root.links()
+
+showArrayElements(ancestors, "root.children[0].children[1].ancestors()")
+showArrayElements(descendants, "root.descendants()")
+showArrayElements(leaves, "root.leaves()")
+showArrayElements(path, "root.path(root.children[0].children[1])")
+showLinkArrayElements(links, "root.links()")
+
+
+
+  </script>
+</body>
+</html>

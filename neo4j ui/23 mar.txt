@@ -1,0 +1,387 @@
+from IPython.display import IFrame
+from IPython.display import HTML
+import json
+import uuid
+from py2neo import Graph, Node
+import cgi
+import tornado.ioloop
+import tornado.web
+   
+graph = Graph("http://10.41.2.15:7474/",user="neo4j",password="slk")
+options={"Company":"companynumber","Address":"postcode"}
+def vis_network(nodes, edges, physics):
+    html = """
+    <html>
+    <head>
+      <script type="text/javascript" src="http://visjs.org/dist/vis.js"></script>
+      <link href="http://visjs.org/dist/vis.css" rel="stylesheet" type="text/css">
+       <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.js"></script>
+    </head>
+    
+    <body>
+    <button onClick="myfunc()">click me </button>
+    <div id="mynetwork2" style="display:none;border: 5px solid rgba(128, 128, 128, 0.5);margin-left:50px;margin-right:50px;font-size:20px;width:91%;padding:10px;margin-bottom:0px;margin-top:20px;
+        border-radius:5px; height: 60%;overflow: auto;">
+    <table  id="itemList" >
+    <thead>
+        <tr>
+            <td>n:</td> 
+        </tr>
+    </thead>
+    <tbody>
+    <tr ">
+            <td style="margin-bottom:5px;border-bottom:2px solid black;" ></td> 
+        </tr>
+    </tbody>
+    </table>
+    </div>
+    
+    <div id="{id}" style="border: 5px solid rgba(128, 128, 128, 0.5);margin-left:50px;margin-right:50px;font-size:20px;width:91%;padding:10px;margin-bottom:0px;margin-top:20px;
+        border-radius:5px; height: 60%;" ></div>
+      
+    <script type="text/javascript">
+      var nodes = {nodes};
+      var edges = {edges};
+      function myfunc(){{
+    var x = document.getElementById("{id}");
+    var y = document.getElementById("mynetwork2"); 
+    if (x.style.display === 'none') {{
+        x.style.display = 'block';
+         y.style.display = 'none';
+    }}
+    else {{
+        x.style.display = 'none';
+         y.style.display = 'block';
+    }}
+    var rows = "";
+    $.each(nodes, function(){{
+
+    rows += "<tr><td style='margin-bottom:5px;border-bottom:1px solid black;'>" + this.title + "</td></tr>";
+    }});
+    $("#itemList tbody").empty();
+    $( rows ).appendTo( "#itemList tbody" );   
+    }}
+
+      var container = document.getElementById("{id}");
+      var domain={physics};
+       var obj = findObjectByKey(nodes, 'group', domain);
+       function findObjectByKey(array, key, value) {{
+          var j=0;
+          var arr=[];
+          for (var i = 0; i < array.length; i++) {{
+            if (array[i][key] === value) {{
+              arr[j]=array[i];
+              j++;      
+            }}
+            }}
+            return arr;
+        }}
+
+      var data = {{
+        nodes: obj,
+        edges: edges
+      }};
+      var options = {{
+          nodes: {{
+              shape: 'dot',
+              size: 25,
+              font: {{
+                  size: 14
+              }}
+          }},
+          edges: {{
+              font: {{
+                  size: 10,
+                  align: 'middle'
+              }},
+              color: 'gray',
+              arrows: {{
+                  to: {{enabled: true, scaleFactor: 0.5}}
+              }},
+              smooth: {{enabled: false}}
+          }},
+          physics: {{
+              enabled: true
+          }}
+      }};
+    
+      var network = new vis.Network(container, data, options);
+      network.on('doubleClick', onDoubleClick);
+      function onDoubleClick() {{
+        network.setData({{ nodes: nodes, edges:edges}});
+        }}
+
+    
+    </script>
+    </body>
+    </html>
+    """
+    
+    unique_id = str(uuid.uuid4())
+    html = html.format(id=unique_id, nodes=json.dumps(nodes), edges=json.dumps(edges), physics=json.dumps(physics))
+    #print ("htmlllllllllllll"+html)
+    return html
+    #filename = "graph-{}.html".format(unique_id)
+    
+    #file = open(filename, "w")
+    #file.write(html)
+    #file.close()
+    #print(filename)
+    #return filename
+    #print ("final ressssss"+IFrame(filename, width="70%", height="400"))
+    #return IFrame(filename, width="900%", height="900")
+    #return IFrame(filename, width="100%", height="400")
+    #return "output"
+    #return HTML('<iframe src='+html+' width=1000 height=1050></iframe>')
+    
+    
+    
+def draw(query,domain,graph, options, physics=True, limit=100):
+    # The options argument should be a dictionary of node labels and property keys; it determines which property
+    # is displayed for the node label. For example, in the movie graph, options = {"Movie": "title", "Person": "name"}.
+    # Omitting a node label from the options dict will leave the node unlabeled in the visualization.
+    # Setting physics = True makes the nodes bounce around when you touch them!
+    print("query"+query)
+    print("domain"+domain)
+    data = graph.run(query, limit=limit)    
+
+    nodes = []
+    edges = []
+
+    def get_vis_info(node, id):
+        node_label = list(node.labels())[0]
+        #print(node_label)
+        prop_key = options.get(node_label)
+        #print(prop_key)
+        vis_label = node.properties.get(prop_key, "")
+        title=repr(node.properties)  
+        print(title)
+        return {"id": id, "label": node_label, "group": node_label, "title": repr(node.properties)}
+
+    for row in data:
+        print (row)
+        source_node = row[0]
+        source_id = row[1]
+        rel = row[2]
+        target_node = row[3]
+        target_id = row[4]
+        print("dataaaaaaaaaaaaaaaaaaaa")
+        #print(source_node)
+
+        source_info = get_vis_info(source_node, source_id)
+
+        if source_info not in nodes:
+            nodes.append(source_info)
+
+        if rel is not None:
+            target_info = get_vis_info(target_node, target_id)
+
+            if target_info not in nodes:
+                nodes.append(target_info)
+
+            edges.append({"from": source_info["id"], "to": target_info["id"], "label": rel.type()})
+
+    return vis_network(nodes, edges, physics=domain)
+
+   
+form= """<html>
+        <title>Neo4j</title>
+        <style>
+         .divStyle{
+          margin: 28px 0px 0px 50px;
+          border: 2px solid black;
+          width:93%;
+          height:27%;
+          border-radius:5px;
+        }
+        .form1 {
+        margin-left:137px;
+        font-size:14px;
+        width:69%;
+
+        height:33px;
+        border-radius:5px;
+        border: 2px solid rgba(128, 128, 128, 1);
+        
+        }
+
+        .property{
+        margin-right: 1100px;
+        float:right;
+        width: 268px;
+        }
+        .support{
+        margin-right: 680px;
+        margin-top:-71px;
+        float:right;
+         width: 268px;
+
+        }
+        .search {
+        margin-right:134px;
+        margin-top:-72px;
+        float:right;
+        height:50px;
+        margin=left: -62px;
+        }
+        .domain {
+        margin-left:140px;
+        font-size:14px;
+        width:80%;
+        height:33px;
+        border-radius:5px;
+        border: 2px solid rgba(128, 128, 128, 1);
+        margin-bottom:38px;
+        }
+        .domdiv{
+        margin-top: 30px;
+        float:right;
+        margin-right:179px;
+        margin-bottom:-7px;
+        
+        }
+        .label {
+        text-align:right;
+        font-size:20px;
+        position:absolute;
+        margin-top: 2px;
+        width: 132px;
+        }
+        .submit{
+        width: 100px;
+        height: 33px;
+        border-radius: 5px;
+        margin-left: 600px;
+        background-color: lightsteelblue;
+        border:none;
+        margin-top: 145px;
+        }
+        #postdata{
+        margin-bottom:0px;
+        }
+        </style>
+        <body>
+            <div class="divStyle">
+              <form  id="postData" method="post">
+                <div style=marginTop:30px >
+                    <div class="domdiv">
+                      <label class="label"  > Select Domain </label>
+                        <select name="domain" id="domain" class="domain" onChange="changecat(this.value);">
+                        <option value="" disabled selected>Select</option>
+                        <option value="BeneficialOwner">BeneficialOwner</option>
+                        <option value="Company">Company</option>
+                        <option value="Address">Address</option>
+                        <option value="SICCode">SICCode</option>
+                        </select>
+                    </div>
+                    <div class="property" >
+                       <label class="label" >Filter</label>           
+                        <select name="category" id="category" class="domain">
+                        <option value="" disabled selected>Select</option>
+                        </select>
+                    </div>
+
+                    <div class="support" >
+                     <label class="label" >Type</label>
+                         <div >
+                            <select   class="domain"  >
+                            <option value ="Is">Is</option>
+                            <option value ="Is not">Is not</option>
+                            <option value ="Is one of">Is one of</option>
+                            <option value ="Exists">Exists</option>
+                            <option value ="Does not exists">Does not exists</option>
+                           </select>  
+                        </div>  
+                    </div>
+                    <div class="search">
+                      <label class="label" >Search</label>
+                          <input type="text" class="form1" placeholder="Search....." ref="search"
+                              name="search" id="search" />
+                    </div>
+                     <input type="submit" class="submit">
+                </div>
+             </form>
+                <br/>
+             </div>
+        <script>
+            var domainByCategory = {
+                BeneficialOwner: ["name", "country_of_residence", "nationality", "companynumber"],
+                Company: ["name","companynumber"],
+                Address: ["line1", "line2", "postcode", "country"],
+                SICCode: ["siccode"]
+                    }
+
+            function changecat(value) {
+                if (value.length == 0) document.getElementById("category").innerHTML = "<option></option>";
+                else {
+                    var catOptions = "";
+                    for (categoryId in domainByCategory[value]) {
+                    catOptions += "<option>" + domainByCategory[value][categoryId] + "</option>";
+                    }
+                    document.getElementById("category").innerHTML = catOptions;
+                    }
+                    }
+            </script>
+        </body>
+        </html>""" 
+        
+class User(tornado.web.RequestHandler):        
+    def get(self): 
+        self.finish(form)
+        #f = open('helloworld.html','w')
+        #f.write(form)
+        #f.close()
+        #filename = 'helloworld.html'
+        #self.render(filename)   
+      
+
+    def post(self):     
+        domain=self.get_argument('domain')
+        category=self.get_argument('category')
+        search=self.get_argument('search')
+        print("domain:"+domain)
+        print("category:"+category)
+        if(search):
+            if (domain=="BeneficialOwner") :
+                query="MATCH (n)-[r]->(m) where n."+category +"= '"+search+"' RETURN n as source_node,id(n) AS source_id,r, m AS target_node,id(m) AS target_id limit 20"
+            else:
+                query="MATCH (n)-[r]->(m) where m."+category +"= '"+search+"' RETURN n as source_node,id(n) AS source_id,r, m AS target_node,id(m) AS target_id limit 20"  
+        else:
+            if (domain=="BeneficialOwner") :
+                query="MATCH (n:"+domain+")-[r]->(m) RETURN n as source_node,id(n) AS source_id,r, m AS target_node,id(m) AS target_id limit 20"  
+            else:
+                query="MATCH (n)-[r]->(m:"+domain+") RETURN n as source_node,id(n) AS source_id,r, m AS target_node,id(m) AS target_id limit 20"
+     
+        
+        
+        print("query: "+query);
+        #self.write(IFrame(filename, width="100%", height="400"))
+        #graph = Graph("http://10.41.2.16:7474/",user="neo4j",password="slk")
+        #options={"Company":"companynumber","SICCode":"siccode"}                
+        res=draw(query,domain,graph,options)
+        print ("output File:"+res)
+        
+        #elem = dom.find( "Iframe[id=chart]" )
+        #elem.Attributes["src"] = "res";
+        #self.render('test.html')
+       
+        self.write(form) 
+        self.write(res)
+        #f = open('helloworld.html','a+')
+        #f.write(res)
+        #f.close()
+        #filename1 = 'helloworld.html'
+        #self.render(filename1) 
+        #self.write('<div>hello</div>')
+        #body = "<iframe id='Iframe1' src="+res+"></iframe>"
+        #print(IFrame(filename, width="100%", height="400"))
+        #self.write(IFrame(res, width="100%", height="400"))
+        
+
+app = tornado.web.Application(
+handlers=[(r"/user/", User),])
+#template_path=os.path.join(os.path.dirname("/root/anaconda3/bin/kirti_notebook/WebService/"), "template"))
+http_server = tornado.httpserver.HTTPServer(app)
+http_server.listen(9982)
+#tornado.ioloop.IOLoop.instance().start() 
+ 

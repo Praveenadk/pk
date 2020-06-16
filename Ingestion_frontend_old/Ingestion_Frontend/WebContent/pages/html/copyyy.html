@@ -1,0 +1,1061 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="shortcut icon" type="image/x-icon" href="../images/TDM_button.png" />
+	<title>TDM</title>
+	<!-- <link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel = "stylesheet">
+      <script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
+	     <script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> 
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<link rel="shortcut icon" type="image/x-icon" href="../images/slk-icon.png" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.13.0/d3.min.js"></script>
+<script src="../js/d3pie.js"></script>
+<link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" />
+<link rel="stylesheet" href="../css/webix.css" type="text/css" charset="utf-8">
+<script src="../js/webix.js" type="text/javascript" charset="utf-8"></script>
+<script src='../js/raven.min.js'></script> -->
+	<link rel="stylesheet" href="../bootstrap-3.3.7/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="../css/bootstrap-datepicker3.css">
+	<link rel="stylesheet" href="../css/mdtimepicker.min.css">
+	<link rel="stylesheet" href="../css/font-awesome.min.css">
+	<link rel="stylesheet" href="../css/ionicons.min.css" />
+	<link rel="stylesheet" href="../css/webix.css" type="text/css" charset="utf-8">
+	<link rel="stylesheet" href="../css/sweetalert.css">
+	<link href="../css/common.css" rel="stylesheet">
+	<script src="../js/sweetalert.min.js"></script>
+	<script src="../js/sweetalert.js"></script>
+	<script src="../js/jquery-1.10.js"></script>
+	<script src="../js/jquery-ui.js"></script>
+ <script src="../bootstrap-3.3.7/dist/js/bootstrap.min.js"></script> 
+ 	<script src="../js/bootstrap-datepicker.js"></script>
+	<script src="../js/mdtimepicker.min.js"></script>
+</head>
+<style>
+
+	td{
+	    padding: 8px;
+	}
+
+	div.job_wrapper {
+	  position: relative;
+	  border: 2px solid #abb3b9;
+	  margin: 1.8%;
+	  padding: 20px 10px 10px;
+	}
+	label#side_label_job  {
+    color: #10486b;
+    line-height: 20px;
+    padding: 5px 15px;
+    position: absolute;
+    background-color: #ffe4ce;
+	    top: -16px;
+	    left: 10px;
+	    font-size: 16px;
+	}
+	#job_name{
+	display:inline-block;
+	}
+	#job_type{
+	display:inline-block;
+	}
+	#line{
+	    border-top: 1px solid #abb3b9;
+	    width: 89.5%;
+	    position: relative;
+	    top: -14px;
+	    left: 151px;
+	}
+	#daily_radio_at_div{
+	    position: relative;
+	    top: -33px;
+	    left: 13px;
+	}
+	#daily_radio_occurs_div{
+	position: relative;
+	    top: -75px;
+	    left: 13px;
+		}
+
+	label{
+	font-weight:600;
+	display:inline-block;
+	}
+	
+	/* The container */
+	.container {
+	    display: inline-block;
+	    position: relative;
+	    padding-left: 35px;
+	    margin-bottom: 12px;
+	    cursor: pointer;
+	    font-size: 14px;
+	    width: 17%;
+	    font-weight: 500;
+	    -webkit-user-select: none;
+	    -moz-user-select: none;
+	    -ms-user-select: none;
+	    user-select: none;
+	}
+	
+	/* Hide the browser's default checkbox */
+	.container input {
+	    position: absolute;
+	    opacity: 0;
+	    cursor: pointer;
+	}
+	
+	/* Create a custom checkbox */
+	.checkmark {
+	    position: absolute;
+	    top: 0;
+	    left: 0;
+	    height: 22px;
+	    width: 22px;
+	    background-color: white;
+	}
+	
+	/* On mouse-over, add a grey background color */
+	.container:hover input ~ .checkmark {
+	    background-color: #ccc;
+	}
+	
+	/* When the checkbox is checked, add a blue background */
+	.container input:checked ~ .checkmark {
+	    background-color: #f58426;
+	}
+	
+	/* Create the checkmark/indicator (hidden when not checked) */
+	.checkmark:after {
+	    content: "";
+	    position: absolute;
+	    display: none;
+	}
+	
+	/* Show the checkmark when checked */
+	.container input:checked ~ .checkmark:after {
+	    display: block;
+	}
+	
+	/* Style the checkmark/indicator */
+	.container .checkmark:after {
+	    left: 9px;
+	    top: 5px;
+	    width: 5px;
+	    height: 10px;
+	    border: solid white;
+	    border-width: 0 3px 3px 0;
+	    -webkit-transform: rotate(45deg);
+	    -ms-transform: rotate(45deg);
+	    transform: rotate(45deg);
+	}
+
+	 .ui-dialog-titlebar-close {
+	  background: url("../css/images/ui-icons_888888_256x240.png") repeat scroll -93px -128px rgba(0, 0, 0, 0);
+	  border: medium none;
+	}
+	.ui-dialog-titlebar-close:hover {
+	  background: url("../css/images/ui-icons_222222_256x240.png") repeat scroll -93px -128px rgba(0, 0, 0, 0);
+	}
+#main.nav-tabs > li > a{
+		text-align:center;
+	    padding: 8px 30px;
+	      // border-bottom: 1px solid #fbc293;
+	    
+	    //background: #dadada;
+		color: #10486b;
+	    font-weight: bold;
+		font-size: 11px;
+		margin-right: 0px; 
+		line-height: 1.42857143;
+	}
+	#main.nav-tabs > li > a:hover{
+	//border-bottom: 1px solid #fbc293;
+    border-right: 0px none;
+    background: #ffc290;
+		font-size:12px;
+		-webkit-transition: font-size 1s;
+	       -moz-transition: font-size 1s;
+	         -o-transition: font-size 1s;
+	            transition: font-size 1s;
+	}
+	#main.nav-tabs > li.active1 > a,
+	#main.nav-tabs > li.active1 > a:focus,
+	#main.nav-tabs > li.active1 > a:hover{
+		border:none;
+	    border-top: 3px solid #346e96;
+	    color: #10486b;
+		background: white;
+		
+		
+	}
+	#obfs_select{
+	margin-bottom:0px;
+	}
+	.container-fluid {
+    padding-right: 15px;
+    padding-left: 15px;
+	}
+</style>
+
+<body >
+	<div class="top-container">
+  <div class="slk_logo"><img style="width:87px;height: 55px;display:inline-block;" src="../images/slk.png"></div>
+  <h3 class="page_title"><img src='../images/TDM_button.png' style="width:36px;height:36px;display:inline-block;margin-bottom:6px;"> Test Data Management</h3>
+  <div class="dsl_logo"><img style="width: 102px;height: 58px;display:inline-block;" src="../images/dsl.png"></div>
+</div>
+	<nav class="navbar navbar-default navbar-custom" data-spy="affix" data-offset-top="10">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar"> <span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span> 
+				</button>
+				
+				<ul id="main" class="nav nav-tabs" role="tablist">
+			
+			<li class="active1"><a aria-controls="home" href='manage_workflow.html'><span data-toggle='tooltip'  title="Home" id="main_icon" class="fa fa-home"></span> </a>
+			</li>
+			<li><a href='job.html'><span data-toggle='tooltip'  title="Job History" id="main_icon" class="fa fa-history"></span></a>
+			</li>
+			<li><a href='manage_conn.html'><span data-toggle='tooltip'  title="Admin Settings" id="main_icon" class="fa fa-cog"></span></a>
+			</li>	
+				
+				</ul>	
+				
+			</div>
+			
+		
+				<ul class="nav navbar-nav navbar-right">
+				<li><a><select class="form-control" id="obfs_select" onchange="javascript:handleSelect(this)"><option value="define_source" selected>Data Obfuscation</option><option value="data_generator">Data Generation</option></select></a></li>
+				 <li class="dropdown">
+				 <a id="profile_pic" class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-user-circle-o" style="font-size:18px"></i><b  id='userid'></b> <span class="caret" style="border-top-color: #fff;border-bottom-color: #fff;"></span></a>
+					<ul class="dropdown-menu">
+					<li><a onclick='logout();'><span class="glyphicon glyphicon-log-out"></span> Sign-out</a></li>
+					</ul>
+				</li>
+
+</div>
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+	<div class="containerDiv">
+		<nav class="demo">
+			<ol class="breadcrumb">
+				<li><a href="#"><span class="icon ion-android-folder "></span>Define Source</a>
+				</li>
+				<li ><a href="#"><span class="icon fa fa-line-chart"></span>Data Discovery</a>
+				</li>
+				<li><a href="#"><span class="icon fa fa-shield"></span>Define Obfuscation</a>
+				</li>
+				<li><a href="#"><span class="icon ion-aperture "></span>Patterns</a>
+				</li>
+				<li><a href="#"><span class="icon ion-filing "></span>Define Target</a>
+				</li>
+				<li class="active"><a href="#"><span class="icon fa fa-calendar-o"></span>Job Scheduler</a>
+				</li>
+				<li class="unactive"><a href="#"><span class="icon ion-clipboard"></span>Preview</a>
+				</li>
+			</ol>
+		</nav>
+		<div class="job_wrapper">
+			<label id='side_label_job'><i class="fa fa-calendar"></i> Job Schedule</label>
+			<div>
+				<table>
+					<tr>
+						<td>
+							<label>Job Name:</label>
+						</td>
+						<td>
+							<input class='form-control' type='text' id='job_name' name='job_name'>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label>Schedule Type:</label>
+						</td>
+						<td>
+							<select class='form-control' type='text' id='job_type' name='job_type'>
+								<option selected>--select--</option>
+								<option value='immediate'>Immediate</option>
+								<option value='one_time'>One Time</option>
+								<option value='recurring'>Recurring</option>
+							</select>
+						</td>
+					</tr>
+				</table>
+				<br />
+				<div id='whole_div'>
+					<div id='one_time'>
+						<label id='onetime_label'>One-time Occurence:</label>
+						<div id='line'></div>
+						<table>
+							<tr>
+								<td>
+									<label>Date:</label>
+								</td>
+								<td>
+									<div class="input-group">
+  
+    <input id="datepicker1" data-format="yyyy-MM-dd" type="text"  class="form-control">   <span class="input-group-addon date"><i class="glyphicon glyphicon-calendar"></i></span>
+  </div>
+								</td>
+								<td></td>
+								<td>
+									<label>Time:</label>
+								</td>
+								<td>
+									<div class="input-group">
+  
+   <input type="text" id="timepicker1"  class="form-control">
+   <span class="input-group-addon time" ><i class="glyphicon glyphicon-time"></i></span>
+  </div>
+								</td>
+							</tr>
+						</table>
+						<br />
+					</div>
+					<div id='recurring'>
+						<label id='onetime_label' style='left: 80px; width: 94%;'>Frequency:</label>
+						<div style='left: 77px; width: 95%;' id='line'></div>
+						<table>
+							<tr>
+								<td style='width: 2%;'>
+									<label>Occurs:</label>
+								</td>
+								<td>
+									<select style='width: 18%;' class='form-control' type='text' id='job_occur_type' name='job_occur_type'>
+										<option value="" selected="selected">--select--</option>
+										<option value='daily'>Daily&nbsp;&nbsp;&nbsp;&nbsp;</option>
+										<option value='weekly'>Weekly</option>
+									</select>
+								</td>
+							</tr>
+							<tr id='daily'>
+								<td>
+									<label>Recurs every:</label>
+								</td>
+								<td style='width: 27%;'>
+									<input type="number" id='days' style='display:inline-block;width: 18%;' class="form-control">
+									<label>day(s)</label>
+								</td>
+							</tr>
+							<tr class='weekly'>
+								<td>
+									<label>Recurs every:</label>
+								</td>
+								<td style='width: 27%;'>
+									<input type="number" id='weeks' style='display:inline-block;width: 18%;' class="form-control">
+									<label>week(s)</label>
+									<br />
+								</td>
+							</tr>
+							<tr class='weekly'>
+								<td></td>
+								<td>
+									<label class="container">Monday
+										<input type="checkbox" name='days_check' class='days_check' value='mon' checked="checked">	<span class="checkmark"></span>
+									</label>
+									<label class="container">Tuesday
+										<input type="checkbox" name='days_check' value='tues' class='days_check'>	<span class="checkmark"></span>
+									</label>
+									<label class="container">Wednesday
+										<input type="checkbox" name='days_check' value='wednes' class='days_check'>	<span class="checkmark"></span>
+									</label>
+									<label class="container">Thursday
+										<input type="checkbox" name='days_check' value='thurs' class='days_check'>	<span class="checkmark"></span>
+									</label>
+									<label class="container">Friday
+										<input type="checkbox" name='days_check' value='fri' class='days_check'>	<span class="checkmark"></span>
+									</label>
+									<label class="container">Saturday
+										<input type="checkbox" name='days_check' value='sat' class='days_check'>	<span class="checkmark"></span>
+									</label>
+									<label class="container">Sunday
+										<input type="checkbox" name='days_check' value='sun' class='days_check'>	<span class="checkmark"></span>
+									</label>
+								</td>
+							</tr>
+					</div>
+					</table>
+					<br />
+					<label id='onetime_label'>Daily frequency:</label>
+					<div style='left: 112px;width: 92.5%;' id='line'></div>
+					<br />
+					<input type='radio' name='daily_radio' value='daily_radio_at' checked>
+					<div id='daily_radio_at_div'>
+						<table>
+							<td>
+								<label>Occurs once at:</label>
+							</td>
+							<td>
+								<div class="input-group">
+  
+   <input type="text" id="timepicker2" data-format="hh:mm:ss" class="form-control">
+   <span class="input-group-addon time" ><i class="glyphicon glyphicon-time"></i></span>
+  </div>
+							</td>
+						</table>
+					</div>
+					<br/>
+					<input type='radio' name='daily_radio' value='daily_radio_occurs'>
+					<div id='daily_radio_occurs_div'>
+						<table>
+							<td>
+								<label>Occurs every:</label>
+							</td>
+							<td>
+								<input type="number" style='display:inline-block;width: 27%;' id='hours' class="form-control">
+								<label>hour(s)</label>
+							</td>
+							<td>
+								<label>Starting At:</label>
+								<div class="input-group">
+  
+   <input type="text" id="timepicker3" data-format="hh:mm:ss" class="form-control">
+   <span class="input-group-addon time" ><i class="glyphicon glyphicon-time"></i></span>
+  </div>
+								<label>Ending At:</label>
+								<div class="input-group">
+  
+   <input type="text" id="timepicker4" data-format="hh:mm:ss" class="form-control">
+   <span class="input-group-addon time" ><i class="glyphicon glyphicon-time"></i></span>
+  </div>
+							</td>
+						</table>
+					</div>
+					<label id='onetime_label'>Duration:</label>
+					<div style='left: 65px;width: 96%;' id='line'></div>
+					<table>
+						<tr>
+							<td>
+								<label>Start date:</label>
+								<div style="display:inline-block">
+								<div class="input-group" >
+  
+    <input id="datepicker2" data-format="yyyy-MM-dd" type="text" class="form-control">   <span class="input-group-addon date"><i class="glyphicon glyphicon-calendar"></i></span>
+  </div>
+  </div>
+							</td>
+							<td>
+								<input type='radio' name='end_date' value='true' checked>
+								<div id='end_date_div' style='display: inline-block;'>
+									<label>End date:</label>
+									<div style="display:inline-block">
+									<div class="input-group" >
+  
+    <input id="datepicker3" data-format="yyyy-MM-dd" type="text" class="form-control">   <span class="input-group-addon date"><i class="glyphicon glyphicon-calendar"></i></span>
+  </div>
+  </div>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td>
+								<input type='radio' name='end_date' value='false'>
+								<label>No end date:</label>
+							</td>
+						</tr>
+					</table>
+					<br />
+				</div>
+			</div>
+			<!--    <label id='onetime_label'>Summary:</label><div style='    left: 70px;width: 95%;' id='line'></div>
+  <table>
+  <tr>
+ 
+  <td>
+
+    <label>Summary:</label> 
+	
+	 </td>
+	  <td>
+<textarea rows=2 class="form-control"></textarea>
+      
+</td>
+</tr>
+ </table> -->
+		</div>
+	</div>
+	<div class="alert alert-danger" style='display:none;'></div>
+	</div>
+	<div style=''>
+		<button style='float: left;margin-left: 2%;' class="btn btn-primary btn-color" onclick="goBack()" /><span class="glyphicon glyphicon-menu-left"></span>&nbsp;Previous</button>
+		<button style='float: right;margin-right: 2%;' class="btn btn-primary btn-color" onclick="submit()" />Next &nbsp;<span class="glyphicon glyphicon-menu-right"></span>
+		</button>
+	</div>
+	<div style='clear:both;margin-bottom:40px;'></div>
+	<footer>
+		<div>	<span> Copyright © 2018 slk All rights reserved. </span> 
+			<img class="imgSlk" src="../images/slk.png" />
+		</div>
+	</footer>
+	<script>
+	$("body").tooltip({ selector: '[data-toggle=tooltip]' });
+	function handleSelect(elm){
+		if(elm.value=="data_generator"){
+	window.location = elm.value+".html";
+	}
+	else{
+	window.location.reload();
+	}
+	}
+	$("#obfs_select").val("define_source");
+		var date = new Date();
+		var today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+		$("#job_name").val("Job-"+date.getDate()+"/"+date.getMonth()+"/"+date.getFullYear()+"_"+date.getHours()+":"+date.getMinutes());
+		$("#toggle_icon").click(function(e) {
+		        e.preventDefault();
+		        $("#wrapper").toggleClass("active");
+		});
+		
+		
+		$("#daily_radio_occurs_div *").prop('disabled',true);
+		$(".weekly *").prop('disabled',true);
+		$("#daily *").prop('disabled',true);
+		$(function() {
+		$(".breadcrumb li.active").prev().addClass("prev");
+		$('.date').click(function(event){
+    event.preventDefault();
+	$(this).siblings().focus();
+});
+
+			$('.time').click(function(event){
+    event.preventDefault();
+    $(this).siblings().click();
+});
+			
+			$('#datepicker1').datepicker({startDate:date , format: 'yyyy-mm-dd'});
+			$('#datepicker2').datepicker({startDate:date , format: 'yyyy-mm-dd' });
+			$('#datepicker3').datepicker({startDate:date , format: 'yyyy-mm-dd'});
+		     <!-- <!--  $('#timepicker1').datetimepicker({ -->
+		      <!-- pickDate: false -->
+		    <!-- }); -->
+			   <!-- $('#timepicker2').datetimepicker({ -->
+		      <!-- pickDate: false -->
+		    <!-- }); -->
+			   <!-- $('#timepicker3').datetimepicker({ -->
+		      <!-- pickDate: false -->
+		    <!-- }); -->
+			   <!-- $('#timepicker4').datetimepicker({ -->
+		      <!-- pickDate: false -->
+		    <!-- }); --> -->
+		$('#timepicker1').mdtimepicker({
+		   readOnly: false ,
+		   timeFormat: 'hh:mm:ss',
+		   format: 'hh:mm:ss'
+		 });
+		$('#timepicker2').mdtimepicker({
+		   readOnly: false ,
+		   timeFormat: 'hh:mm:ss',
+		   format: 'hh:mm:ss'
+		 });
+		$('#timepicker3').mdtimepicker({
+		   readOnly: false ,
+		   timeFormat: 'hh:mm:ss',
+		   format: 'hh:mm:ss'
+		 });
+		$('#timepicker4').mdtimepicker({
+		   readOnly: false ,
+		   timeFormat: 'hh:mm:ss',
+		   format: 'hh:mm:ss'
+		 }); 
+		
+		});
+		var preview_inp_fin;
+			  if (typeof(Storage) !== "undefined") {
+		
+			var userid1= localStorage.getItem("userid");
+			//var sourceid= localStorage.getItem("sourceid");
+			//var sessionid= localStorage.getItem("sessionid");
+			document.getElementById("userid").innerHTML=userid1;
+			preview_inp_fin=  JSON.parse(localStorage.getItem("preview_inp_fin"));
+		
+		} else {
+		    console.log("Sorry, your browser does not support Web Storage...");
+		}
+		
+		
+		function logout() {
+		window.open("login.html","_self");
+		localStorage.clear();
+		}
+		$("select[name='job_type']").change(function(){
+		//linear-gradient(to bottom right, #d0d5db, #fafafc)
+		var job_type=$("select[name='job_type'] option:selected").val();
+		if(job_type==""){
+		}
+		else{
+		if($(".alert").html()=="<strong>Error!</strong> Select the job type" && $(".alert").is(':visible')){
+		
+		$(".alert").hide();
+		
+		}
+		if(job_type=="one_time"){
+		//console.log($("#recurring").children());
+		//$("#recurring").children().prop('disabled',true);
+		$("#whole_div *").prop('disabled',false);
+		$("#whole_div").css("background","none");
+		$("#one_time *").prop('disabled',false);
+		$("#one_time").css("background","none");
+		$("#recurring *").prop('disabled',true);
+		$("#recurring").css("background","rgb(208, 213, 219)");
+		
+		}
+		else if(job_type=="recurring"){
+		$("#whole_div *").prop('disabled',false);
+		$("#whole_div").css("background","none");
+		$("#recurring *").prop('disabled',false);
+		$("#recurring").css("background","none");
+		$("#one_time *").prop('disabled',true);
+		$('input:radio[name=daily_radio]').filter('[value=daily_radio_at]').prop('checked', true);
+		$('#job_occur_type').val("");
+		$("#daily").show();
+		$(".weekly").show();
+		$("#daily_radio_occurs_div *").prop('disabled',true);
+		$(".weekly *").prop('disabled',true);
+		$("#daily *").prop('disabled',true);
+		
+		$("#one_time").css("background","rgb(208, 213, 219)");
+		
+		}
+		else if(job_type=="immediate"){
+		
+		$("#whole_div *").prop('disabled',true);
+		$("#whole_div").css("background","rgb(208, 213, 219)");
+		}
+		}
+		});
+		$("select[name='job_occur_type']").change(function(){
+		var job_occur_type=$("select[name='job_occur_type'] option:selected").val();
+		$(".weekly *").prop('disabled',false);
+		$("#daily *").prop('disabled',false);
+		if(job_occur_type=="daily"){
+		//console.log($("#recurring").children());
+		//$("#recurring").children().prop('disabled',true);
+		$("#daily").show();
+		$(".weekly").hide();
+		
+		}
+		else if(job_occur_type=="weekly"){
+		$(".weekly").show();
+		$("#daily").hide();
+		}
+		else{
+		$("#daily").show();
+		$(".weekly").show();
+		$(".weekly *").prop('disabled',true);
+		$("#daily *").prop('disabled',true);
+		}
+		});
+		$("input:radio[name='end_date']").change(function(){
+		
+		var radio=$("input:radio[name='end_date']:checked").val();
+		if(radio == "false"){
+		$("#datepicker3").prop('disabled',true);
+		}
+		else{
+		$("#datepicker3").prop('disabled',false);
+		}
+		});
+		
+		$("input:radio[name='daily_radio']").change(function(){
+		
+		var radio=$("input:radio[name='daily_radio']:checked").val();
+		if(radio == "daily_radio_at"){
+		$("#daily_radio_at_div *").prop('disabled',false);
+		$("#daily_radio_occurs_div *").prop('disabled',true);
+		}
+		else{
+		$("#daily_radio_occurs_div *").prop('disabled',false);
+		$("#daily_radio_at_div *").prop('disabled',true);
+		}
+		});
+		
+		
+		function goBack(){
+		window.open("define_target.html","_self");
+		}
+		
+		$("#job_name").on("keyup", function() {
+		if($(".alert").html()=="<strong>Error!</strong> Enter the job name" && $(".alert").is(':visible')){
+		
+		$(".alert").hide();
+		
+		}
+		});
+		
+		
+		
+		function submit(){
+		if(validation()){
+		$(".alert").hide();
+		var final_obj_job={};
+		jobname=$("#job_name").val();
+		
+
+		final_obj_job.jobname=jobname;
+		var job_type_fin=$("select[name='job_type'] option:selected").val();
+		if(job_type_fin =="immediate"){
+		final_obj_job.module='immediate';
+		
+		}
+		else if(job_type_fin =="one_time"){
+		final_obj_job.module='one_time';
+		var options={};
+		var date=$('#datepicker1').val();
+		var time=$('#timepicker1').val();
+		options.date=date;
+		options.time=time;
+		final_obj_job.options=options;
+		
+		
+		}
+		else if(job_type_fin =="recurring"){
+		var recur_type_fin=$("select[name='job_occur_type'] option:selected").val();
+		final_obj_job.module='recurring';
+		var options={};
+		var daily={};
+		var weekly={};
+		if(recur_type_fin=="daily"){
+		
+		var occurs_once;
+		var occurs_every={};
+		
+		var recurs_days=$("#days").val();
+
+		if($("input[name='daily_radio']:checked"). val() == "daily_radio_at"){
+		occurs_once=$('#timepicker2').val();
+		occurs_every={};
+		}
+		else{
+		occurs_once="";
+		occurs_every={};
+		occurs_every["hours"]=$("#hours").val();
+		occurs_every["Starting At"]=$('#timepicker3').val();
+		occurs_every["Ending At"]=$('#timepicker4').val();
+		
+		}
+		var start_date=$('#datepicker2').val();
+		var end_date;
+		if($('input[name=end_date]:checked').val()== "true"){
+		end_date=$('#datepicker3').val();
+		}
+		else{
+		end_date="";
+		}
+		
+		daily["Recurs every_days"]=recurs_days;
+		daily["Occurs once at"]=occurs_once;
+		daily["Occurs every"]=occurs_every;
+		daily["Start date"]=start_date;
+		daily["End date"]=end_date;
+		console.log(daily);
+
+		}
+		else if(recur_type_fin=="weekly"){
+		var recurs_weeks=$("#weeks").val();
+		var daysofweek=[];
+		$('input[name=days_check]:checked').each(function () {
+		           daysofweek.push($(this).val());
+		       });
+		var weekly={};
+		var occurs_once;
+		var occurs_every={};
+		if($("input[name='daily_radio']:checked"). val() == "daily_radio_at"){
+		occurs_once=$('#timepicker2').val();
+		occurs_every={};
+		}
+		else{
+		occurs_once="";
+		var occurs_every={};
+		occurs_every["hours"]=$("#hours").val();
+		occurs_every["Starting At"]=$('#timepicker3').val();
+		occurs_every["Ending At"]=$('#timepicker4').val();
+		}
+		var start_date=$('#datepicker2').val();
+		var end_date;
+		if($('input[name=end_date]:checked').val()== "true"){
+		end_date=$('#datepicker3').val();
+		}
+		else{
+		end_date="";
+		}
+		weekly["Recurs every_week[dayscount]"]=recurs_weeks*7;
+		weekly["daysofweek"]=daysofweek;
+		weekly["Occurs once at"]=occurs_once;
+		weekly["Occurs every"]=occurs_every;
+		weekly["Start date"]=start_date;
+		weekly["End date"]=end_date;
+		console.log(weekly);
+		}
+		
+		options.Daily=daily;
+		options.Weekly=weekly;
+		final_obj_job.options=options;
+		}
+		preview_inp_fin.scheduler=final_obj_job;
+		console.log(preview_inp_fin);
+		if (typeof(Storage) !== "undefined") {
+			localStorage.setItem("preview_inp_fin",JSON.stringify(preview_inp_fin) );
+			window.open("reviewpage.html","_self");
+		} 
+		else {
+			console.log("Sorry, your browser does not support Web Storage...");
+		}
+		
+		
+		}
+		
+		
+		}
+		function validation(){
+		jobname=$("#job_name").val();
+		if(jobname=="" ){
+
+		$(".alert").html("<strong>Error!</strong> Enter the job name");
+		return false;
+		}
+		
+		var job_type_fin=$("select[name='job_type'] option:selected").val();
+		if(job_type_fin =="immediate"){
+		return true;
+		
+		}
+		else if(job_type_fin =="one_time"){
+
+		var date=$('#datepicker1').val();
+		var time=$('#timepicker1').val();
+		if(!date){
+		$(".alert").html("<strong>Error!</strong> Please Enter one time date.");
+		$(".alert").show();
+		return false;	
+		}
+		else if(!time){
+		$(".alert").html("<strong>Error!</strong> Please Enter one time Time.");
+		$(".alert").show();
+		return false;	
+		}
+		else if(new Date(date+' '+time)< new Date()){
+		$(".alert").html("<strong>Error!</strong> Please Enter valid date and time.");
+		$(".alert").show();
+		return false;
+		}
+		else{
+			return true;
+		}
+		}
+		else if(job_type_fin =="recurring"){
+		var recur_type_fin=$("select[name='job_occur_type'] option:selected").val();
+
+		if(recur_type_fin=="daily"){
+		var recurs_days=$("#days").val();
+		if(recurs_days && recurs_days>0){
+		if($("input[name='daily_radio']:checked"). val() == "daily_radio_at"){
+		occurs_once=$('#timepicker2').val();
+			if(!occurs_once){
+			$(".alert").html("<strong>Error!</strong> Enter  daily frequency time");
+			$(".alert").show();
+			return false
+			}
+			else{
+			if(duration_valid()){
+			return true;
+			}
+			else{
+			return false;
+			}
+			}
+		}
+		else{
+		var occurs_every_hrs=$("#hours").val();
+		var occurs_every_start=$('#timepicker3').val();
+		var occurs_every_end=$('#timepicker4').val();
+		if(!occurs_every_hrs){
+		$(".alert").html("<strong>Error!</strong> Enter hours in daily frequency.");
+		$(".alert").show();
+		return false;
+		}
+		else if(!occurs_every_start){
+		$(".alert").html("<strong>Error!</strong> Enter Start time in daily frequency.");
+		$(".alert").show();
+		return false;
+		}
+		else if(!occurs_every_hrs){
+		$(".alert").html("<strong>Error!</strong> Enter End time in daily frequency.");
+		$(".alert").show();
+		return false;
+		}
+		else if(occurs_every_start > occurs_every_end){
+		$(".alert").html("<strong>Error!</strong> End time should be greater than start time in daily frequency.");
+		$(".alert").show();
+		return false;
+		}
+		else if(occurs_every_hrs && occurs_every_hrs >0 && occurs_every_start && occurs_every_end && occurs_every_start < occurs_every_end){
+         if(duration_valid()){
+			return true;
+			}
+			else{
+			return false;
+			}
+		}
+		else{
+		$(".alert").html("<strong>Error!</strong> Enter valid data");
+		$(".alert").show();
+		return false;
+		}
+		}
+		
+		}
+		else{
+		$(".alert").html("<strong>Error!</strong> Number of recurring days should be greater than zero.");
+		$(".alert").show();
+		return false;
+		}
+		
+		}
+		else if(recur_type_fin=="weekly"){
+		var recurs_weeks=$("#weeks").val();
+		var daysofweek=[];
+		$('input[name=days_check]:checked').each(function () {
+		           daysofweek.push($(this).val());
+		       });
+		if(!recurs_weeks || recurs_weeks<1){
+		$(".alert").html("<strong>Error!</strong> Number of recurring weeks should be greater than zero.");
+		$(".alert").show();
+		return false;
+		}
+		if(daysofweek.length <=0){
+		$(".alert").html("<strong>Error!</strong> Select the week days in which recurring should happen.");
+		$(".alert").show();
+		return false;
+		}
+
+		if($("input[name='daily_radio']:checked"). val() == "daily_radio_at"){
+		occurs_once=$('#timepicker2').val();
+		if(!occurs_once){
+		$(".alert").html("<strong>Error!</strong> Enter daily frequency time.");
+		$(".alert").show();
+		return false;
+		}
+		else{
+		if(duration_valid()){
+			return true;
+			}else{
+			return false;
+			}
+		}
+		}
+		else{
+
+			var occurs_every_hrs=$("#hours").val();
+		var occurs_every_start=$('#timepicker3').val();
+		var occurs_every_end=$('#timepicker4').val();
+	if(!occurs_every_hrs){
+		$(".alert").html("<strong>Error!</strong> Enter hours in daily frequency.");
+		$(".alert").show();
+		return false;
+		}
+		else if(!occurs_every_start){
+		$(".alert").html("<strong>Error!</strong> Enter Start time in daily frequency.");
+		$(".alert").show();
+		return false;
+		}
+		else if(!occurs_every_hrs){
+		$(".alert").html("<strong>Error!</strong> Enter End time in daily frequency.");
+		$(".alert").show();
+		return false;
+		}
+		else if(occurs_every_start > occurs_every_end){
+		$(".alert").html("<strong>Error!</strong> End time should be greater than start time in daily frequency.");
+		$(".alert").show();
+		return false;
+		}
+		else if(occurs_every_hrs && occurs_every_hrs >0 && occurs_every_start && occurs_every_end && occurs_every_start < occurs_every_end){
+         if(duration_valid()){
+			return true;
+			}
+			else{
+			return false;
+			}
+		}
+		else{
+		$(".alert").html("<strong>Error!</strong> Enter valid data");
+		$(".alert").show();
+		return false;
+		}
+		
+		}
+		
+		}
+		else{
+		$(".alert").html("<strong>Error!</strong>Select the Recurring type");
+		$(".alert").show();
+		return false;
+		}
+		
+		}
+		else{
+		
+		$(".alert").html("<strong>Error!</strong> Select the job type");
+		$(".alert").show();
+		return false;
+		}
+		function duration_valid(){
+		var start_date=$('#datepicker2').val();
+		var end_date;
+		if(!start_date){
+		$(".alert").html("<strong>Error!</strong> Enter Start date in duration");
+		$(".alert").show();
+		return false;
+		}
+		if($('input[name=end_date]:checked').val()== "true"){
+		end_date=$('#datepicker3').val();
+		var d1 = new Date(start_date);
+		var d2 = new Date(end_date);
+		if(!end_date){
+		$(".alert").html("<strong>Error!</strong> Enter End date in duration");
+		$(".alert").show();
+		return false;
+		}
+		else if(d1 >= d2){
+		
+		$(".alert").html("<strong>Error!</strong> End date should be after start date");
+		$(".alert").show();
+		return false;
+		}
+		else{
+		return true;
+		}
+		
+		}
+		
+		else{
+		return true;
+		}
+		}
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</script>
+</body>
+
+</html>

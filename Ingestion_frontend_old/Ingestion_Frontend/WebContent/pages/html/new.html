@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Drag & Drop</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.10.2/jquery.js "></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jsPlumb/1.4.1/jquery.jsPlumb-1.4.1-all-min.js"></script>
+         <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
+    
+  
+    
+    <style>
+    
+
+@import 'https://fonts.googleapis.com/css?family=Cairo|Slabo+27px';
+        .nav-side-menu {
+            overflow: auto;
+            font-family: verdana;
+            font-size: 12px;
+            font-weight: 200;
+            background-color: #2e353d;
+            position: fixed;
+            top: 0px;
+            width: 207px;
+            height: 100%;
+            color: #e1ffff;
+        }
+        
+        .nav-side-menu .brand {
+            background-color: #23282e;
+            line-height: 50px;
+            display: block;
+            text-align: center;
+            font-size: 14px;
+        }
+        
+        .nav-side-menu .toggle-btn {
+            display: none;
+        }
+        
+        .nav-side-menu ul,
+        .nav-side-menu li {
+            list-style: none;
+            padding: 0px;
+            margin: 0px;
+            line-height: 35px;
+            cursor: pointer;
+  
+        }
+        
+        .nav-side-menu ul:not(collapsed) .arrow:before,
+        .nav-side-menu li:not(collapsed) .arrow:before {
+            font-family: FontAwesome;
+            content: "\f078";
+            display: inline-block;
+            padding-left: 10px;
+            padding-right: 10px;
+            vertical-align: middle;
+            float: right;
+        }
+        
+        .nav-side-menu ul .active,
+        .nav-side-menu li .active {
+            border-left: 3px solid #d19b3d;
+            background-color: #4f5b69;
+        }
+        
+        .nav-side-menu ul .sub-menu li.active,
+        .nav-side-menu li .sub-menu li.active {
+            color: #d19b3d;
+        }
+        
+        .nav-side-menu ul .sub-menu li.active a,
+        .nav-side-menu li .sub-menu li.active a {
+            color: #d19b3d;
+        }
+        
+        .nav-side-menu ul .sub-menu li,
+        .nav-side-menu li .sub-menu li {
+            background-color: #181c20;
+            border: none;
+            line-height: 40px;
+            border-bottom: 1px solid #23282e;
+            margin-left: 0px;
+        }
+        
+        .nav-side-menu ul .sub-menu li:hover,
+        .nav-side-menu li .sub-menu li:hover {
+            background-color: #020203;
+        }
+        
+        .nav-side-menu ul .sub-menu li:before,
+        .nav-side-menu li .sub-menu li:before {
+            font-family: FontAwesome;
+            content: "\";
+            display: inline-block;
+            padding-left: 10px;
+            padding-right: 10px;
+            vertical-align: middle;
+        }
+        
+        .nav-side-menu li {
+            padding-left: 0px;
+            border-left: 3px solid #2e353d;
+            border-bottom: 1px solid #23282e;
+        }
+        
+        .nav-side-menu li a {
+            text-decoration: none;
+            color: #e1ffff;
+        }
+        
+        .nav-side-menu li a i {
+            padding-left: 10px;
+            width: 20px;
+            padding-right: 20px;
+        }
+        
+        .nav-side-menu li:hover {
+            border-left: 3px solid #d19b3d;
+            background-color: #4f5b69;
+            -webkit-transition: all 1s ease;
+            -moz-transition: all 1s ease;
+            -o-transition: all 1s ease;
+            -ms-transition: all 1s ease;
+            transition: all 1s ease;
+        }
+        
+        @media (max-width: 767px) {
+            .nav-side-menu {
+                position: relative;
+                width: 100%;
+                margin-bottom: 10px;
+            }
+            .nav-side-menu .toggle-btn {
+                display: block;
+                cursor: pointer;
+                position: absolute;
+                right: 10px;
+                top: 10px;
+                z-index: 10 !important;
+                padding: 3px;
+                background-color: #ffffff;
+                color: #000;
+                width: 40px;
+                text-align: center;
+            }
+            .brand {
+                text-align: left !important;
+                font-size: 22px;
+                padding-left: 20px;
+                line-height: 50px !important;
+            }
+        }
+        
+        @media (min-width: 767px) {
+            .nav-side-menu .menu-list .menu-content {
+                display: block;
+            }
+            
+        }
+        
+          body {
+            margin: 0px;
+            padding: 0px;
+        
+  
+    background-color: #f9fafb;
+    background-size: 14px 14px;
+    background-image: linear-gradient(to right,rgba(229,235,237,1) 1px,transparent 1px),linear-gradient(to bottom,rgba(229,235,237,1) 1px,transparent 1px);
+    z-index: 1;
+  
+}
+#demodrop1 li{
+   display: inline-block;
+   width: auto;
+   list-style: outside none none;
+   margin-left: 76px;
+
+}
+        li{
+  list-style-type: none;
+}      
+
+#demodrop1 {
+    height: 96%;
+    margin-top: -32.5%;
+    margin-left: 3%;
+    /* background-color: #fff; */
+    position: relative;
+    margin-bottom: 1em;
+    display: block;
+    width: 74%;
+    white-space: nowrap;
+  
+}
+
+#demodrop {
+    height: 96%;
+    margin-top: 0.5%;
+    margin-left: -30%;
+    /* background-color: #fff; */
+    position: relative;
+    /* margin-bottom: 1em; */
+    /* display: block; */
+    width: 26%;
+    float: left;
+    
+}
+#demodrop2 {
+    height: 96%;
+    margin-top: -98%;
+    margin-left: 84%;
+    display: block;
+    width: 26%;
+    
+}
+.drag{
+
+margin-left:1px;
+color: #a0a0a0;
+    
+    position: absolute;
+    text-align: center;
+   
+}
+.drag1{
+
+margin-left:155px;
+color: #a0a0a0;
+    
+    position: absolute;
+    text-align: center;
+   
+}
+.drag2{
+
+margin-left:6px;
+color: #a0a0a0;
+    
+    position: absolute;
+    text-align: center;
+   
+}
+.newId {
+   
+    margin: 4px;
+    width: 63%;
+   padding: 13px;
+    height: 51px;
+    box-shadow: 0 10px 30px rgba(#333333,0.4);
+    border: 3px solid #333333;
+    position: relative;
+    margin-top: 12%;
+    text-align: center;
+    font-family: 'Cairo', sans-serif;
+     cursor:move; 
+     overflow:none;
+    border: 1px solid #2e6f9a;
+     -moz-border-radius: 8px;
+    border-radius: 8px;
+    opacity: 0.8;
+    cursor: move;
+    background-color: white;
+    font-size: 13px;
+    position:relative;
+     
+     
+}
+.newId:hover{
+   background-color:#417da580;
+}
+
+
+.transform {
+   
+    margin: 4px;
+    width:26%;
+    padding: 13px;
+    height: 51px;
+    box-shadow: 0 10px 30px rgba(#333333,0.4);
+    position: relative;
+    margin-top: 5%;
+    text-align: center;
+    font-family: 'Cairo', sans-serif;
+    position:relative;
+     overflow:none;
+    border: 1px solid #2e6f9a;
+     -moz-border-radius: 8px;
+    border-radius: 8px;
+    opacity: 0.8;
+    cursor: move;
+    background-color: white;
+    font-size: 13px;
+}
+.transform:hover{
+   background-color:#417da580;
+}
+
+.targets {
+
+     overflow:none;
+    border: 1px solid #2e6f9a;
+     -moz-border-radius: 8px;
+    border-radius: 8px;
+    opacity: 0.8;
+    cursor: move;
+    background-color: white;
+    font-size: 13px;
+    margin: 4px;
+    width: 63%;
+    padding: 13px;
+    height: 51px;
+   
+    position: relative;
+    margin-top: 16%;
+    text-align: center;
+    font-family: 'Cairo', sans-serif;
+  
+}
+.targets:hover{
+   background-color:#417da580;
+}
+
+
+.highlightborder {  
+ background-color: #c1c1c1; 
+ }
+
+.disableborder{
+
+background-color: none; 
+
+}
+.item {
+
+  background-color:none;
+  width: 100px;
+  height: 100px;
+    position:absolute;
+}
+      
+
+
+#dragbutton {
+    background-color: #ddffdd;
+    
+    
+}
+#wrapper {
+    width: 800px;
+    height: 800px;
+    position: relative;
+    margin-top: 19%;
+    margin-left: 34%;
+}
+
+circle {
+    cx:6;
+    cy:6;
+    r: 6;
+       fill: transparent;
+    
+}
+
+   </style>
+</head>
+
+<body>
+
+    <div class="nav-side-menu">
+
+        <i class="fa fa-bars fa-2x toggle-btn" data-toggle="collapse" data-target="#menu-content"></i>
+        <div class="menu-list">
+            <ul id="menu-content" class="menu-content collapse out">
+
+                <li data-toggle="collapse" data-target="#products" class="collapsed active">
+                    <a href="#"><img src="../images/mysql.png" style="width: 26px;height: 26px;"> Sources <span class="arrow"></span></a>
+                </li>
+                <ul class="sub-menu collapse" id="products">
+                    <li  id="mysql" ondragstart="dragStart(event) " ondrag="dragging(event)" draggable="true">Mysql</li>
+                    <li id="orcl" ondragstart="dragStart(event)" ondrag="dragging(event)" draggable="true">Oracle</li>
+                    
+                    <li id="DB2" ondragstart="dragStart(event)" ondrag="dragging(event)" draggable="true">DB2</li>
+
+                </ul>
+                <li data-toggle="collapse" data-target="#service" class="collapsed">
+                    <a href="#"><img src="../images/transform.png" style="width: 26px;height: 26px;"> Transform <span class="arrow"></span></a>
+                </li>
+                <ul class="sub-menu collapse" id="service">
+                    <li id="union" ondragstart="transform(event)" ondrag="transformdrag(event)" draggable="true">Union</li>
+                    <li id="join"  ondragstart="transform(event)" ondrag="transformdrag(event)" draggable="true">Joiner</li>
+                    <li id="aggr"  ondragstart="transform(event)" ondrag="transformdrag(event)" draggable="true">Aggregator</li>
+                    <li id="sort"  ondragstart="transform(event)" ondrag="transformdrag(event)" draggable="true">Sorter</li>
+                </ul>
+                
+       <li data-toggle="collapse" data-target="#target" class="collapsed">
+                <a href="#"><img src="../images/target.png" style="width: 26px;height: 26px;"> Target <span class="arrow"></span></a>
+            </li>
+            <ul class="sub-menu collapse" id="target">
+                <li id="hive" ondragstart="target(event)" ondrag="targetdrag(event)" draggable="true">Hive</li>
+                 <li id="target2" ondragstart="target(event)" ondrag="targetdrag(event)" draggable="true">target2</li>
+                  <li id="target3" ondragstart="target(event)" ondrag="targetdrag(event)" draggable="true">target3</li>
+                
+            </ul>
+            </ul>
+        </div>
+    </div>
+  
+       <div id="wrapper" >
+            <ul id="demodrop" class="item" ondrop="drop(event)"  ondragover="allowDrop(event)" > <span class="drag">Drag source here </span></ul>
+            <ul  id="demodrop1" class="item"ondrop="transformdrop(event)"  ondragover="allowDrop(event)"><span class="drag1"> Drag transformation here </span></ul>
+            <ul  id="demodrop2" class="item" ondrop="targetdrop(event)"  ondragover="allowDrop(event)"> <span class="drag2">Drag Target here </span></ul>
+      </div>
+       
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/jsPlumb/1.4.1/jquery.jsPlumb-1.4.1-all-min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.10.2/jquery.js"></script>
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js" type="text/javascript"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" type="text/javascript"></script>
+    <script>
+    var kiran=[];
+    var kiran1=[];
+    var src_trg=[];
+
+
+    
+    
+    function dragStart(event) 
+    {
+         event.dataTransfer.setData("Text", event.target.id);   
+    }
+    function transform(event) {
+         event.dataTransfer.setData("Text1", event.target.id);
+       }
+    function target(event) {
+         event.dataTransfer.setData("Text2", event.target.id);
+       }
+       function dragging(event) {
+              $("#demodrop").addClass("highlightborder");
+         //document.getElementById("demo").innerHTML = "dragged";
+       }
+       function transformdrag(event) {
+              $("#demodrop1").addClass("highlightborder");
+        //document.getElementById("demo").innerHTML = "dragged";
+      }
+       function targetdrag(event) {
+              $("#demodrop2").addClass("highlightborder");
+                //document.getElementById("demo").innerHTML = "dragged";
+              }
+       function allowDrop(event) {
+         event.preventDefault();
+         
+       }
+    
+       function drop(event) {
+              event.preventDefault();
+              $(".drag").remove();
+              kiran.length = 0;
+              var data = event.dataTransfer.getData("Text");  
+              if(data!=""){
+              var nodeCopy=document.getElementById(data).cloneNode(true); 
+             nodeCopy.removeEventListener("drag",dragging);  
+              nodeCopy.removeEventListener("dragstart",dragStart);    
+              nodeCopy.removeAttribute("draggable");
+              nodeCopy.removeAttribute("Id"); 
+              nodeCopy.className = "newId"; 
+      
+              event.target.appendChild(nodeCopy);  
+              kiran.push(nodeCopy.className);
+              src_trg.push(nodeCopy.className);
+               }
+           
+      } 
+
+       function transformdrop(event) {
+         event.preventDefault();
+         $(".drag1").remove();
+        var data = event.dataTransfer.getData('Text1');
+        console.log(data);
+        if(data!=""){
+        var nodeCopy1=document.getElementById(data).cloneNode(true);   
+       nodeCopy1.removeEventListener("drag",transform);  
+       nodeCopy1.removeEventListener("dragstart",transformdrag);    
+       nodeCopy1.removeAttribute("draggable");
+       nodeCopy1.removeAttribute("Id");
+        nodeCopy1.className  = "transform"; 
+    	if($('ul#demodrop1 li').length % 3==0)
+    	{		    		 
+    		//appendChild(document.createElement("br")); 
+    		event.target.appendChild(document.createElement("br"));  
+    	} 
+         event.target.appendChild(nodeCopy1);
+         kiran.push(nodeCopy1.className);
+         kiran1.push(nodeCopy1.className);
+         console.log(kiran);
+          reload_cart(kiran);
+          src_trgt(src_trg);
+        }
+       }
+
+       function targetdrop(event) {
+              $(".drag2").remove();
+        event.preventDefault();
+        var data = window.event.dataTransfer.getData('Text2');
+        if(data!=""){
+        var nodeCopy1=document.getElementById(data).cloneNode(true);   
+       nodeCopy1.removeEventListener("drag",target);  
+       nodeCopy1.removeEventListener("dragstart",targetdrag);    
+       nodeCopy1.removeAttribute("draggable");
+       nodeCopy1.removeAttribute("Id");
+       nodeCopy1.className = "targets"; 
+         event.target.appendChild(nodeCopy1);
+         kiran1.push(nodeCopy1.className);
+         src_trg.push(nodeCopy1.className);
+         console.log(src_trg);
+         console.log(kiran1);
+      reload_cart1(kiran1);
+      src_trgt(src_trg);
+        }
+       }
+       document.addEventListener("dragend", function(event) {
+                $("#demodrop,#demodrop1,#demodrop2").removeClass("highlightborder");
+              }); 
+       jsPlumb.Defaults.Endpoint = "Blank";
+         function reload_cart() {
+             console.log(kiran);
+                jsPlumb.ready(function() {
+                     console.log("ready");
+                     var jsp = jsPlumb.getInstance();
+                     var endpoint = jsp.addEndpoint( $(".newId"), { anchor:"RightMiddle" }, {
+                   	     isSource:true,
+                         isTarget:true,
+                         connector:"Flowchart",
+                         connectorOverlays:[[ "Arrow", { width:10, height: 10, length:15, location:0.97, id:"arrow"} ]],
+                         connectorStyle:{ strokeStyle:"#2e6f9a", lineWidth:3 },
+                         connectorHoverStyle:{ lineWidth:2 },
+                         maxConnections:3
+                     });
+                  for(i=0;i<kiran.length;i++){
+                	  var Id1=kiran[0];
+                	  var Id2=kiran[1];
+                      console.log(Id1,Id2);
+                      
+                    if(Id1 == "newId"){
+                    	  
+                      var endpoint = jsp.addEndpoint( $("."+Id1), { anchor:"RightMiddle" }, {
+                    	  isSource:true,
+                          isTarget:true,
+                          connector:"Flowchart",
+                          connectorOverlays:[[ "Arrow", { width:10, height: 10, length:15, location:0.97, id:"arrow"} ]],
+                          connectorStyle:{ strokeStyle:"#2e6f9a", lineWidth:3 },
+                          connectorHoverStyle:{ lineWidth:2 },
+                          maxConnections:3
+                      });
+                      console.log("1");
+                  } 
+                  
+                       if(Id2 =="transform") {
+                      var endpoint1 = jsp.addEndpoint($("."+Id2), { anchor:"LeftMiddle" }, {
+                          isTarget:true,
+                          connector:"Flowchart",
+                          connectorOverlays:[[ "Arrow", { width:10, height: 10, length:10, location:0.97, id:"arrow", foldback: 0.8} ]],
+                          connectorStyle:{ strokeStyle:"#2e6f9a", lineWidth:2 },
+                          connectorHoverStyle:{ lineWidth:3 },
+                          maxConnections:3
+                          
+                      });
+                      var endpoint2 = jsp.addEndpoint($("."+Id2), { anchor:"RightMiddle" }, {
+                    	
+                    	  maxConnections:5,
+                    	  uniqueEndpoint:true,
+                    	  deleteEndpointsOnDetach:false,
+                          isSource:true,
+                          isTarget:true,
+                          connector:"Flowchart",
+                          connectorOverlays:[[ "Arrow", { width:10, height: 10, length:10, location:0.97, id:"arrow", foldback: 0.8} ]],
+                          connectorStyle:{ strokeStyle:"#2e6f9a", lineWidth:2 },
+                          connectorHoverStyle:{ lineWidth:2},
+                          maxConnections:3
+                          
+                      });
+                      console.log("2");
+                  }
+                  }
+              
+                    /*   jsp.addEndpoint($("#demodrop1"),{ anchor:"LeftMiddle" }, {
+                          isTarget:true
+                      }); 
+                      jsp.addEndpoint($("#demodrop2"),{ anchor:"LeftMiddle" }, {
+                          isTarget:true
+                      }); */
+                     
+                    $(document).unbind("mousemove.adjust");
+                          });
+                         }
+        
+         function reload_cart1() {
+                jsPlumb.ready(function() {
+                console.log("khajsdf");
+                var jsp = jsPlumb.getInstance();
+                for(i=0;i<kiran1.length;i++){
+              	  var Id1=kiran1[0];
+              	  var Id2=kiran1[1];
+                    console.log(Id1,Id2);
+                  if(Id1 =="transform"){
+              
+                 var endpoint = jsp.addEndpoint($("."+Id1),{ anchor:"RightMiddle" }, {
+                     isSource:true,
+                     isTarget:true,
+                     connector:"Flowchart",
+                     connectorOverlays:[[ "Arrow", { width:10, height: 10, length:10, location:0.97, id:"arrow", foldback: 0.8} ]],
+                     connectorStyle:{ strokeStyle:"#2e6f9a", lineWidth:2},
+                     connectorHoverStyle:{ lineWidth:3 },
+                     maxConnections:3
+                 });
+                  }
+                  if(Id2=="targets"){
+                 var endpoint1 = jsp.addEndpoint( $("."+Id2), { anchor:"LeftMiddle" }, {
+                     isTarget:true
+                   
+                 });
+                  }
+             
+               /*   jsp.addEndpoint($("#demodrop1"),{ anchor:"LeftMiddle" }, {
+                     isTarget:true
+                 }); 
+                 jsp.addEndpoint($("#demodrop2"),{ anchor:"LeftMiddle" }, {
+                     isTarget:true
+                 }); */
+                }
+         });
+                   
+         }    
+         
+         function src_trgt() {
+              jsPlumb.ready(function() {
+                console.log("khajsdf");
+                var jsp = jsPlumb.getInstance();
+                for(i=0;i<src_trg.length;i++){
+              	  
+              	  var Id1=src_trg[0];
+              	  var Id2=src_trg[1];
+                    console.log(Id1,Id2);
+                  if(Id1 =="newId"){
+              
+                 var endpoint = jsp.addEndpoint( $("."+Id1), { anchor:"RightMiddle" }, {
+                     isSource:true,
+                     isTarget:true,
+                     connector:"Flowchart",
+                     connectorOverlays:[["Arrow", { width:10, height: 10, length:10, location:0.97, id:"arrow", foldback: 0.8} ]],
+                     connectorStyle:{ strokeStyle:"#2e6f9a", lineWidth:2 },
+                     connectorHoverStyle:{ lineWidth:3 },
+                     maxConnections:3
+                 });
+                  }
+                  if(Id2=="targets"){
+                 var endpoint1 = jsp.addEndpoint( $("."+Id2), { anchor:"LeftMiddle" }, {
+                     isTarget:true
+                   
+                 });
+                  }
+               /*   jsp.addEndpoint($("#demodrop1"),{ anchor:"LeftMiddle" }, {
+                     isTarget:true
+                 }); 
+                 jsp.addEndpoint($("#demodrop2"),{ anchor:"LeftMiddle" }, {
+                     isTarget:true
+                 }); */
+                 }
+				   <!-- jsPlumb.connect({ -->
+    <!-- source: d1, -->
+    <!-- target: d2, -->
+    <!-- connector: [ "Flowchart", { curviness: 1, stub: 10 }, {cssClass:"connectorClass"} ], -->
+    <!-- paintStyle:{ lineWidth:2, strokeStyle:'green' } -->
+  <!-- }); -->
+         });          
+         }             
+    </script>
+</body>
+</html>
