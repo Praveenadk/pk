@@ -1,3 +1,4 @@
+#Version 1
 FROM amazonlinux
 
 RUN yum install -y git
