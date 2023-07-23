@@ -1,0 +1,146 @@
+var width = 1000,
+    height = 500
+
+var svg1 = d3.select("#chart1").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+var force1 = d3.layout.force()
+    .gravity(.05)
+    .distance(100)
+    .charge(-100)
+    .size([width, height]);
+
+d3.json("http://localhost:3000/p", function(error, json) {
+	var json1=[];
+	var k=0;
+	console.log(json.nodes);
+	  console.log('length: ' + json.nodes.length) // returning 0 
+    for (let i = 0; i < json.nodes.length; i++) {
+       if (json.nodes[i].id == keyword) {
+		   
+		  json1[k]= json.nodes[i]; 
+		  k++;
+		  console.log(json1);// not running because the length is 0
+    }
+  }
+  
+  	var json2=[];
+	  var j=0;
+	console.log(json.nodes);
+	  console.log('length: ' + json.links.length) // returning 0 
+    for (let i = 0; i < json.links.length; i++) {
+       if (json.links[i].source == keyword || json.links[i].target == keyword) {
+		
+		  json2[j]= json.links[i]; 
+		  j++;
+		 // not running because the length is 0
+    }
+
+  }
+  	 console.log(json2);
+    
+	var edges1 = [];
+
+ json2.forEach(function(e) { 
+    // Get the source and target nodes
+
+    var sourceNode = json.nodes.filter(function(n) {
+				
+			return n.id === e.source;
+			
+			})[0],
+        targetNode =  json.nodes.filter(function(n) { return n.id === e.target; })[0],
+type=e.type;
+    // Add the edge to the array
+    edges1.push({source: sourceNode, target: targetNode,type:type});
+});
+
+
+  force1
+      .nodes(json.nodes)
+      .links(edges1)
+      .start();
+
+  var link = svg1.selectAll(".link")
+       .data(edges)
+       .enter().append("line")
+       .attr("class", "link")
+	   .attr("fill", "none")
+	   .attr("stroke", " #000")
+	   .attr("stroke-opacity", " .2")
+	   .style("stroke-width", 3);;
+
+  var node = svg1.selectAll(".node")
+      .data(json.nodes)
+      .enter().append("g")
+      .attr("class", "node")
+	  .style("fill",function(d) {
+    if(d.labels =="Company") {
+        return "rgb(222, 155, 249)";
+    } else {
+        return "lightsteelblue";
+    }
+	})
+	   .on("mouseover", function(d) {
+		if(d.labels =="Company"){
+        return tooltip.style("visibility", "visible").text( "<id>=" + d.id+ "   Company Name:  "+d.properties.name.val +"   , Company Number="+d.properties.companynumber.val);
+		}
+		else if (d.labels =="Address"){
+		return tooltip.style("visibility", "visible").text( "<id>=" + d.id+ "   Address:  "+d.properties.line2.val + d.properties.line1.val +"   , PostCode="+d.properties.postcode.val+"       , Country=" + d.properties.country.val);	
+		}})
+		 .on("mouseout", function() {
+       return tooltip.style("visibility", "hidden");
+        })
+      .call(force.drag);
+  var text1 = svg1.selectAll('text')
+      .data(json.nodes)
+      .enter().append("svg1:text")
+      .style("font-size", "10px")
+      .text(function(d) { return d.id; })
+	  .attr('text-anchor', 'middle')
+	  .attr('alignment-baseline', 'middle')
+	  .style('font-size', d => d.radius * 0.4 + 'px')
+	  .attr('fill-opacity', 1);
+   node.append("circle")
+      .attr("class", "node")
+      .attr("r", 20 );
+	  
+      link.append("text")
+        .attr("class", "link-label")
+        .attr("font-family", "Arial, Helvetica, sans-serif")
+        .attr("fill", "Black")
+        .style("font", "normal 12px Arial")
+        .style("color", "black")
+        .attr("dy", ".35em")
+        .attr("text-anchor", "middle")
+        .text(function(d) {
+            return d.type;
+        })
+            .attr("x", function(d) {
+                return ((d.source.x + d.target.x)/2);
+            })
+            .attr("y", function(d) {
+                return ((d.source.y + d.target.y)/2);
+            });
+ var tooltip = d3.select("#chart")
+  .append("div")
+  .attr('class', 'tooltip');
+
+
+	 
+
+  
+  force.on("tick", function() {
+    link.attr("x1", function(d) { return d.source.x; })
+        .attr("y1", function(d) { return d.source.y; })
+        .attr("x2", function(d) { return d.target.x; })
+        .attr("y2", function(d) { return d.target.y; });
+     text1.attr("x", function(d) { return d.x ; })
+         .attr("y", function(d) { return d.y ; })
+   
+		
+ 
+    node.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+  });
+});
